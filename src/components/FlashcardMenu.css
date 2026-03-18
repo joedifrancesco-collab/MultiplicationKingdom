@@ -1,0 +1,164 @@
+.fc-menu {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top)) 20px max(40px, env(safe-area-inset-bottom));
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fc-menu-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.fc-menu-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.fc-menu-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin: 0;
+}
+
+.fc-menu-subtitle {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.fc-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Shared card styles ─── */
+.fc-mode-card,
+.fc-time-picker {
+  width: 100%;
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+  border: 3px solid transparent;
+}
+
+.fc-mode-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  cursor: pointer;
+  background: var(--card-bg);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.fc-mode-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.fc-mode-card:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.practice-card { border-color: #6BCB77; background: #f0fff4; }
+.timed-card    { border-color: #FFD93D; background: #fffde7; }
+.sprint-card   { border-color: #FF6B6B; background: #fff0f0; }
+
+.fc-mode-icon {
+  font-size: 2.4rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.fc-mode-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.fc-mode-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.fc-mode-desc {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.45;
+}
+
+.fc-mode-arrow {
+  font-size: 1.8rem;
+  color: var(--text-light);
+  flex-shrink: 0;
+  font-weight: 300;
+}
+
+/* ── Time picker ─── */
+.fc-time-picker {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #fffde7;
+}
+
+.fc-time-picker-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fc-time-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fc-time-btns button {
+  flex: 1;
+  min-width: 70px;
+  padding: 12px 8px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.fc-time-btns button:active {
+  transform: scale(0.95);
+}
+
+.fc-cancel-btn {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  font-weight: 600;
+}
+
+.fc-cancel-btn:hover {
+  color: var(--secondary);
+}

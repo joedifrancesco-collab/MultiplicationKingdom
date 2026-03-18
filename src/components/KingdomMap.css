@@ -1,0 +1,105 @@
+.kingdom-map {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(20px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.map-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.map-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.map-subtitle {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+.kingdoms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 480px) {
+  .kingdoms-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 720px) {
+  .kingdoms-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.kingdom-tile {
+  position: relative;
+  background: var(--card-bg);
+  border: 3px solid var(--kingdom-color, var(--primary));
+  border-radius: var(--radius);
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-height: 120px;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+
+.kingdom-tile.unlocked:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.kingdom-tile.unlocked:active {
+  transform: scale(0.96);
+  box-shadow: none;
+}
+
+.kingdom-tile.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.kingdom-number {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--kingdom-color, var(--primary));
+  line-height: 1;
+}
+
+.kingdom-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.kingdom-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.kingdom-stars .star {
+  font-size: 1rem;
+  color: #ddd;
+}
+
+.kingdom-stars .star.filled {
+  color: var(--accent);
+}
+
+.kingdom-lock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1rem;
+}

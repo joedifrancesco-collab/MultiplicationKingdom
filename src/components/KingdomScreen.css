@@ -1,0 +1,88 @@
+.kingdom-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(20px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kingdom-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--kingdom-color, var(--primary));
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.kingdom-desc {
+  color: var(--text-light);
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+.kingdom-stars-display {
+  display: flex;
+  gap: 8px;
+  font-size: 2rem;
+  margin-bottom: 32px;
+}
+
+.mode-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  text-align: left;
+  min-height: 80px;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  border: none;
+}
+
+.mode-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.mode-btn:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.mode-btn.flashcard { background: #ede7ff; }
+.mode-btn.speed     { background: #fff8e1; }
+.mode-btn.match     { background: #e1f5fe; }
+
+.mode-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.mode-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mode-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.mode-desc {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}

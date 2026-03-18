@@ -1,0 +1,134 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #6C63FF;
+  --secondary: #FF6B6B;
+  --accent: #FFD93D;
+  --success: #6BCB77;
+  --bg: #F0F4FF;
+  --card-bg: #FFFFFF;
+  --text: #2D3436;
+  --text-light: #636E72;
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --radius: 16px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.4;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  padding-top: env(safe-area-inset-top);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+input {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* ── Shared utility styles ─────────────────────────── */
+
+.back-btn {
+  background: none;
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px 0;
+  margin-bottom: 12px;
+  display: inline-block;
+  align-self: flex-start;
+  border: none;
+  cursor: pointer;
+}
+
+.back-btn:hover { opacity: 0.8; }
+
+.star        { font-size: 1.4rem; color: #ddd; }
+.star.filled { color: var(--accent); }
+.star.empty  { color: #ddd; }
+
+.stars-earned {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  font-size: 2.8rem;
+  margin: 8px 0;
+}
+
+.done-emoji {
+  font-size: 4rem;
+}
+
+.unlock-msg {
+  font-size: 1.1rem;
+  color: var(--success);
+  font-weight: 700;
+  margin: 4px 0;
+}
+
+.done-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.done-buttons button {
+  background: var(--primary);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  min-height: 52px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.done-buttons button:active { transform: scale(0.96); }
+
+.done-buttons button.btn-secondary {
+  background: var(--card-bg);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.progress-bar {
+  width: 100%;
+  max-width: 360px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progress-fill {
+  background: var(--primary);
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+

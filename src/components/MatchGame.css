@@ -1,0 +1,122 @@
+.match-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(20px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.match-header {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+.match-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (min-width: 400px) {
+  .match-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.match-card {
+  aspect-ratio: 1;
+  cursor: pointer;
+  perspective: 600px;
+}
+
+.match-card:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+.match-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.4s;
+  border-radius: 12px;
+}
+
+.match-card.flipped .match-card-inner {
+  transform: rotateY(180deg);
+}
+
+.match-card-back,
+.match-card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  padding: 4px;
+  text-align: center;
+}
+
+.match-card-back {
+  background: var(--primary);
+  color: white;
+  font-size: 1.5rem;
+}
+
+.match-card-front {
+  transform: rotateY(180deg);
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.match-card-front.question {
+  background: #ede7ff;
+  color: var(--primary);
+  font-size: 0.8rem;
+}
+
+.match-card-front.answer {
+  background: #c8f7c5;
+  color: #2d6a4f;
+  font-size: 1.1rem;
+}
+
+.match-card.matched .match-card-inner {
+  opacity: 0.5;
+}
+
+.match-done {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  gap: 14px;
+}
+
+.match-done .done-emoji {
+  font-size: 4rem;
+}
+
+.match-done h2 {
+  font-size: 2rem;
+  color: var(--primary);
+}
