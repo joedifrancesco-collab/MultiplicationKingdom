@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
-import { awardStars } from '../store/progress';
+import { awardStars, saveGameScore } from '../store/progress';
 import './SpeedChallenge.css';
 
 const TIME_LIMIT = 30;
@@ -49,6 +49,7 @@ export default function SpeedChallenge() {
     if (!done) return;
     const stars = calcStars(score, shuffled.length);
     awardStars(kingdomId, stars);
+    saveGameScore('speed', { stars, correct: score, total: shuffled.length, kingdomId, kingdomName: KINGDOMS[kingdomId - 1].name });
     setEarnedStars(stars);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [done]);
