@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
-import { awardStars } from '../store/progress';
+import { awardStars, saveGameScore } from '../store/progress';
 import './MatchGame.css';
 
 function buildCards(questions) {
@@ -39,6 +39,7 @@ export default function MatchGame() {
     if (!done) return;
     const stars = calcStars(moves, cards.length / 2);
     awardStars(kingdomId, stars);
+    saveGameScore('match', { stars, moves, kingdomId, kingdomName: KINGDOMS[kingdomId - 1].name });
     setEarnedStars(stars);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [done]);

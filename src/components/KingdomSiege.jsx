@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ALL_QUESTIONS } from '../data/questions';
+import { saveGameScore } from '../store/progress';
 import './KingdomSiege.css';
 
 // ── Config ───────────────────────────────────────────────────────────────────
@@ -184,6 +185,8 @@ export default function KingdomSiege() {
 
       // ── Game-over check
       if (g.towers.every(t => !t)) {
+        const finalSecs = Math.floor(seconds);
+        saveGameScore('siege', { seconds: finalSecs, stars: calcStars(finalSecs) });
         setScreen('done');
         return; // stops the loop
       }
