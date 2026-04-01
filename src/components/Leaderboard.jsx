@@ -85,7 +85,7 @@ export default function Leaderboard() {
     return (
       <div key={score.id} className="lb-row">
         <RankBadge index={i} />
-        <span className="lb-row-name">{score.playerName}</span>
+        <span className="lb-row-name">{score.email || score.playerName || 'Anonymous'}</span>
         {gameType === 'siege' && (
           <>
             <span className="lb-row-score">{score.seconds}s</span>
