@@ -1,3 +1,6 @@
+import { collection, addDoc, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { db } from '../config/firebase';
+
 const KEY = 'mk_progress';
 const USERS_KEY = 'mk_users';
 const CURRENT_USER_KEY = 'mk_current_user';
@@ -157,6 +160,8 @@ export function saveGameScore(gameType, data) {
       if (gameType === 'siege') users[currentUser].siegeBest = data.seconds;
       saveUsers(users);
     }
+    // Sync to Firebase in background (don't block game flow)
+    syncScoreToFirebase(currentUser, gameType, data);
     return;
   }
   // Anonymous player
@@ -175,4 +180,88 @@ export function saveGameScore(gameType, data) {
 export function getGameBests(username) {
   const users = getUsers();
   return users[username]?.gameBests || {};
+}
+
+// ── Firebase Firestore sync ─────────────────────────────────────────────────────
+
+/**
+ * Save a game score to Firestore for the centralized leaderboard.
+ * Called automatically when saveGameScore is invoked.
+ * Runs silently in background (doesn't block game flow).
+ */
+export async function syncScoreToFirebase(playerName, gameType, data) {
+  try {
+    await addDoc(collection(db, 'leaderboard'), {
+      playerName,
+      gameType,
+      ...data,
+      timestamp: new Date(),
+    });
+  } catch (error) {
+    console.error(`Failed to sync ${gameType} score to Firebase:`, error);
+    // Fail silently - game still works offline
+  }
+}
+
+/**
+ * Fetch leaderboard data from Firestore for a specific game type.
+ * Returns top scores sorted by best performance.
+ */
+export async function fetchLeaderboardFromFirebase(gameType, topN = 50) {
+  try {
+    const q = query(
+      collection(db, 'leaderboard'),
+      orderBy('timestamp', 'desc'),
+      limit(topN * 2) // Fetch more to filter by game type
+    );
+    const querySnapshot = await getDocs(q);
+    
+    const scores = querySnapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(doc => doc.gameType === gameType)
+      .slice(0, topN);
+
+    return scores;
+  } catch (error) {
+    console.error('Failed to fetch leaderboard from Firebase:', error);
+    return [];
+  }
+}
+
+/**
+ * Fetch aggregated leaderboard (best score per player per game type)
+ */
+export async function fetchAggregatedLeaderboard(gameType) {
+  try {
+    const allScores = await fetchLeaderboardFromFirebase(gameType, 500);
+    const bestByPlayer = {};
+
+    allScores.forEach(score => {
+      const playerName = score.playerName;
+      if (!bestByPlayer[playerName]) {
+        bestByPlayer[playerName] = score;
+      } else if (isBetter(gameType, score, bestByPlayer[playerName])) {
+        bestByPlayer[playerName] = score;
+      }
+    });
+
+    return Object.values(bestByPlayer).sort((a, b) => {
+      if (gameType === 'siege') return b.seconds - a.seconds;
+      if (gameType === 'speed') {
+        if (b.stars !== a.stars) return b.stars - a.stars;
+        return (b.correct / b.total) - (a.correct / a.total);
+      }
+      if (gameType === 'flashcard') {
+        return (b.correct / b.total) - (a.correct / a.total);
+      }
+      if (gameType === 'fcg_timed' || gameType === 'fcg_countdown') {
+        if (b.pct !== a.pct) return b.pct - a.pct;
+        return b.correct - a.correct;
+      }
+      return 0;
+    });
+  } catch (error) {
+    console.error('Failed to fetch aggregated leaderboard:', error);
+    return [];
+  }
 }
