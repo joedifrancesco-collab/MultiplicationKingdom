@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { getUsers, getCurrentUser, totalStars, getGameBests } from '../store/progress';
+import { getUsers, getCurrentUser, getGameBests } from '../store/progress';
 import './Leaderboard.css';
 
 const MEDAL = ['🥇', '🥈', '🥉'];
@@ -63,18 +63,11 @@ export default function Leaderboard() {
       .sort(sortFn);
   }
 
-  const overallRanked = userNames
-    .map(name => ({ name, stars: totalStars(name) }))
-    .sort((a, b) => b.stars - a.stars);
-
   const siegeRanked = rankByGame('siege',
     (a, b) => b.best.seconds - a.best.seconds);
 
   const speedRanked = rankByGame('speed',
     (a, b) => b.best.stars - a.best.stars || (b.best.correct / b.best.total) - (a.best.correct / a.best.total));
-
-  const matchRanked = rankByGame('match',
-    (a, b) => b.best.stars - a.best.stars || a.best.moves - b.best.moves);
 
   const flashcardRanked = rankByGame('flashcard',
     (a, b) => (b.best.correct / b.best.total) - (a.best.correct / a.best.total));
@@ -90,7 +83,7 @@ export default function Leaderboard() {
       <div className="lb-screen">
         <div className="lb-header">
           <button className="lb-back" onClick={() => navigate('/')}>← Back</button>
-          <h1 className="lb-title">🏆 High Scores</h1>
+          <h1 className="lb-title">🏆 Leaderboard</h1>
         </div>
         <div className="lb-empty">
           <div className="lb-empty-icon">👤</div>
@@ -105,93 +98,45 @@ export default function Leaderboard() {
     <div className="lb-screen">
       <div className="lb-header">
         <button className="lb-back" onClick={() => navigate('/')}>← Back</button>
-        <h1 className="lb-title">🏆 High Scores</h1>
+        <h1 className="lb-title">🏆 Leaderboard</h1>
       </div>
 
-      {/* ── Overall Rankings ── */}
-      <GameSection icon="👑" title="Overall Rankings" color="var(--primary)">
-        <div className="lb-rows">
-          {overallRanked.map(({ name, stars }, i) => (
-            <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-              <RankBadge index={i} />
-              <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-              <span className="lb-row-score">⭐ {stars}<span className="lb-row-max">/36</span></span>
-              <div className="lb-row-bar">
-                <div className="lb-row-bar-fill" style={{ width: `${Math.round((stars / 36) * 100)}%`, background: 'var(--primary)' }} />
-              </div>
+      {/* ── Conquest ── */}
+      <GameSection icon="🏰" title="Conquest" color="var(--primary)">
+        {speedRanked.length > 0 && (
+          <SubSection icon="⚡" title="Speed Challenge">
+            <div className="lb-rows">
+              {speedRanked.map(({ name, best }, i) => (
+                <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
+                  <RankBadge index={i} />
+                  <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
+                  <span className="lb-row-score">{best.correct}/{best.total}</span>
+                  <Stars n={best.stars} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+            <p className="lb-section-note">Best single land run. Land: {speedRanked[0]?.best.kingdomName}</p>
+          </SubSection>
+        )}
+
+        {flashcardRanked.length > 0 && (
+          <SubSection icon="🔖" title="Kingdom Flashcard">
+            <div className="lb-rows">
+              {flashcardRanked.map(({ name, best }, i) => (
+                <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
+                  <RankBadge index={i} />
+                  <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
+                  <span className="lb-row-score">{best.correct}/{best.total}</span>
+                  <span className="lb-row-pct">{Math.round((best.correct / best.total) * 100)}%</span>
+                </div>
+              ))}
+            </div>
+          </SubSection>
+        )}
       </GameSection>
-
-      {/* ── Kingdom Siege ── */}
-      {siegeRanked.length > 0 && (
-        <GameSection icon="⚔️" title="Kingdom Siege" color="#FF6B6B">
-          <div className="lb-rows">
-            {siegeRanked.map(({ name, best }, i) => (
-              <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                <RankBadge index={i} />
-                <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                <span className="lb-row-score">{best.seconds}s</span>
-                <Stars n={best.stars} />
-              </div>
-            ))}
-          </div>
-        </GameSection>
-      )}
-
-      {/* ── Speed Challenge ── */}
-      {speedRanked.length > 0 && (
-        <GameSection icon="⚡" title="Speed Challenge" color="#FFD93D">
-          <div className="lb-rows">
-            {speedRanked.map(({ name, best }, i) => (
-              <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                <RankBadge index={i} />
-                <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                <span className="lb-row-score">{best.correct}/{best.total}</span>
-                <Stars n={best.stars} />
-              </div>
-            ))}
-          </div>
-          <p className="lb-section-note">Best single kingdom run. Kingdom: {speedRanked[0]?.best.kingdomName}</p>
-        </GameSection>
-      )}
-
-      {/* ── Match Game ── */}
-      {matchRanked.length > 0 && (
-        <GameSection icon="🃏" title="Match Game" color="#6BCB77">
-          <div className="lb-rows">
-            {matchRanked.map(({ name, best }, i) => (
-              <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                <RankBadge index={i} />
-                <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                <span className="lb-row-score">{best.moves} moves</span>
-                <Stars n={best.stars} />
-              </div>
-            ))}
-          </div>
-        </GameSection>
-      )}
-
-      {/* ── Kingdom Flashcard ── */}
-      {flashcardRanked.length > 0 && (
-        <GameSection icon="🔖" title="Kingdom Flashcard" color="var(--primary)">
-          <div className="lb-rows">
-            {flashcardRanked.map(({ name, best }, i) => (
-              <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                <RankBadge index={i} />
-                <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                <span className="lb-row-score">{best.correct}/{best.total}</span>
-                <span className="lb-row-pct">{Math.round((best.correct / best.total) * 100)}%</span>
-              </div>
-            ))}
-          </div>
-        </GameSection>
-      )}
 
       {/* ── Flashcard Challenge ── */}
       <GameSection icon="🃏" title="Flashcard Challenge" color="#FF9F43">
-
         <SubSection icon="⏱️" title="Timed">
           {timedRanked.length > 0 ? (
             <div className="lb-rows">
@@ -225,8 +170,23 @@ export default function Leaderboard() {
         <SubSection icon="📚" title="Practice">
           <p className="lb-practice-note">Practice is endless and untracked — it&apos;s just for learning! 🌱</p>
         </SubSection>
-
       </GameSection>
+
+      {/* ── Kingdom Siege ── */}
+      {siegeRanked.length > 0 && (
+        <GameSection icon="⚔️" title="Kingdom Siege" color="#FF6B6B">
+          <div className="lb-rows">
+            {siegeRanked.map(({ name, best }, i) => (
+              <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
+                <RankBadge index={i} />
+                <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
+                <span className="lb-row-score">{best.seconds}s</span>
+                <Stars n={best.stars} />
+              </div>
+            ))}
+          </div>
+        </GameSection>
+      )}
     </div>
   );
 }

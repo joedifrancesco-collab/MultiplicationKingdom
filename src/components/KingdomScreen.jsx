@@ -20,7 +20,7 @@ export default function KingdomScreen() {
     <div className="kingdom-screen" style={{ '--kingdom-color': kingdom.color }}>
       <button className="back-btn" onClick={() => navigate('/kingdom')}>← Back to Map</button>
       <h1 className="kingdom-title">{kingdom.name}</h1>
-      <p className="kingdom-desc">Master the {kingdomId}× table!</p>
+      <p className="kingdom-desc">Conquer the {kingdomId}× land!</p>
 
       <div className="kingdom-stars-display">
         {[1, 2, 3].map(s => (
@@ -42,14 +42,6 @@ export default function KingdomScreen() {
           <div className="mode-text">
             <span className="mode-label">Speed Challenge</span>
             <span className="mode-desc">Beat the clock!</span>
-          </div>
-        </button>
-
-        <button className="mode-btn match" onClick={() => navigate(`/kingdom/${id}/match`)}>
-          <span className="mode-icon">🎴</span>
-          <div className="mode-text">
-            <span className="mode-label">Match Game</span>
-            <span className="mode-desc">Flip and find pairs</span>
           </div>
         </button>
       </div>

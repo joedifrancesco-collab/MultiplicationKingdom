@@ -65,9 +65,9 @@ export default function HomeScreen() {
         <button className="home-game-card kingdom-card" onClick={() => navigate('/kingdom')}>
           <div className="game-card-icon">🏰</div>
           <div className="game-card-body">
-            <div className="game-card-title">The Kingdom</div>
+            <div className="game-card-title">Conquest</div>
             <div className="game-card-desc">
-              Unlock 12 kingdoms — one per times table. Play flashcards, speed challenges, and match games to earn stars!
+              Conquer 12 Lands — one per times table. Train with flashcards, and then conquer the speed challenge!
             </div>
           </div>
           <div className="game-card-arrow">›</div>
@@ -89,7 +89,7 @@ export default function HomeScreen() {
           <div className="game-card-body">
             <div className="game-card-title">Kingdom Siege</div>
             <div className="game-card-desc">
-              Towers under attack! Solve problems to fire — survive as long as you can!
+              Towers under attack! Solve problems to defend — survive as long as you can!
             </div>
           </div>
           <div className="game-card-arrow">›</div>
@@ -101,7 +101,7 @@ export default function HomeScreen() {
           {currentUser ? `👤 ${currentUser} ›` : '💾 Save Your Progress'}
         </button>
         <button className="home-footer-btn scores-btn" onClick={() => navigate('/leaderboard')}>
-          🏆 High Scores
+          🏆 Leaderboard
         </button>
       </div>
 

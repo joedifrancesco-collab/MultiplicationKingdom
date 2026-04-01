@@ -12,7 +12,7 @@ export default function KingdomMap() {
       <button className="back-btn" onClick={() => navigate('/')}>← Home</button>
       <header className="map-header">
         <h1 className="map-title">✨ Multiplication Kingdom</h1>
-        <p className="map-subtitle">Conquer all 12 kingdoms!</p>
+        <p className="map-subtitle">Conquer all 12 lands!</p>
       </header>
 
       <div className="kingdoms-grid">
