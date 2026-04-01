@@ -1,5 +1,11 @@
 import { collection, addDoc, query, orderBy, limit, getDocs } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { db, auth } from '../config/firebase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
 
 const KEY = 'mk_progress';
 const USERS_KEY = 'mk_users';
@@ -149,6 +155,16 @@ function isBetter(gameType, next, prev) {
 }
 
 export function saveGameScore(gameType, data) {
+  // Try to save to Firebase if user is authenticated
+  const authUser = getCurrentAuthUser();
+  if (authUser) {
+    console.log('📊 Saving score for authenticated user:', authUser.email);
+    // Sync to Firebase (only for authenticated users)
+    syncScoreToFirebase(authUser.email, gameType, data);
+    return;
+  }
+
+  // Fallback: try old localStorage system for backward compatibility
   const currentUser = getCurrentUser();
   if (currentUser) {
     const users = getUsers();
@@ -164,17 +180,9 @@ export function saveGameScore(gameType, data) {
     syncScoreToFirebase(currentUser, gameType, data);
     return;
   }
-  // Anonymous player
-  try {
-    const raw = localStorage.getItem(KEY);
-    const p = raw ? JSON.parse(raw) : defaultProgress();
-    if (!p.gameBests) p.gameBests = {};
-    if (isBetter(gameType, data, p.gameBests[gameType])) {
-      p.gameBests[gameType] = data;
-      if (gameType === 'siege') p.siegeBest = data.seconds;
-      localStorage.setItem(KEY, JSON.stringify(p));
-    }
-  } catch { /* ignore */ }
+
+  // If neither auth user nor localStorage user, just log
+  console.log('⏭️  Score not saved - no authenticated or named user');
 }
 
 export function getGameBests(username) {
@@ -189,16 +197,23 @@ export function getGameBests(username) {
  * Called automatically when saveGameScore is invoked.
  * Runs silently in background (doesn't block game flow).
  */
-export async function syncScoreToFirebase(playerName, gameType, data) {
+export async function syncScoreToFirebase(emailOrName, gameType, data) {
   try {
+    // Get the authenticated user's info
+    const user = auth.currentUser;
+    if (!user) {
+      return;
+    }
+    
     await addDoc(collection(db, 'leaderboard'), {
-      playerName,
+      uid: user.uid,
+      email: user.email,
       gameType,
       ...data,
       timestamp: new Date(),
     });
   } catch (error) {
-    console.error(`Failed to sync ${gameType} score to Firebase:`, error);
+    console.error(`Failed to sync ${gameType} score to Firebase:`, error.code, error.message);
     // Fail silently - game still works offline
   }
 }
@@ -237,11 +252,11 @@ export async function fetchAggregatedLeaderboard(gameType) {
     const bestByPlayer = {};
 
     allScores.forEach(score => {
-      const playerName = score.playerName;
-      if (!bestByPlayer[playerName]) {
-        bestByPlayer[playerName] = score;
-      } else if (isBetter(gameType, score, bestByPlayer[playerName])) {
-        bestByPlayer[playerName] = score;
+      const playerEmail = score.email || 'Anonymous';
+      if (!bestByPlayer[playerEmail]) {
+        bestByPlayer[playerEmail] = score;
+      } else if (isBetter(gameType, score, bestByPlayer[playerEmail])) {
+        bestByPlayer[playerEmail] = score;
       }
     });
 
@@ -263,5 +278,70 @@ export async function fetchAggregatedLeaderboard(gameType) {
   } catch (error) {
     console.error('Failed to fetch aggregated leaderboard:', error);
     return [];
+  }
+}
+
+// ── Firebase Authentication ─────────────────────────────────────────────────────
+
+/**
+ * Sign up a new user with email and password
+ */
+export async function signUpUser(email, password) {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return { success: true, user: userCredential.user };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Sign in an existing user with email and password
+ */
+export async function signInUser(email, password) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return { success: true, user: userCredential.user };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Sign out the current user
+ */
+export async function signOutUser() {
+  try {
+    await signOut(auth);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Get the current authenticated user
+ */
+export function getCurrentAuthUser() {
+  try {
+    return auth.currentUser;
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
+ * Listen to auth state changes
+ * Returns an unsubscribe function
+ */
+export function subscribeToAuthChanges(callback) {
+  try {
+    return onAuthStateChanged(auth, (user) => {
+      callback(user);
+    });
+  } catch (error) {
+    console.error('Error subscribing to auth changes:', error);
+    // Return a no-op unsubscribe if auth fails
+    return () => {};
   }
 }
