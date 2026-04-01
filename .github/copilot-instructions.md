@@ -36,8 +36,10 @@ src/
   main.jsx           ← Entry point, React 19 strict mode
   index.css          ← Global CSS custom properties / theme variables
   components/        ← One .jsx + one .css file per component (co-located)
+  config/
+    firebase.js      ← Firebase Firestore initialization (centralized leaderboard)
   data/questions.js  ← Procedurally generates KINGDOMS and ALL_QUESTIONS (no API)
-  store/progress.js  ← All localStorage reads/writes (mk_progress key)
+  store/progress.js  ← localStorage reads/writes (mk_progress key) + Firebase sync
 ```
 
 **Route map:**
@@ -88,10 +90,37 @@ Every game component follows the same lifecycle:
 
 ---
 
+## Firebase Setup (Centralized Leaderboard)
+
+**Status:** Integrated via Firebase Firestore (games sync scores to cloud automatically).
+
+**Configuration:**
+- Config file: `src/config/firebase.js`
+- Integration: `src/store/progress.js` — functions `syncScoreToFirebase()`, `fetchAggregatedLeaderboard()`
+- Leaderboard UI: `src/components/Leaderboard.jsx` loads cloud scores on mount
+
+**How it works:**
+1. When `saveGameScore(gameType, data)` is called, scores are saved to localStorage AND synced to Firestore
+2. Leaderboard component fetches top scores from Firestore (cloud) on mount
+3. Local players show in the leaderboard alongside cloud scores
+4. Fallback: if Firebase is unavailable, local leaderboard still works
+
+**First time setup:**
+- See `FIREBASE_SETUP.md` for complete instructions
+- Must configure `src/config/firebase.js` with your Firebase project credentials
+- Create Firestore database with rules allowing read-only public access
+
+**Notes:**
+- Scores sync in background without blocking gameplay
+- Firebase errors fail silently (games still work offline)
+- Free Firebase tier supports leaderboards for small schools/classrooms
+
+---
+
 ## Known Pitfalls
 
 - **No centralized re-render signal.** After calling `awardStars()`, navigate away and back to see updated star counts — components won't auto-update mid-session without re-mounting.
-- **localStorage only.** Progress is device-local and lost on browser/app data clear. No cloud sync.
+- **Firebase config required.** App starts but leaderboard shows empty until `src/config/firebase.js` is configured with real credentials.
 - **Android only** for mobile — no iOS Capacitor setup.
 - **No error boundaries.** Games can white-screen on unexpected state; add `<ErrorBoundary>` when reliability matters.
 - **Focus management in games.** `inputRef.current?.focus()` is called after state changes; rapid interactions can cause focus to be lost.
