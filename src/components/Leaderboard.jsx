@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { getUsers, getCurrentUser, getGameBests } from '../store/progress';
+import { useState, useEffect } from 'react';
+import { fetchAggregatedLeaderboard } from '../store/progress';
 import './Leaderboard.css';
 
 const MEDAL = ['🥇', '🥈', '🥉'];
@@ -18,10 +19,6 @@ function RankBadge({ index }) {
   return index < 3
     ? <span className="lb-medal">{MEDAL[index]}</span>
     : <span className="lb-rank-num">#{index + 1}</span>;
-}
-
-function YouBadge() {
-  return <span className="lb-you-badge">You</span>;
 }
 
 function EmptyRows() {
@@ -52,33 +49,72 @@ function SubSection({ icon, title, children }) {
 
 export default function Leaderboard() {
   const navigate = useNavigate();
-  const currentUser = getCurrentUser();
-  const users = getUsers();
-  const userNames = Object.keys(users);
 
-  function rankByGame(gameType, sortFn) {
-    return userNames
-      .map(name => ({ name, best: getGameBests(name)[gameType] }))
-      .filter(p => p.best != null)
-      .sort(sortFn);
+  // Cloud leaderboard data
+  const [cloudData, setCloudData] = useState({
+    siege: [],
+    speed: [],
+    flashcard: [],
+    fcg_timed: [],
+    fcg_countdown: [],
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Fetch cloud leaderboard on mount
+  useEffect(() => {
+    const fetchCloudData = async () => {
+      try {
+        const [siege, speed, flashcard, timed, sprint] = await Promise.all([
+          fetchAggregatedLeaderboard('siege'),
+          fetchAggregatedLeaderboard('speed'),
+          fetchAggregatedLeaderboard('flashcard'),
+          fetchAggregatedLeaderboard('fcg_timed'),
+          fetchAggregatedLeaderboard('fcg_countdown'),
+        ]);
+        setCloudData({ siege, speed, flashcard, fcg_timed: timed, fcg_countdown: sprint });
+      } catch (error) {
+        console.error('Failed to load cloud leaderboard:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCloudData();
+  }, []);
+
+  function renderCloudScore(score, i, gameType) {
+    return (
+      <div key={score.id} className="lb-row">
+        <RankBadge index={i} />
+        <span className="lb-row-name">{score.playerName}</span>
+        {gameType === 'siege' && (
+          <>
+            <span className="lb-row-score">{score.seconds}s</span>
+            <Stars n={score.stars} />
+          </>
+        )}
+        {gameType === 'speed' && (
+          <>
+            <span className="lb-row-score">{score.correct}/{score.total}</span>
+            <Stars n={score.stars} />
+          </>
+        )}
+        {gameType === 'flashcard' && (
+          <>
+            <span className="lb-row-score">{score.correct}/{score.total}</span>
+            <span className="lb-row-pct">{Math.round((score.correct / score.total) * 100)}%</span>
+          </>
+        )}
+        {(gameType === 'fcg_timed' || gameType === 'fcg_countdown') && (
+          <>
+            <span className="lb-row-score">{score.correct}/{score.total}</span>
+            <span className="lb-row-pct">{score.pct}%</span>
+          </>
+        )}
+      </div>
+    );
   }
 
-  const siegeRanked = rankByGame('siege',
-    (a, b) => b.best.seconds - a.best.seconds);
-
-  const speedRanked = rankByGame('speed',
-    (a, b) => b.best.stars - a.best.stars || (b.best.correct / b.best.total) - (a.best.correct / a.best.total));
-
-  const flashcardRanked = rankByGame('flashcard',
-    (a, b) => (b.best.correct / b.best.total) - (a.best.correct / a.best.total));
-
-  const timedRanked = rankByGame('fcg_timed',
-    (a, b) => b.best.pct - a.best.pct || b.best.correct - a.best.correct);
-
-  const sprintRanked = rankByGame('fcg_countdown',
-    (a, b) => b.best.pct - a.best.pct || b.best.correct - a.best.correct);
-
-  if (userNames.length === 0) {
+  if (loading) {
     return (
       <div className="lb-screen">
         <div className="lb-header">
@@ -86,9 +122,8 @@ export default function Leaderboard() {
           <h1 className="lb-title">🏆 Leaderboard</h1>
         </div>
         <div className="lb-empty">
-          <div className="lb-empty-icon">👤</div>
-          <p>No saved players yet.</p>
-          <p className="lb-empty-hint">Tap <strong>💾 Save Your Progress</strong> on the home screen to create a profile!</p>
+          <div className="lb-empty-icon">⏳</div>
+          <p>Loading leaderboard...</p>
         </div>
       </div>
     );
@@ -103,66 +138,42 @@ export default function Leaderboard() {
 
       {/* ── Conquest ── */}
       <GameSection icon="🏰" title="Conquest" color="var(--primary)">
-        {speedRanked.length > 0 && (
+        {cloudData.speed.length > 0 && (
           <SubSection icon="⚡" title="Speed Challenge">
             <div className="lb-rows">
-              {speedRanked.map(({ name, best }, i) => (
-                <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                  <RankBadge index={i} />
-                  <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                  <span className="lb-row-score">{best.correct}/{best.total}</span>
-                  <Stars n={best.stars} />
-                </div>
-              ))}
+              {cloudData.speed.map((score, i) => renderCloudScore(score, i, 'speed'))}
             </div>
-            <p className="lb-section-note">Best single land run. Land: {speedRanked[0]?.best.kingdomName}</p>
+            <p className="lb-section-note">Best single land run. Land: {cloudData.speed[0]?.kingdomName}</p>
           </SubSection>
         )}
 
-        {flashcardRanked.length > 0 && (
+        {cloudData.flashcard.length > 0 && (
           <SubSection icon="🔖" title="Kingdom Flashcard">
             <div className="lb-rows">
-              {flashcardRanked.map(({ name, best }, i) => (
-                <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                  <RankBadge index={i} />
-                  <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                  <span className="lb-row-score">{best.correct}/{best.total}</span>
-                  <span className="lb-row-pct">{Math.round((best.correct / best.total) * 100)}%</span>
-                </div>
-              ))}
+              {cloudData.flashcard.map((score, i) => renderCloudScore(score, i, 'flashcard'))}
             </div>
           </SubSection>
+        )}
+
+        {cloudData.speed.length === 0 && cloudData.flashcard.length === 0 && (
+          <p className="lb-no-scores">No cloud scores yet — start playing!</p>
         )}
       </GameSection>
 
       {/* ── Flashcard Challenge ── */}
       <GameSection icon="🃏" title="Flashcard Challenge" color="#FF9F43">
         <SubSection icon="⏱️" title="Timed">
-          {timedRanked.length > 0 ? (
+          {cloudData.fcg_timed.length > 0 ? (
             <div className="lb-rows">
-              {timedRanked.map(({ name, best }, i) => (
-                <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                  <RankBadge index={i} />
-                  <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                  <span className="lb-row-score">{best.correct}/{best.total}</span>
-                  <span className="lb-row-pct">{best.pct}%</span>
-                </div>
-              ))}
+              {cloudData.fcg_timed.map((score, i) => renderCloudScore(score, i, 'fcg_timed'))}
             </div>
           ) : <EmptyRows />}
         </SubSection>
 
         <SubSection icon="⚡" title="Sprint">
-          {sprintRanked.length > 0 ? (
+          {cloudData.fcg_countdown.length > 0 ? (
             <div className="lb-rows">
-              {sprintRanked.map(({ name, best }, i) => (
-                <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                  <RankBadge index={i} />
-                  <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                  <span className="lb-row-score">{best.correct}/{best.total}</span>
-                  <span className="lb-row-pct">{best.pct}%</span>
-                </div>
-              ))}
+              {cloudData.fcg_countdown.map((score, i) => renderCloudScore(score, i, 'fcg_countdown'))}
             </div>
           ) : <EmptyRows />}
         </SubSection>
@@ -173,20 +184,14 @@ export default function Leaderboard() {
       </GameSection>
 
       {/* ── Kingdom Siege ── */}
-      {siegeRanked.length > 0 && (
+      {cloudData.siege.length > 0 && (
         <GameSection icon="⚔️" title="Kingdom Siege" color="#FF6B6B">
           <div className="lb-rows">
-            {siegeRanked.map(({ name, best }, i) => (
-              <div key={name} className={`lb-row${name === currentUser ? ' lb-row-you' : ''}`}>
-                <RankBadge index={i} />
-                <span className="lb-row-name">{name}{name === currentUser && <YouBadge />}</span>
-                <span className="lb-row-score">{best.seconds}s</span>
-                <Stars n={best.stars} />
-              </div>
-            ))}
+            {cloudData.siege.map((score, i) => renderCloudScore(score, i, 'siege'))}
           </div>
         </GameSection>
       )}
     </div>
   );
 }
+
