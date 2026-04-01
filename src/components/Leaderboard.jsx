@@ -81,9 +81,6 @@ export default function Leaderboard() {
     fetchCloudData();
   }, []);
 
-  const siegeRanked = rankByGame('siege',
-    (a, b) => b.best.seconds - a.best.seconds);
-
   function renderCloudScore(score, i, gameType) {
     return (
       <div key={score.id} className="lb-row">
