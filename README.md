@@ -4,24 +4,32 @@ Master multiplication tables the fun way! An engaging educational game for stude
 
 ## 🎮 Features
 
-### 🏰 The Kingdom
-Explore 12 magical kingdoms, each dedicated to one multiplication table (1-12). Each kingdom offers three game modes:
+### 🏰 Conquest
+Explore 12 magical lands, each dedicated to one multiplication table (1-12). Each land offers two game modes:
 - **Flashcard Mode** - Test your knowledge at your own pace
 - **Speed Challenge** - Race against the clock
-- **Match Game** - Connect problems with their answers
 
-Earn stars by completing kingdoms and track your progress!
+Earn stars by completing lands and track your progress!
 
 ### 🃏 Flashcard Challenge
 Practice multiplication with flexible modes:
-- **Untimed Mode** - Learn at your own pace
-- **Sprint Mode** - 30-second speed rounds
-- **Clock Mode** - Challenge yourself against time
+- **Timed Mode** - 60-second speed rounds with scoring
+- **Sprint Mode** - 30-second intense challenges
+- **Practice Mode** - Learn at your own pace (untracked)
 
 Work through all 12 times tables (1×1 to 12×12).
 
 ### ⚔️ Kingdom Siege
-Defend your kingdom by solving multiplication problems before towers are breached. How long can you survive?
+Defend your kingdom by solving multiplication problems before towers breach your defenses. How long can you survive?
+
+### 👥 User Profiles & Leaderboard
+- Create and manage multiple player profiles
+- Track personal high scores across all game modes
+- View leaderboards organized by game type:
+  - **Conquest** (Speed Challenge & Flashcard Mode)
+  - **Flashcard Challenge** (Timed, Sprint, Practice)
+  - **Kingdom Siege**
+- All progress saved locally on your device
 
 ## 🛠 Tech Stack
 
@@ -99,14 +107,14 @@ src/
 │   ├── KingdomScreen.jsx
 │   ├── Flashcard.jsx
 │   ├── SpeedChallenge.jsx
-│   ├── MatchGame.jsx
 │   ├── FlashcardMenu.jsx
 │   ├── FlashcardGame.jsx
-│   └── KingdomSiege.jsx
+│   ├── KingdomSiege.jsx
+│   └── Leaderboard.jsx  # Multi-user leaderboard
 ├── data/
 │   └── questions.js      # All multiplication questions (1-12 tables)
 ├── store/
-│   └── progress.js       # Game progress tracking
+│   └── progress.js       # User profiles & game progress tracking
 ├── App.jsx               # Main router
 └── index.css             # Global styles
 android/                  # Capacitor Android project
@@ -115,9 +123,11 @@ public/                   # Static assets & manifest
 
 ## 🎯 Game Progression
 
-- **Progress Storage**: Stored in browser localStorage and synced with Android
-- **Star System**: Earn stars in each kingdom by completing games
-- **Unlock System**: Kingdoms available immediately (no paywalls)
+- **Progress Storage**: All progress stored in browser localStorage (device-local)
+- **Multi-User Support**: Create multiple player profiles, easily switch between them
+- **Star System**: Earn stars in each land by completing games (Speed Challenge: up to 3 stars per land)
+- **High Scores**: Track best performances per game type
+- **Leaderboard**: Compare scores with other players on the same device
 
 ## 🔧 Development
 

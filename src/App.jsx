@@ -22,7 +22,6 @@ export default function App() {
         <Route path="/kingdom/:id" element={<KingdomScreen />} />
         <Route path="/kingdom/:id/flashcard" element={<Flashcard />} />
         <Route path="/kingdom/:id/speed" element={<SpeedChallenge />} />
-        <Route path="/kingdom/:id/match" element={<MatchGame />} />
 
         {/* Flashcard Challenge */}
         <Route path="/flashcards" element={<FlashcardMenu />} />
