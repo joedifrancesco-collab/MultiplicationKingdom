@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 // TODO: Replace with your Firebase project config
 // Get this from Firebase Console → Project Settings → Web App Config
@@ -14,5 +15,7 @@ const firebaseConfig = {
   appId: "1:21184528155:web:eff9acb075a4ff2cce9dbe",
   measurementId: "G-EBYCK4Y68Y"
 };
+
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const auth = getAuth(app);

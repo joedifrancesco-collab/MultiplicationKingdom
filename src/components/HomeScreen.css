@@ -40,6 +40,16 @@
   margin: 0;
 }
 
+.home-user-email {
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin: 4px 0 0 0;
+  padding: 6px 12px;
+  background: rgba(108, 99, 255, 0.08);
+  border-radius: 8px;
+}
+
+
 .home-games {
   width: 100%;
   display: flex;
@@ -129,17 +139,29 @@
 .home-footer-btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
 .home-footer-btn:active { transform: scale(0.97); }
 
-.player-btn {
-  background: var(--primary);
-  color: #fff;
-  border-color: var(--primary);
-}
-
 .scores-btn {
   background: var(--accent);
   color: #333;
   border-color: var(--accent);
 }
+
+.signout-btn {
+  background: #ff6b6b;
+  color: #fff;
+  border-color: #ff6b6b;
+}
+
+.signout-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.signout-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 
 /* ── Player modal ────────────────────────────────────────────────────────── */
 

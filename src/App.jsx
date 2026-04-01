@@ -1,4 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { subscribeToAuthChanges } from './store/progress';
+import AuthScreen from './components/AuthScreen';
 import HomeScreen from './components/HomeScreen';
 import KingdomMap from './components/KingdomMap';
 import KingdomScreen from './components/KingdomScreen';
@@ -10,28 +13,45 @@ import FlashcardGame from './components/FlashcardGame';
 import KingdomSiege from './components/KingdomSiege';
 import Leaderboard from './components/Leaderboard';
 
+// Protected route component
+function ProtectedRoute({ element, isAuthenticated, isLoading }) {
+  if (isLoading) {
+    return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>Loading...</div>;
+  }
+  return isAuthenticated ? element : <Navigate to="/auth" replace />;
+}
+
 export default function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToAuthChanges((authUser) => {
+      setUser(authUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
-        {/* Home */}
-        <Route path="/" element={<HomeScreen />} />
+        {/* Authentication */}
+        <Route path="/auth" element={<AuthScreen />} />
 
-        {/* The Kingdom */}
-        <Route path="/kingdom" element={<KingdomMap />} />
-        <Route path="/kingdom/:id" element={<KingdomScreen />} />
-        <Route path="/kingdom/:id/flashcard" element={<Flashcard />} />
-        <Route path="/kingdom/:id/speed" element={<SpeedChallenge />} />
+        {/* Protected Routes - require authentication */}
+        <Route path="/" element={<ProtectedRoute element={<HomeScreen />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/kingdom" element={<ProtectedRoute element={<KingdomMap />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/kingdom/:id" element={<ProtectedRoute element={<KingdomScreen />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/kingdom/:id/flashcard" element={<ProtectedRoute element={<Flashcard />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/kingdom/:id/speed" element={<ProtectedRoute element={<SpeedChallenge />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/flashcards" element={<ProtectedRoute element={<FlashcardMenu />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/flashcards/play" element={<ProtectedRoute element={<FlashcardGame />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/siege" element={<ProtectedRoute element={<KingdomSiege />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isLoading={loading} />} />
 
-        {/* Flashcard Challenge */}
-        <Route path="/flashcards" element={<FlashcardMenu />} />
-        <Route path="/flashcards/play" element={<FlashcardGame />} />
-
-        {/* Kingdom Siege */}
-        <Route path="/siege" element={<KingdomSiege />} />
-
-        {/* High Scores */}
-        <Route path="/leaderboard" element={<Leaderboard />} />
+        {/* Catch-all - redirect to auth or home depending on auth state */}
+        <Route path="*" element={user ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />
       </Routes>
     </BrowserRouter>
   );
