@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { getUsers, getCurrentUser, getGameBests } from '../store/progress';
+import { useState, useEffect } from 'react';
+import { getUsers, getCurrentUser, getGameBests, fetchAggregatedLeaderboard } from '../store/progress';
 import './Leaderboard.css';
 
 const MEDAL = ['🥇', '🥈', '🥉'];
@@ -55,6 +56,37 @@ export default function Leaderboard() {
   const currentUser = getCurrentUser();
   const users = getUsers();
   const userNames = Object.keys(users);
+
+  // Cloud leaderboard data
+  const [cloudData, setCloudData] = useState({
+    siege: [],
+    speed: [],
+    flashcard: [],
+    fcg_timed: [],
+    fcg_countdown: [],
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Fetch cloud leaderboard on mount
+  useEffect(() => {
+    const fetchCloudData = async () => {
+      try {
+        const [siege, speed, flashcard, timed, sprint] = await Promise.all([
+          fetchAggregatedLeaderboard('siege'),
+          fetchAggregatedLeaderboard('speed'),
+          fetchAggregatedLeaderboard('flashcard'),
+          fetchAggregatedLeaderboard('fcg_timed'),
+          fetchAggregatedLeaderboard('fcg_countdown'),
+        ]);
+        setCloudData({ siege, speed, flashcard, fcg_timed: timed, fcg_countdown: sprint });
+      } catch (error) {
+        console.error('Failed to load cloud leaderboard:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCloudData();
+  }, []);
 
   function rankByGame(gameType, sortFn) {
     return userNames
