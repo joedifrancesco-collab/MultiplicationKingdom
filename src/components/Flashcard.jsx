@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
+import { saveGameScore } from '../store/progress';
 import './Flashcard.css';
 
 export default function Flashcard() {
@@ -17,8 +18,15 @@ export default function Flashcard() {
   const current = questions[index];
 
   function handleRating(gotIt) {
-    if (gotIt) setCorrect(c => c + 1);
+    const finalCorrect = gotIt ? correct + 1 : correct;
+    if (gotIt) setCorrect(finalCorrect);
     if (index + 1 >= questions.length) {
+      saveGameScore('flashcard', {
+        correct: finalCorrect,
+        total: questions.length,
+        kingdomId,
+        kingdomName: KINGDOMS[kingdomId - 1].name,
+      });
       setDone(true);
     } else {
       setIndex(i => i + 1);

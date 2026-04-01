@@ -8,6 +8,7 @@ import MatchGame from './components/MatchGame';
 import FlashcardMenu from './components/FlashcardMenu';
 import FlashcardGame from './components/FlashcardGame';
 import KingdomSiege from './components/KingdomSiege';
+import Leaderboard from './components/Leaderboard';
 
 export default function App() {
   return (
@@ -21,7 +22,6 @@ export default function App() {
         <Route path="/kingdom/:id" element={<KingdomScreen />} />
         <Route path="/kingdom/:id/flashcard" element={<Flashcard />} />
         <Route path="/kingdom/:id/speed" element={<SpeedChallenge />} />
-        <Route path="/kingdom/:id/match" element={<MatchGame />} />
 
         {/* Flashcard Challenge */}
         <Route path="/flashcards" element={<FlashcardMenu />} />
@@ -29,6 +29,9 @@ export default function App() {
 
         {/* Kingdom Siege */}
         <Route path="/siege" element={<KingdomSiege />} />
+
+        {/* High Scores */}
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ALL_QUESTIONS } from '../data/questions';
+import { saveGameScore } from '../store/progress';
 import './FlashcardGame.css';
 
 function shuffle(arr) {
@@ -44,6 +45,16 @@ export default function FlashcardGame() {
   useEffect(() => {
     if (!done) inputRef.current?.focus();
   }, [qIndex, done]);
+
+  // ── Save best score when timed/countdown game ends ───────────────────────
+  useEffect(() => {
+    if (!done || mode === 'practice') return;
+    const total = score.correct + score.wrong;
+    const pct = total > 0 ? Math.round((score.correct / total) * 100) : 0;
+    const gameType = mode === 'countdown' ? 'fcg_countdown' : 'fcg_timed';
+    saveGameScore(gameType, { correct: score.correct, total, pct });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done]);
 
   // ── Advance to next question ─────────────────────
   function advance() {
