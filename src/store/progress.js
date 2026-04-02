@@ -1,10 +1,11 @@
-import { collection, addDoc, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, limit, getDocs, doc, setDoc, getDoc } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateProfile,
 } from 'firebase/auth';
 
 const KEY = 'mk_progress';
@@ -205,9 +206,13 @@ export async function syncScoreToFirebase(emailOrName, gameType, data) {
       return;
     }
     
+    // Use displayName (username) if available
+    const username = user.displayName || user.email;
+    
     await addDoc(collection(db, 'leaderboard'), {
       uid: user.uid,
       email: user.email,
+      username: username,
       gameType,
       ...data,
       timestamp: new Date(),
@@ -252,11 +257,12 @@ export async function fetchAggregatedLeaderboard(gameType) {
     const bestByPlayer = {};
 
     allScores.forEach(score => {
-      const playerEmail = score.email || 'Anonymous';
-      if (!bestByPlayer[playerEmail]) {
-        bestByPlayer[playerEmail] = score;
-      } else if (isBetter(gameType, score, bestByPlayer[playerEmail])) {
-        bestByPlayer[playerEmail] = score;
+      // Prefer username, fallback to email, then to 'Anonymous'
+      const playerKey = score.username || score.email || 'Anonymous';
+      if (!bestByPlayer[playerKey]) {
+        bestByPlayer[playerKey] = score;
+      } else if (isBetter(gameType, score, bestByPlayer[playerKey])) {
+        bestByPlayer[playerKey] = score;
       }
     });
 
@@ -284,13 +290,36 @@ export async function fetchAggregatedLeaderboard(gameType) {
 // ── Firebase Authentication ─────────────────────────────────────────────────────
 
 /**
- * Sign up a new user with email and password
+ * Sign up a new user with email, username, and password
  */
-export async function signUpUser(email, password) {
+export async function signUpUser(email, username, password) {
   try {
+    // Check if username is already taken
+    const usernameDoc = await getDoc(doc(db, 'users', username.toLowerCase()));
+    if (usernameDoc.exists()) {
+      return { success: false, error: 'Username already taken. Please choose another.' };
+    }
+
+    // Create Firebase auth user
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Update user profile with display name
+    await updateProfile(userCredential.user, { displayName: username });
+    
+    // Store username in Firestore users collection
+    await setDoc(doc(db, 'users', username.toLowerCase()), {
+      uid: userCredential.user.uid,
+      username: username,
+      email: email,
+      createdAt: new Date(),
+    });
+    
     return { success: true, user: userCredential.user };
   } catch (error) {
+    // Check for specific Firebase errors
+    if (error.code === 'auth/email-already-in-use') {
+      return { success: false, error: 'Email already in use. Please sign in or use a different email.' };
+    }
     return { success: false, error: error.message };
   }
 }

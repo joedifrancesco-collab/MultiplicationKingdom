@@ -26,10 +26,17 @@ export default function HomeScreen() {
   return (
     <div className="home-screen">
       <header className="home-header">
+        <button 
+          className="home-mult-table-btn" 
+          onClick={() => navigate('/training/table', { state: { origin: '/' } })}
+          title="Interactive Multiplication Table"
+        >
+          📊
+        </button>
         <div className="home-crown">👑</div>
         <h1 className="home-title">Multiplication<br />Kingdom</h1>
         <p className="home-subtitle">Master your times tables the fun way!</p>
-        {user && <p className="home-user-email">Playing as: {redactProfanity(user.email)}</p>}
+        {user && <p className="home-user-email">Playing as: {redactProfanity(user.displayName || user.email)}</p>}
       </header>
 
       <div className="home-games">
@@ -61,17 +68,6 @@ export default function HomeScreen() {
             <div className="game-card-title">Kingdom Siege</div>
             <div className="game-card-desc">
               Towers under attack! Solve problems to defend — survive as long as you can!
-            </div>
-          </div>
-          <div className="game-card-arrow">›</div>
-        </button>
-
-        <button className="home-game-card training-card" onClick={() => navigate('/training')}>
-          <div className="game-card-icon">📊</div>
-          <div className="game-card-body">
-            <div className="game-card-title">Training</div>
-            <div className="game-card-desc">
-              See how multiplications work! Practice with interactive tables and visual learning.
             </div>
           </div>
           <div className="game-card-arrow">›</div>

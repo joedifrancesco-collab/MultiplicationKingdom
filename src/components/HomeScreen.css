@@ -18,6 +18,34 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.home-mult-table-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.home-mult-table-btn:hover {
+  background: var(--primary);
+  transform: scale(1.1);
+}
+
+.home-mult-table-btn:active {
+  transform: scale(0.95);
 }
 
 .home-crown {
@@ -85,7 +113,6 @@
 .kingdom-card   { border-color: var(--primary); }
 .flashcard-card { border-color: #FF9F43; }
 .siege-card     { border-color: #FF6B6B; }
-.training-card  { border-color: #6BCB77; }
 
 .game-card-icon {
   font-size: 3rem;
