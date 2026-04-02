@@ -83,7 +83,7 @@ export default function Leaderboard() {
   }, []);
 
   function renderCloudScore(score, i, gameType) {
-    const displayName = redactProfanity(score.email || score.playerName || 'Anonymous');
+    const displayName = redactProfanity(score.username || score.email || score.playerName || 'Anonymous');
     
     return (
       <div key={score.id} className="lb-row">
