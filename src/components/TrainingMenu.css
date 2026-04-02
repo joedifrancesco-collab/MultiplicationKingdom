@@ -1,0 +1,121 @@
+.training-menu {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(32px, env(safe-area-inset-top)) 20px max(40px, env(safe-area-inset-bottom));
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tm-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: white;
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.tm-back-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.tm-back-btn:active {
+  transform: scale(0.95);
+}
+
+.tm-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.tm-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tm-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin: 0;
+  text-align: center;
+}
+
+.tm-option-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 2px solid #6BCB77;
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.tm-option-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--primary);
+}
+
+.tm-option-card:active {
+  transform: scale(0.98);
+}
+
+.tm-option-icon {
+  font-size: 3rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tm-option-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.tm-option-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px 0;
+}
+
+.tm-option-desc {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.tm-option-arrow {
+  font-size: 1.8rem;
+  color: var(--text-light);
+  flex-shrink: 0;
+  line-height: 1;
+}

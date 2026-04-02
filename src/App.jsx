@@ -11,6 +11,8 @@ import MatchGame from './components/MatchGame';
 import FlashcardMenu from './components/FlashcardMenu';
 import FlashcardGame from './components/FlashcardGame';
 import KingdomSiege from './components/KingdomSiege';
+import TrainingMenu from './components/TrainingMenu';
+import TrainingTable from './components/TrainingTable';
 import Leaderboard from './components/Leaderboard';
 
 // Protected route component
@@ -48,6 +50,8 @@ export default function App() {
         <Route path="/flashcards" element={<ProtectedRoute element={<FlashcardMenu />} isAuthenticated={!!user} isLoading={loading} />} />
         <Route path="/flashcards/play" element={<ProtectedRoute element={<FlashcardGame />} isAuthenticated={!!user} isLoading={loading} />} />
         <Route path="/siege" element={<ProtectedRoute element={<KingdomSiege />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/training" element={<ProtectedRoute element={<TrainingMenu />} isAuthenticated={!!user} isLoading={loading} />} />
+        <Route path="/training/table" element={<ProtectedRoute element={<TrainingTable />} isAuthenticated={!!user} isLoading={loading} />} />
         <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isLoading={loading} />} />
 
         {/* Catch-all - redirect to auth or home depending on auth state */}
