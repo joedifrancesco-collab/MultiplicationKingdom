@@ -262,7 +262,16 @@ export default function KingdomSiege() {
   if (screen === 'intro') {
     return (
       <div className="siege-container">
-        <button className="back-btn" onClick={() => navigate('/')}>← Back</button>
+        <div className="siege-intro-header">
+          <button className="back-btn" onClick={() => navigate('/')}>← Back</button>
+          <button 
+            className="siege-mult-table-btn-intro" 
+            onClick={() => navigate('/training/table', { state: { origin: '/siege' } })}
+            title="Interactive Multiplication Table"
+          >
+            📊
+          </button>
+        </div>
         <div className="siege-intro">
           <div className="siege-intro-icon">🏰</div>
           <h1 className="siege-title">Kingdom Siege</h1>
@@ -319,6 +328,13 @@ export default function KingdomSiege() {
         <button className="back-btn siege-back" onClick={() => navigate('/')}>← Back</button>
         <div className="siege-score">⏱ {score}s</div>
         <div className="siege-phase-badge">Phase {getPhase(score) + 1}</div>
+        <button 
+          className="siege-mult-table-btn" 
+          onClick={() => navigate('/training/table', { state: { origin: '/siege' } })}
+          title="Interactive Multiplication Table"
+        >
+          📊
+        </button>
       </div>
 
       {/* Battle field */}
