@@ -13,6 +13,13 @@ export default function KingdomMap() {
       <header className="map-header">
         <h1 className="map-title">✨ Multiplication Kingdom</h1>
         <p className="map-subtitle">Conquer all 12 lands!</p>
+        <button 
+          className="map-mult-table-btn" 
+          onClick={() => navigate('/training/table', { state: { origin: '/kingdom' } })}
+          title="Interactive Multiplication Table"
+        >
+          📊
+        </button>
       </header>
 
       <div className="kingdoms-grid">
