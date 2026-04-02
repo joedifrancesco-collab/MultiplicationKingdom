@@ -65,6 +65,17 @@ export default function HomeScreen() {
           </div>
           <div className="game-card-arrow">›</div>
         </button>
+
+        <button className="home-game-card training-card" onClick={() => navigate('/training')}>
+          <div className="game-card-icon">📊</div>
+          <div className="game-card-body">
+            <div className="game-card-title">Training</div>
+            <div className="game-card-desc">
+              See how multiplications work! Practice with interactive tables and visual learning.
+            </div>
+          </div>
+          <div className="game-card-arrow">›</div>
+        </button>
       </div>
 
       <div className="home-footer">

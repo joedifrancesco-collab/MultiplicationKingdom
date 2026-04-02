@@ -85,6 +85,7 @@
 .kingdom-card   { border-color: var(--primary); }
 .flashcard-card { border-color: #FF9F43; }
 .siege-card     { border-color: #FF6B6B; }
+.training-card  { border-color: #6BCB77; }
 
 .game-card-icon {
   font-size: 3rem;

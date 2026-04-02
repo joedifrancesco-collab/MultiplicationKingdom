@@ -1,0 +1,66 @@
+.training-table {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(32px, env(safe-area-inset-top)) 20px max(40px, env(safe-area-inset-bottom));
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: var(--bg);
+}
+
+.tt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  padding: 12px 0;
+  background: var(--bg);
+  z-index: 10;
+}
+
+.tt-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: white;
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.tt-back-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.tt-back-btn:active {
+  transform: scale(0.95);
+}
+
+.tt-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.tt-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
