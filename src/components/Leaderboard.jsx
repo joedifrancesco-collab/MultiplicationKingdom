@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { fetchAggregatedLeaderboard } from '../store/progress';
+import { redactProfanity } from '../utils/contentFilter';
 import './Leaderboard.css';
 
 const MEDAL = ['🥇', '🥈', '🥉'];
@@ -82,10 +83,12 @@ export default function Leaderboard() {
   }, []);
 
   function renderCloudScore(score, i, gameType) {
+    const displayName = redactProfanity(score.email || score.playerName || 'Anonymous');
+    
     return (
       <div key={score.id} className="lb-row">
         <RankBadge index={i} />
-        <span className="lb-row-name">{score.email || score.playerName || 'Anonymous'}</span>
+        <span className="lb-row-name">{displayName}</span>
         {gameType === 'siege' && (
           <>
             <span className="lb-row-score">{score.seconds}s</span>
