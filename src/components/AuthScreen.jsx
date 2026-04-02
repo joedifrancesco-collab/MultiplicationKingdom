@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUpUser, signInUser } from '../store/progress';
+import { redactProfanity } from '../utils/contentFilter';
 import './AuthScreen.css';
 
 export default function AuthScreen() {
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,6 +22,16 @@ export default function AuthScreen() {
     try {
       if (isSignUp) {
         // Sign up
+        if (!username.trim()) {
+          setError('Please enter a username');
+          setLoading(false);
+          return;
+        }
+        if (username.length < 3) {
+          setError('Username must be at least 3 characters');
+          setLoading(false);
+          return;
+        }
         if (!password || !confirmPassword) {
           setError('Please enter and confirm password');
           setLoading(false);
@@ -36,7 +48,7 @@ export default function AuthScreen() {
           return;
         }
 
-        const result = await signUpUser(email, password);
+        const result = await signUpUser(email, username, password);
         if (result.success) {
           navigate('/');
         } else {
@@ -79,6 +91,21 @@ export default function AuthScreen() {
               disabled={loading}
             />
           </div>
+
+          {isSignUp && (
+            <div className="form-group">
+              <label htmlFor="username">Username:</label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(redactProfanity(e.target.value))}
+                placeholder="Your display name"
+                required
+                disabled={loading}
+              />
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="password">Password:</label>
@@ -123,6 +150,7 @@ export default function AuthScreen() {
               onClick={() => {
                 setIsSignUp(!isSignUp);
                 setError('');
+                setUsername('');
                 setPassword('');
                 setConfirmPassword('');
               }}
@@ -132,6 +160,18 @@ export default function AuthScreen() {
             </button>
           </p>
         </div>
+
+        {isSignUp && (
+          <div className="auth-privacy-notice">
+            <p>
+              🔒 <strong>We will never sell or share your information.</strong>
+              <br />
+              <a href="/PRIVACY_POLICY.md" target="_blank" rel="noopener noreferrer" className="auth-privacy-link">
+                Read our privacy policy
+              </a>
+            </p>
+          </div>
+        )}
 
         <div className="auth-info">
           <p>📚 Sign in to save your progress and compete on the leaderboard!</p>
