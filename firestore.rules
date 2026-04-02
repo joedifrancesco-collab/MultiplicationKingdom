@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ── Users Collection ──────────────────────────────────────────────────
+    // Allow anyone to read (for username availability checks during signup)
+    // Allow authenticated users to create a new user document
+    // Allow users to update/delete their own profile
+    match /users/{username} {
+      allow create: if request.auth != null;
+      allow read: if true;  // Allow anyone to read for signup username validation
+      allow update, delete: if request.auth.uid == resource.data.uid;
+    }
+
+    // ── Leaderboard Collection ────────────────────────────────────────────
+    // Allow authenticated users to write scores
+    // Allow anyone to read (public leaderboard)
+    match /leaderboard/{document=**} {
+      allow create: if request.auth != null;
+      allow read: if true;
+      allow update, delete: if request.auth.uid == resource.data.uid;
+    }
+
+    // ── Deny all other access ─────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
