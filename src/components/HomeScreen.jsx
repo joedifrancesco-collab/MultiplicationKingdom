@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentAuthUser, signOutUser, subscribeToAuthChanges } from '../store/progress';
+import { redactProfanity } from '../utils/contentFilter';
 import './HomeScreen.css';
 
 export default function HomeScreen() {
@@ -28,7 +29,7 @@ export default function HomeScreen() {
         <div className="home-crown">👑</div>
         <h1 className="home-title">Multiplication<br />Kingdom</h1>
         <p className="home-subtitle">Master your times tables the fun way!</p>
-        {user && <p className="home-user-email">Playing as: {user.email}</p>}
+        {user && <p className="home-user-email">Playing as: {redactProfanity(user.email)}</p>}
       </header>
 
       <div className="home-games">
