@@ -12,6 +12,7 @@ Prioritized list of features, improvements, and fixes for the educational multip
 - [x] **Privacy Policy Notice on Signup** — Add brief statement on signup page: "We will never sell or share your information" with link to PRIVACY_POLICY.md
 - [x] **Hide Training Game from Homepage** — Remove Training card from Home Page while preserving all source code and routes for future re-enable
 - [x] **Interactive Mult Table Quick Access** — Add button/link to top-right corner of Home Page and all Game Home Pages; back arrow on table should return to originating page (not fixed TrainingMenu route)
+- [x] **Touch/Drag Support for Interactive Mult Table** — Implemented touch gesture support (tap + drag) for touchscreen devices; highlights follow finger in real-time during drag and persist after lifting until user taps elsewhere
 
 ### Infrastructure & Tooling (Suggested)
 - [x] **Firestore Security Rules** — Created comprehensive Firestore rules allowing authenticated users to write scores and read usernames for signup validation
@@ -23,13 +24,10 @@ Prioritized list of features, improvements, and fixes for the educational multip
 ## Near-Term / In Progress
 
 ### User-Requested
-- [ ] **Touch/Drag Support for Interactive Mult Table** — Research and implement touch gesture support (tap + drag) for touchscreen devices to match mouse hover experience; user should be able to drag finger across table to see X/Y coordinates and highlights
 - [ ] **Create Teacher Dashboard** — Build admin interface for classroom management: view class progress, assign kingdoms, track student completion
 
 ### Suggested
 - [ ] **Rework Interactive Multiplication Table** — Improve UX, consider additional features or refinements
-- [x] **Hide Training Game from Homepage** — Remove Training card from Home Page while preserving all source code and routes for future re-enable
-- [x] **Interactive Mult Table Quick Access** — Add button/link to top-right corner of Home Page and all Game Home Pages; back arrow on table should return to originating page (not fixed TrainingMenu route)
 
 ---
 
