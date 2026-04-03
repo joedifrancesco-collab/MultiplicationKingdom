@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './MultiplicationTable.css';
 
 export default function MultiplicationTable() {
   const [hoverRow, setHoverRow] = useState(null);
   const [hoverCol, setHoverCol] = useState(null);
+  const [isTouching, setIsTouching] = useState(false);
+  const tableContainerRef = useRef(null);
 
   const handleCellEnter = (row, col) => {
     setHoverRow(row);
@@ -13,6 +15,56 @@ export default function MultiplicationTable() {
   const handleCellLeave = () => {
     setHoverRow(null);
     setHoverCol(null);
+  };
+
+  /**
+   * Find the cell (row, col) at the given touch coordinates
+   * Returns { row, col } or null if no cell found
+   */
+  const getCellAtPoint = (clientX, clientY) => {
+    const element = document.elementFromPoint(clientX, clientY);
+    if (!element) return null;
+
+    // Find the nearest td element
+    const cell = element.closest('.mult-cell');
+    if (!cell) return null;
+
+    const row = parseInt(cell.dataset.row, 10);
+    const col = parseInt(cell.dataset.col, 10);
+
+    if (isNaN(row) || isNaN(col)) return null;
+    return { row, col };
+  };
+
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    setIsTouching(true);
+
+    const touch = e.touches[0];
+    const cell = getCellAtPoint(touch.clientX, touch.clientY);
+    if (cell) {
+      handleCellEnter(cell.row, cell.col);
+    } else {
+      // Tapped outside table - clear highlights
+      handleCellLeave();
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    if (!isTouching) return;
+
+    const touch = e.touches[0];
+    const cell = getCellAtPoint(touch.clientX, touch.clientY);
+    if (cell) {
+      handleCellEnter(cell.row, cell.col);
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
+    setIsTouching(false);
+    // Keep the highlights on the last selected cell until user taps elsewhere
   };
 
   const getProduct = (row, col) => {
@@ -41,7 +93,14 @@ export default function MultiplicationTable() {
   };
 
   return (
-    <div className="mult-table-container">
+    <div
+      ref={tableContainerRef}
+      className="mult-table-container"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
+    >
       <table className="mult-table">
         <tbody>
           {Array.from({ length: 13 }).map((_, row) => (
@@ -56,6 +115,8 @@ export default function MultiplicationTable() {
                 return (
                   <td
                     key={`${row}-${col}`}
+                    data-row={row}
+                    data-col={col}
                     className={`mult-cell ${isHeader ? 'header' : ''} ${
                       isHighlighted ? 'highlighted' : ''
                     } ${isIntersection ? 'intersection' : ''}`}
