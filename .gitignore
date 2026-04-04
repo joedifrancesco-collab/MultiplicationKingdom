@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Firebase & Google Cloud credentials (NEVER commit these!)
+serviceAccountKey.json
+*.json.key
+.firebaserc
+
+# Environment variables with secrets
+.env
+.env.local
+.env.*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
