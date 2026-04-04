@@ -175,7 +175,7 @@ export default function FlashcardGame() {
         )}
       </div>
 
-      {/* Input form — always in DOM to keep keyboard visible, disabled while feedback is showing */}
+      {/* Input form — always in DOM to keep keyboard visible */}
       <form className="fcg-form" onSubmit={handleSubmit}>
         <input
           ref={inputRef}
@@ -186,9 +186,8 @@ export default function FlashcardGame() {
           className="fcg-input"
           placeholder="?"
           autoComplete="off"
-          disabled={!!feedback}
         />
-        <button type="submit" className="fcg-submit" disabled={!!feedback}>✓</button>
+        <button type="submit" className="fcg-submit">✓</button>
       </form>
 
       {/* "Next" button for wrong answers in Practice and Timed modes */}

@@ -12,12 +12,37 @@
   align-items: center;
 }
 
+.speed-topbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.speed-quit-btn {
+  background: none;
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.speed-quit-btn:hover { opacity: 0.8; }
+
 .timer {
-  font-size: 3.5rem;
+  font-size: 2.2rem;
   font-weight: 900;
   color: var(--primary);
   line-height: 1;
-  margin-bottom: 4px;
+  flex: 1;
+  text-align: center;
   transition: color 0.3s;
 }
 
@@ -32,17 +57,17 @@
 }
 
 .speed-score {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-light);
-  margin-bottom: 28px;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .speed-question {
   font-size: 2.5rem;
   font-weight: 900;
   color: var(--text);
-  margin-bottom: 24px;
+  margin-bottom: 32px;
   padding: 24px 32px;
   background: var(--card-bg);
   border-radius: var(--radius);

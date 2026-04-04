@@ -89,7 +89,7 @@ export default function SpeedChallenge() {
         </div>
         {unlocked && <p className="unlock-msg">🎉 Kingdom {kingdomId + 1} unlocked!</p>}
         <div className="done-buttons">
-          <button onClick={() => navigate(`/kingdom/${id}`)}>Back to Kingdom</button>
+          <button onClick={() => navigate('/kingdom')}>Back to Kingdom Map</button>
           <button className="btn-secondary" onClick={() => navigate('/')}>World Map</button>
         </div>
       </div>
@@ -101,9 +101,11 @@ export default function SpeedChallenge() {
 
   return (
     <div className="speed-container">
-      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>‹</button>
-      <div className={`timer ${timerDanger ? 'danger' : ''}`}>{timeLeft}s</div>
-      <div className="speed-score">Score: {score}</div>
+      <div className="speed-topbar">
+        <button className="speed-quit-btn" onClick={() => navigate('/kingdom')}>✕ Quit</button>
+        <div className={`timer ${timerDanger ? 'danger' : ''}`}>{timeLeft}s</div>
+        <div className="speed-score">Score: {score}</div>
+      </div>
 
       <div className={`speed-question ${feedback || ''}`}>
         {current.question} = ?
