@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
 import { saveGameScore } from '../store/progress';
+import { useSound } from '../hooks/useSound';
 import './Flashcard.css';
 
 export default function Flashcard() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { play, toggleMute, isMuted } = useSound();
   const kingdomId = parseInt(id, 10);
   const { questions } = KINGDOMS[kingdomId - 1];
 
@@ -14,15 +16,20 @@ export default function Flashcard() {
   const [flipped, setFlipped] = useState(false);
   const [correct, setCorrect] = useState(0);
   const [done, setDone] = useState(false);
+  const [soundMuted, setSoundMuted] = useState(isMuted);
 
   const current = questions[index];
 
   function handleRating(gotIt) {
-    const finalCorrect = gotIt ? correct + 1 : correct;
-    if (gotIt) setCorrect(finalCorrect);
+    if (gotIt) {
+      play('correct');
+      setCorrect(correct + 1);
+    } else {
+      play('wrong');
+    }
     if (index + 1 >= questions.length) {
       saveGameScore('flashcard', {
-        correct: finalCorrect,
+        correct: gotIt ? correct + 1 : correct,
         total: questions.length,
         kingdomId,
         kingdomName: KINGDOMS[kingdomId - 1].name,
@@ -32,6 +39,11 @@ export default function Flashcard() {
       setIndex(i => i + 1);
       setFlipped(false);
     }
+  }
+
+  function handleMuteToggle() {
+    toggleMute();
+    setSoundMuted(!soundMuted);
   }
 
   if (done) {
@@ -52,7 +64,12 @@ export default function Flashcard() {
 
   return (
     <div className="flashcard-container">
-      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>‹</button>
+      <div className="flashcard-header">
+        <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>‹</button>
+        <button className="fcg-mute-btn" onClick={handleMuteToggle} title={soundMuted ? 'Unmute' : 'Mute'}>
+          {soundMuted ? '🔇' : '🔊'}
+        </button>
+      </div>
 
       <div className="progress-bar">
         <div className="progress-fill" style={{ width: `${(index / questions.length) * 100}%` }} />
