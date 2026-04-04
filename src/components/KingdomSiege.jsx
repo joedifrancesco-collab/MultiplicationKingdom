@@ -327,7 +327,7 @@ export default function KingdomSiege() {
     <div className="siege-container siege-playing">
       {/* Header */}
       <div className="siege-header">
-        <button className="back-btn" onClick={() => navigate(origin)}>‹</button>
+        <button className="fcg-quit-btn" onClick={() => setScreen('intro')}>✕ Quit</button>
         <div className="siege-score">⏱ {score}s</div>
         <div className="siege-phase-badge">Phase {getPhase(score) + 1}</div>
         <button 

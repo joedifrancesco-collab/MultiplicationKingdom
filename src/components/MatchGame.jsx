@@ -83,7 +83,7 @@ export default function MatchGame() {
         </div>
         {unlocked && <p className="unlock-msg">🎉 Kingdom {kingdomId + 1} unlocked!</p>}
         <div className="done-buttons">
-          <button onClick={() => navigate(`/kingdom/${id}`)}>Back to Kingdom</button>
+          <button onClick={() => navigate('/kingdom')}>Back to Kingdom Map</button>
           <button className="btn-secondary" onClick={() => navigate('/')}>World Map</button>
         </div>
       </div>
@@ -92,7 +92,7 @@ export default function MatchGame() {
 
   return (
     <div className="match-container">
-      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>‹</button>
+      <button className="back-btn" onClick={() => navigate('/kingdom')}>‹</button>
       <div className="match-header">
         <span>Moves: {moves}</span>
         <span>Matched: {matched.size} / {cards.length / 2}</span>

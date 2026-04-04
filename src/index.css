@@ -62,6 +62,8 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: flex-start;
+  flex-shrink: 0;
   cursor: pointer;
   transition: all 0.2s;
 }
