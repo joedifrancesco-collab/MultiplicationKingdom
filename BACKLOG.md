@@ -19,6 +19,7 @@ Prioritized list of features, improvements, and fixes for the educational multip
 - [x] **Consistent Back Icon Throughout App** — Standardized all back buttons to use `‹` icon with circular 40×40px design; updated all components and removed redundant CSS classes (tm-back-btn, tt-back-btn, lb-back)
 - [x] **Back Button Origin Tracking** — Updated KingdomSiege and other games to track origin from navigation state; back buttons now navigate to previous screen instead of hardcoded routes
 - [x] **Remove Home Button from Flashcard Results** — Removed "Home" button from Flashcard Challenge's Play Again screen; added back icon button in top-left corner instead
+- [x] **Mobile & Desktop UX Polish** — Fixed back icon alignment consistency, adjusted mult table icon positioning, added Quit buttons to Kingdom Siege and SpeedChallenge, skip KingdomScreen during Conquest (direct to Speed Challenge), fixed Flashcard keypad hiding on wrong answers, made topbar sticky, reduced question card height for better mobile screen space
 
 ### Infrastructure & Tooling (Suggested)
 - [x] **Firestore Security Rules** — Created comprehensive Firestore rules allowing authenticated users to write scores and read usernames for signup validation
@@ -30,6 +31,7 @@ Prioritized list of features, improvements, and fixes for the educational multip
 ## Near-Term / In Progress
 
 ### User-Requested
+- [ ] **Sound Effects** — Audio feedback system implemented with mute button in FlashcardGame and SpeedChallenge. Ready for audio files: download MP3s from free sources (Freesound, Zapsplat, Pixabay), place in public/sounds/, and integrate into remaining game modes (MatchGame, KingdomSiege, Flashcard Mode in Conquest)
 - [ ] **Create Teacher Dashboard** — Build admin interface for classroom management: view class progress, assign kingdoms, track student completion
 
 ### Suggested
@@ -48,7 +50,7 @@ Prioritized list of features, improvements, and fixes for the educational multip
 ### UI/UX Improvements
 
 #### User-Requested
-- [ ] **Sound Effects** — Add audio feedback for correct/incorrect answers, level completion, and other key game events
+(None currently)
 
 #### Suggested
 - [ ] **Achievements/Badges** — Unlock badges for milestones (e.g., "Master of 7s", "Speed Demon")
@@ -150,6 +152,7 @@ Prioritized list of features, improvements, and fixes for the educational multip
 (None currently)
 
 #### Suggested
+- [ ] **Firebase Credentials Setup** — To use new Firebase credentials, create `.env.local` based on `.env.example` with values from your Firebase Console
 - [ ] **Fix Git Lock Issue** — Investigate why `.git/index.lock` persists
 - [ ] **Error Boundaries** — Add React error boundary components to prevent white screens
 - [ ] **Performance** — Optimize large multiplayer games, reduce re-renders

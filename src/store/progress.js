@@ -159,7 +159,6 @@ export function saveGameScore(gameType, data) {
   // Try to save to Firebase if user is authenticated
   const authUser = getCurrentAuthUser();
   if (authUser) {
-    console.log('📊 Saving score for authenticated user:', authUser.email);
     // Sync to Firebase (only for authenticated users)
     syncScoreToFirebase(authUser.email, gameType, data);
     return;
@@ -181,9 +180,6 @@ export function saveGameScore(gameType, data) {
     syncScoreToFirebase(currentUser, gameType, data);
     return;
   }
-
-  // If neither auth user nor localStorage user, just log
-  console.log('⏭️  Score not saved - no authenticated or named user');
 }
 
 export function getGameBests(username) {
@@ -354,7 +350,7 @@ export async function signOutUser() {
 export function getCurrentAuthUser() {
   try {
     return auth.currentUser;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

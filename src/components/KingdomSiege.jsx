@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ALL_QUESTIONS } from '../data/questions';
 import { saveGameScore } from '../store/progress';
+import useSound from '../hooks/useSound';
 import './KingdomSiege.css';
 
 // ── Config ───────────────────────────────────────────────────────────────────
@@ -55,9 +56,11 @@ export default function KingdomSiege() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const origin = state?.origin || '/';
+  const { play, toggleMute, isMuted } = useSound();
 
   // 'intro' | 'play' | 'done'
   const [screen, setScreen] = useState('intro');
+  const [soundMuted, setSoundMuted] = useState(isMuted);
 
   // ── Render-driven state ──────────────────────────────────────────────────
   const [renderEnemies, setRenderEnemies] = useState([]);
@@ -221,6 +224,8 @@ export default function KingdomSiege() {
 
     if (val === q.answer) {
       // ✓ Correct – intercept the targeted enemy
+      play('correct');
+      // eslint-disable-next-line react-hooks/purity
       const now = performance.now();
       const idx = g.enemies.findIndex(e => e.id === q.id);
       if (idx !== -1) {
@@ -238,6 +243,7 @@ export default function KingdomSiege() {
       setTimeout(() => setFeedback(null), 350);
     } else {
       // ✗ Wrong – brief stun
+      play('wrong');
       g.stunned      = true;
       g.stunnedTimer = STUN_MS;
       setIsStunned(true);
@@ -257,6 +263,12 @@ export default function KingdomSiege() {
     setExplosions([]);
     setChoices([]);
     setScreen('play');
+  }
+
+  // ── Mute toggle handler ──────────────────────────────────────────────────
+  function handleMuteToggle() {
+    toggleMute();
+    setSoundMuted(!soundMuted);
   }
 
   // ── Screens ──────────────────────────────────────────────────────────────
@@ -336,6 +348,9 @@ export default function KingdomSiege() {
           title="Interactive Multiplication Table"
         >
           📊
+        </button>
+        <button className="fcg-mute-btn" onClick={handleMuteToggle} title={soundMuted ? 'Unmute' : 'Mute'}>
+          {soundMuted ? '🔇' : '🔊'}
         </button>
       </div>
 

@@ -22,7 +22,12 @@ Work through all 12 times tables (1×1 to 12×12).
 ### ⚔️ Kingdom Siege
 Defend your kingdom by solving multiplication problems before towers breach your defenses. How long can you survive?
 
-### 👥 User Profiles & Leaderboard
+### � Audio Feedback
+- Real-time sound effects for correct/incorrect answers
+- Customizable volume and mute toggle in every game
+- Procedural tone fallback system (works without audio files)
+
+### �👥 User Profiles & Leaderboard
 - Create and manage multiple player profiles
 - Track personal high scores across all game modes
 - View leaderboards organized by game type:

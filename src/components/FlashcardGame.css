@@ -40,6 +40,22 @@
 
 .fcg-quit-btn:hover { opacity: 0.8; }
 
+.fcg-mute-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+
+.fcg-mute-btn:hover { opacity: 0.7; }
+.fcg-mute-btn:active { opacity: 0.5; }
+
 .fcg-timer {
   font-size: 2.2rem;
   font-weight: 900;

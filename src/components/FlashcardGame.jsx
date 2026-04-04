@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ALL_QUESTIONS } from '../data/questions';
 import { saveGameScore } from '../store/progress';
+import useSound from '../hooks/useSound';
 import './FlashcardGame.css';
 
 function shuffle(arr) {
@@ -11,6 +12,7 @@ function shuffle(arr) {
 export default function FlashcardGame() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { play, toggleMute, isMuted } = useSound();
 
   const mode     = state?.mode     ?? 'practice';
   const duration = state?.duration ?? 30;
@@ -26,6 +28,7 @@ export default function FlashcardGame() {
   const [score,     setScore]     = useState({ correct: 0, wrong: 0 });
   const [timeLeft,  setTimeLeft]  = useState(duration);
   const [timerOn,   setTimerOn]   = useState(hasClock);
+  const [soundMuted, setSoundMuted] = useState(isMuted);
   const [done,      setDone]      = useState(false);
   const inputRef = useRef(null);
 
@@ -80,6 +83,12 @@ export default function FlashcardGame() {
     setTimeout(() => inputRef.current?.focus(), 0);
   }
 
+  // ── Handle mute toggle ───────────────────────────
+  function handleMuteToggle() {
+    toggleMute();
+    setSoundMuted(!soundMuted);
+  }
+
   // ── Handle answer submission ─────────────────────
   function handleSubmit(e) {
     e.preventDefault();
@@ -95,6 +104,13 @@ export default function FlashcardGame() {
       wrong:   s.wrong   + (isCorrect ? 0 : 1),
     }));
     setFeedback({ correct: isCorrect, answer: current.answer });
+
+    // Play sound feedback
+    if (isCorrect) {
+      play('correct');
+    } else {
+      play('wrong');
+    }
 
     if (isCorrect) {
       // Short flash then auto-advance in every mode
@@ -163,6 +179,10 @@ export default function FlashcardGame() {
           <span className="sc-c">✓{score.correct}</span>
           <span className="sc-w">✗{score.wrong}</span>
         </div>
+
+        <button className="fcg-mute-btn" onClick={handleMuteToggle} title={soundMuted ? 'Unmute' : 'Mute'}>
+          {soundMuted ? '🔇' : '🔊'}
+        </button>
       </div>
 
       {/* Question card */}
