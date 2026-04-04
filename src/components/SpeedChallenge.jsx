@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
 import { awardStars, saveGameScore } from '../store/progress';
+import useSound from '../hooks/useSound';
 import './SpeedChallenge.css';
 
 const TIME_LIMIT = 30;
@@ -21,6 +22,7 @@ function calcStars(score, total) {
 export default function SpeedChallenge() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { play, toggleMute, isMuted } = useSound();
   const kingdomId = parseInt(id, 10);
   const { questions } = KINGDOMS[kingdomId - 1];
 
@@ -32,6 +34,7 @@ export default function SpeedChallenge() {
   const [done, setDone] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [earnedStars, setEarnedStars] = useState(0);
+  const [soundMuted, setSoundMuted] = useState(isMuted);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -63,6 +66,14 @@ export default function SpeedChallenge() {
     const current = shuffled[index];
     const isCorrect = parseInt(input.trim(), 10) === current.answer;
     setFeedback(isCorrect ? 'correct' : 'wrong');
+    
+    // Play sound feedback
+    if (isCorrect) {
+      play('correct');
+    } else {
+      play('wrong');
+    }
+    
     if (isCorrect) setScore(s => s + 1);
     setTimeout(() => {
       setFeedback(null);
@@ -73,6 +84,11 @@ export default function SpeedChallenge() {
         setIndex(i => i + 1);
       }
     }, 400);
+  }
+
+  function handleMuteToggle() {
+    toggleMute();
+    setSoundMuted(!soundMuted);
   }
 
   if (done) {
@@ -105,6 +121,9 @@ export default function SpeedChallenge() {
         <button className="speed-quit-btn" onClick={() => navigate('/kingdom')}>✕ Quit</button>
         <div className={`timer ${timerDanger ? 'danger' : ''}`}>{timeLeft}s</div>
         <div className="speed-score">Score: {score}</div>
+        <button className="speed-mute-btn" onClick={handleMuteToggle} title={soundMuted ? 'Unmute' : 'Mute'}>
+          {soundMuted ? '🔇' : '🔊'}
+        </button>
       </div>
 
       <div className={`speed-question ${feedback || ''}`}>
