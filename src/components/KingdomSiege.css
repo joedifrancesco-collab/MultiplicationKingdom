@@ -29,11 +29,6 @@
   flex-shrink: 0;
 }
 
-.siege-back {
-  margin-bottom: 0 !important;
-  padding: 6px 0 !important;
-}
-
 .siege-score {
   font-size: 1.5rem;
   font-weight: 900;

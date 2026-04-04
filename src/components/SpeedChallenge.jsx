@@ -101,7 +101,7 @@ export default function SpeedChallenge() {
 
   return (
     <div className="speed-container">
-      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>← Back</button>
+      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>‹</button>
       <div className={`timer ${timerDanger ? 'danger' : ''}`}>{timeLeft}s</div>
       <div className="speed-score">Score: {score}</div>
 

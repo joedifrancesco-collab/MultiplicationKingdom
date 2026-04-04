@@ -62,7 +62,7 @@ export default function HomeScreen() {
           <div className="game-card-arrow">›</div>
         </button>
 
-        <button className="home-game-card siege-card" onClick={() => navigate('/siege')}>
+        <button className="home-game-card siege-card" onClick={() => navigate('/siege', { state: { origin: '/' } })}>
           <div className="game-card-icon">⚔️</div>
           <div className="game-card-body">
             <div className="game-card-title">Kingdom Siege</div>

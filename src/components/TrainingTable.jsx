@@ -12,7 +12,7 @@ export default function TrainingTable() {
   return (
     <div className="training-table">
       <header className="tt-header">
-        <button className="tt-back-btn" onClick={() => navigate(origin)}>
+        <button className="back-btn" onClick={() => navigate(origin)}>
           ‹
         </button>
         <h1 className="tt-title">Multiplication Table</h1>

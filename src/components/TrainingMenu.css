@@ -17,32 +17,6 @@
   justify-content: space-between;
 }
 
-.tm-back-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid var(--primary);
-  background: white;
-  color: var(--primary);
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.tm-back-btn:hover {
-  background: var(--primary);
-  color: white;
-  transform: scale(1.05);
-}
-
-.tm-back-btn:active {
-  transform: scale(0.95);
-}
-
 .tm-title {
   font-size: 1.8rem;
   font-weight: 900;

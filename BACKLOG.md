@@ -13,6 +13,12 @@ Prioritized list of features, improvements, and fixes for the educational multip
 - [x] **Hide Training Game from Homepage** — Remove Training card from Home Page while preserving all source code and routes for future re-enable
 - [x] **Interactive Mult Table Quick Access** — Add button/link to top-right corner of Home Page and all Game Home Pages; back arrow on table should return to originating page (not fixed TrainingMenu route)
 - [x] **Touch/Drag Support for Interactive Mult Table** — Implemented touch gesture support (tap + drag) for touchscreen devices; highlights follow finger in real-time during drag and persist after lifting until user taps elsewhere
+- [x] **Remove Flashcard Challenge from Conquest** — Removed Flashcard Practice button from kingdom selection; landing on kingdom goes directly to Speed Challenge
+- [x] **Fix Interactive Mult Table Icon Overlap** — Moved 📊 icon up and right (top: -12px, right: -12px) so it doesn't cover "Kingdom" text in headers
+- [x] **Keep Mobile Keypad Visible in Flashcard Challenge** — Fixed input form to always stay in DOM (disabled during feedback) instead of unmounting, preserving onscreen keyboard between questions
+- [x] **Consistent Back Icon Throughout App** — Standardized all back buttons to use `‹` icon with circular 40×40px design; updated all components and removed redundant CSS classes (tm-back-btn, tt-back-btn, lb-back)
+- [x] **Back Button Origin Tracking** — Updated KingdomSiege and other games to track origin from navigation state; back buttons now navigate to previous screen instead of hardcoded routes
+- [x] **Remove Home Button from Flashcard Results** — Removed "Home" button from Flashcard Challenge's Play Again screen; added back icon button in top-left corner instead
 
 ### Infrastructure & Tooling (Suggested)
 - [x] **Firestore Security Rules** — Created comprehensive Firestore rules allowing authenticated users to write scores and read usernames for signup validation

@@ -19,17 +19,6 @@
   gap: 16px;
 }
 
-.lb-back {
-  background: none;
-  border: none;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--primary);
-  cursor: pointer;
-  padding: 8px 0;
-  flex-shrink: 0;
-}
-
 .lb-title {
   font-size: 1.8rem;
   font-weight: 900;

@@ -12,7 +12,7 @@ export default function FlashcardMenu() {
 
   return (
     <div className="fc-menu">
-      <button className="back-btn" onClick={() => navigate('/')}>← Home</button>
+      <button className="back-btn" onClick={() => navigate('/')}>‹</button>
 
       <header className="fc-menu-header">
         <div className="fc-menu-icon">🃏</div>

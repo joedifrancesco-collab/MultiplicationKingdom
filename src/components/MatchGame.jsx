@@ -92,7 +92,7 @@ export default function MatchGame() {
 
   return (
     <div className="match-container">
-      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>← Back</button>
+      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>‹</button>
       <div className="match-header">
         <span>Moves: {moves}</span>
         <span>Matched: {matched.size} / {cards.length / 2}</span>
