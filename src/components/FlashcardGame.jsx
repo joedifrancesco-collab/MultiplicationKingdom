@@ -182,7 +182,7 @@ export default function FlashcardGame() {
       </div>
 
       {/* Input form — always in DOM to keep keyboard visible */}
-      <form className="fcg-form" onSubmit={handleSubmit}>
+      <form className="fcg-form" onSubmit={handleSubmit} autoComplete="off">
         <input
           ref={inputRef}
           type="number"
@@ -192,6 +192,10 @@ export default function FlashcardGame() {
           className="fcg-input"
           placeholder="?"
           autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
+          data-form-type="other"
         />
         <button type="submit" className="fcg-submit">✓</button>
       </form>
