@@ -31,7 +31,7 @@ Prioritized list of features, improvements, and fixes for the educational multip
 ## Near-Term / In Progress
 
 ### User-Requested
-- [ ] **Sound Effects** — Add audio feedback for correct/incorrect answers, level completion, and other key game events
+- [ ] **Sound Effects** — Audio feedback system implemented with mute button in FlashcardGame and SpeedChallenge. Ready for audio files: download MP3s from free sources (Freesound, Zapsplat, Pixabay), place in public/sounds/, and integrate into remaining game modes (MatchGame, KingdomSiege, Flashcard Mode in Conquest)
 - [ ] **Create Teacher Dashboard** — Build admin interface for classroom management: view class progress, assign kingdoms, track student completion
 
 ### Suggested
