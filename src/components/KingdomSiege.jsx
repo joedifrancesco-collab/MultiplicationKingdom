@@ -225,6 +225,7 @@ export default function KingdomSiege() {
     if (val === q.answer) {
       // ✓ Correct – intercept the targeted enemy
       play('correct');
+      // eslint-disable-next-line react-hooks/purity
       const now = performance.now();
       const idx = g.enemies.findIndex(e => e.id === q.id);
       if (idx !== -1) {

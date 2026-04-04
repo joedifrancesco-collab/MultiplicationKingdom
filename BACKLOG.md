@@ -152,6 +152,7 @@ Prioritized list of features, improvements, and fixes for the educational multip
 (None currently)
 
 #### Suggested
+- [ ] **Firebase Credentials Setup** — To use new Firebase credentials, create `.env.local` based on `.env.example` with values from your Firebase Console
 - [ ] **Fix Git Lock Issue** — Investigate why `.git/index.lock` persists
 - [ ] **Error Boundaries** — Add React error boundary components to prevent white screens
 - [ ] **Performance** — Optimize large multiplayer games, reduce re-renders

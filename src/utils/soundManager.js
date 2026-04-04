@@ -30,8 +30,8 @@ function playTone(frequency = 800, duration = 0.2, type = 'sine') {
     
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + duration);
-  } catch (err) {
-    console.debug('Web Audio API not available:', err);
+  } catch {
+    // Web Audio API not available
   }
 }
 
@@ -108,9 +108,8 @@ class SoundManager {
     } else if (sound instanceof HTMLAudioElement) {
       // Play actual audio file
       sound.currentTime = 0;
-      sound.play().catch(err => {
+      sound.play().catch(() => {
         // Silently handle autoplay policy restrictions
-        console.debug(`Sound play blocked: ${soundKey}`, err);
       });
     }
   }

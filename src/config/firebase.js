@@ -2,18 +2,17 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
-// TODO: Replace with your Firebase project config
-// Get this from Firebase Console → Project Settings → Web App Config
+// Firebase configuration from environment variables
+// For development: create .env.local with values from Firebase Console
+// For production: set environment variables in your deployment platform (Render, Vercel, etc.)
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCDBQg-OUAMA5IE6GqAvMkZ3bUFr1L5cPE",
-  authDomain: "multiplication-kingdom-e8c53.firebaseapp.com",
-  projectId: "multiplication-kingdom-e8c53",
-  storageBucket: "multiplication-kingdom-e8c53.firebasestorage.app",
-  messagingSenderId: "21184528155",
-  appId: "1:21184528155:web:eff9acb075a4ff2cce9dbe",
-  measurementId: "G-EBYCK4Y68Y"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);

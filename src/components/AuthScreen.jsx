@@ -63,7 +63,7 @@ export default function AuthScreen() {
           setError(result.error);
         }
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
