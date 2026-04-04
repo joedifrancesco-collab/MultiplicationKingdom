@@ -45,7 +45,13 @@ export default function FlashcardGame() {
   useEffect(() => {
     if (!done) inputRef.current?.focus();
   }, [qIndex, done]);
-
+  // ── Hide keyboard when wrong answer shown ──────────────────────────────────
+  useEffect(() => {
+    if (feedback && !feedback.correct) {
+      // Blur to hide mobile keyboard when wrong answer is displayed
+      inputRef.current?.blur();
+    }
+  }, [feedback]);
   // ── Save best score when timed/countdown game ends ───────────────────────
   useEffect(() => {
     if (!done || mode === 'practice') return;
