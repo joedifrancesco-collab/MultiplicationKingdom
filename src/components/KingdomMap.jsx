@@ -9,7 +9,7 @@ export default function KingdomMap() {
 
   return (
     <div className="kingdom-map">
-      <button className="back-btn" onClick={() => navigate('/')}>← Home</button>
+      <button className="back-btn" onClick={() => navigate('/')}>‹</button>
       <header className="map-header">
         <h1 className="map-title">✨ Multiplication Kingdom</h1>
         <p className="map-subtitle">Conquer all 12 lands!</p>

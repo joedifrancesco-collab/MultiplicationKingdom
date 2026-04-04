@@ -152,6 +152,12 @@
   outline: none;
   box-sizing: border-box;
   -moz-appearance: textfield;
+  transition: opacity 0.15s;
+}
+
+.fcg-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .fcg-input::-webkit-outer-spin-button,
@@ -174,10 +180,15 @@
   border: none;
   cursor: pointer;
   flex-shrink: 0;
-  transition: transform 0.1s;
+  transition: transform 0.1s, opacity 0.15s;
 }
 
 .fcg-submit:active { transform: scale(0.96); }
+
+.fcg-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 /* ── Next button ─── */
 .fcg-next-btn {
@@ -218,6 +229,13 @@
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+  position: relative;
+}
+
+.fcg-done .back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
 }
 
 .fcg-done h2 {

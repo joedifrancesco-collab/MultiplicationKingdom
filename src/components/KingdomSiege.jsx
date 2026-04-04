@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ALL_QUESTIONS } from '../data/questions';
 import { saveGameScore } from '../store/progress';
 import './KingdomSiege.css';
@@ -53,6 +53,8 @@ function makeChoices(correct) {
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function KingdomSiege() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const origin = state?.origin || '/';
 
   // 'intro' | 'play' | 'done'
   const [screen, setScreen] = useState('intro');
@@ -263,7 +265,7 @@ export default function KingdomSiege() {
     return (
       <div className="siege-container">
         <div className="siege-intro-header">
-          <button className="back-btn" onClick={() => navigate('/')}>← Back</button>
+          <button className="back-btn" onClick={() => navigate(origin)}>‹</button>
           <button 
             className="siege-mult-table-btn-intro" 
             onClick={() => navigate('/training/table', { state: { origin: '/siege' } })}
@@ -325,7 +327,7 @@ export default function KingdomSiege() {
     <div className="siege-container siege-playing">
       {/* Header */}
       <div className="siege-header">
-        <button className="back-btn siege-back" onClick={() => navigate('/')}>← Back</button>
+        <button className="back-btn" onClick={() => navigate(origin)}>‹</button>
         <div className="siege-score">⏱ {score}s</div>
         <div className="siege-phase-badge">Phase {getPhase(score) + 1}</div>
         <button 

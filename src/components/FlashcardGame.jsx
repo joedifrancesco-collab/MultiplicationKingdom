@@ -115,6 +115,7 @@ export default function FlashcardGame() {
 
     return (
       <div className="fcg-done">
+        <button className="back-btn" onClick={() => navigate('/flashcards')}>‹</button>
         <div className="done-emoji">{emoji}</div>
         <h2>{heading}</h2>
         <div className="fcg-results">
@@ -125,7 +126,6 @@ export default function FlashcardGame() {
         </div>
         <div className="done-buttons">
           <button onClick={() => navigate('/flashcards')}>Play Again</button>
-          <button className="btn-secondary" onClick={() => navigate('/')}>Home</button>
         </div>
       </div>
     );
@@ -175,22 +175,21 @@ export default function FlashcardGame() {
         )}
       </div>
 
-      {/* Input form — hidden while feedback is showing */}
-      {!feedback && (
-        <form className="fcg-form" onSubmit={handleSubmit}>
-          <input
-            ref={inputRef}
-            type="number"
-            inputMode="numeric"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            className="fcg-input"
-            placeholder="?"
-            autoComplete="off"
-          />
-          <button type="submit" className="fcg-submit">✓</button>
-        </form>
-      )}
+      {/* Input form — always in DOM to keep keyboard visible, disabled while feedback is showing */}
+      <form className="fcg-form" onSubmit={handleSubmit}>
+        <input
+          ref={inputRef}
+          type="number"
+          inputMode="numeric"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          className="fcg-input"
+          placeholder="?"
+          autoComplete="off"
+          disabled={!!feedback}
+        />
+        <button type="submit" className="fcg-submit" disabled={!!feedback}>✓</button>
+      </form>
 
       {/* "Next" button for wrong answers in Practice and Timed modes */}
       {feedback && !feedback.correct && !isCountdown && (

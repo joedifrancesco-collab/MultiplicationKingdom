@@ -52,7 +52,7 @@ export default function Flashcard() {
 
   return (
     <div className="flashcard-container">
-      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>← Back</button>
+      <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>‹</button>
 
       <div className="progress-bar">
         <div className="progress-fill" style={{ width: `${(index / questions.length) * 100}%` }} />

@@ -49,19 +49,32 @@ input {
 /* ── Shared utility styles ─────────────────────────── */
 
 .back-btn {
-  background: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: white;
   color: var(--primary);
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 10px 0;
-  margin-bottom: 12px;
-  display: inline-block;
-  align-self: flex-start;
-  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.back-btn:hover { opacity: 0.8; }
+.back-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.back-btn:active {
+  transform: scale(0.95);
+}
 
 .star        { font-size: 1.4rem; color: #ddd; }
 .star.filled { color: var(--accent); }

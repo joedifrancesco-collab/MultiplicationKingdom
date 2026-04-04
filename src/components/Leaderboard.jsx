@@ -121,7 +121,7 @@ export default function Leaderboard() {
     return (
       <div className="lb-screen">
         <div className="lb-header">
-          <button className="lb-back" onClick={() => navigate('/')}>← Back</button>
+          <button className="back-btn" onClick={() => navigate('/')}>‹</button>
           <h1 className="lb-title">🏆 Leaderboard</h1>
         </div>
         <div className="lb-empty">
@@ -135,7 +135,7 @@ export default function Leaderboard() {
   return (
     <div className="lb-screen">
       <div className="lb-header">
-        <button className="lb-back" onClick={() => navigate('/')}>← Back</button>
+        <button className="back-btn" onClick={() => navigate('/')}>‹</button>
         <h1 className="lb-title">🏆 Leaderboard</h1>
       </div>
 

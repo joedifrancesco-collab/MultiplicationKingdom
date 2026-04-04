@@ -18,7 +18,7 @@ export default function KingdomScreen() {
 
   return (
     <div className="kingdom-screen" style={{ '--kingdom-color': kingdom.color }}>
-      <button className="back-btn" onClick={() => navigate('/kingdom')}>← Back to Map</button>
+      <button className="back-btn" onClick={() => navigate('/kingdom')}>‹</button>
       <h1 className="kingdom-title">{kingdom.name}</h1>
       <p className="kingdom-desc">Conquer the {kingdomId}× land!</p>
 
@@ -29,6 +29,7 @@ export default function KingdomScreen() {
       </div>
 
       <div className="mode-buttons">
+        {/* ARCHIVED: Flashcard Challenge button removed from Conquest game
         <button className="mode-btn flashcard" onClick={() => navigate(`/kingdom/${id}/flashcard`)}>
           <span className="mode-icon">🃏</span>
           <div className="mode-text">
@@ -36,6 +37,7 @@ export default function KingdomScreen() {
             <span className="mode-desc">Learn at your own pace</span>
           </div>
         </button>
+        */}
 
         <button className="mode-btn speed" onClick={() => navigate(`/kingdom/${id}/speed`)}>
           <span className="mode-icon">⚡</span>

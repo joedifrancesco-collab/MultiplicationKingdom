@@ -7,7 +7,7 @@ export default function TrainingMenu() {
   return (
     <div className="training-menu">
       <header className="tm-header">
-        <button className="tm-back-btn" onClick={() => navigate('/')}>
+        <button className="back-btn" onClick={() => navigate('/')}>
           ‹
         </button>
         <h1 className="tm-title">Training</h1>
