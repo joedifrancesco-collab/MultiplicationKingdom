@@ -58,6 +58,7 @@ export default function Leaderboard() {
     flashcard: [],
     fcg_timed: [],
     fcg_countdown: [],
+    kingdomMaps_timed: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -65,14 +66,15 @@ export default function Leaderboard() {
   useEffect(() => {
     const fetchCloudData = async () => {
       try {
-        const [siege, speed, flashcard, timed, sprint] = await Promise.all([
+        const [siege, speed, flashcard, timed, sprint, kmTimed] = await Promise.all([
           fetchAggregatedLeaderboard('siege'),
           fetchAggregatedLeaderboard('speed'),
           fetchAggregatedLeaderboard('flashcard'),
           fetchAggregatedLeaderboard('fcg_timed'),
           fetchAggregatedLeaderboard('fcg_countdown'),
+          fetchAggregatedLeaderboard('kingdomMaps-timed'),
         ]);
-        setCloudData({ siege, speed, flashcard, fcg_timed: timed, fcg_countdown: sprint });
+        setCloudData({ siege, speed, flashcard, fcg_timed: timed, fcg_countdown: sprint, kingdomMaps_timed: kmTimed });
       } catch (error) {
         console.error('Failed to load cloud leaderboard:', error);
       } finally {
@@ -113,6 +115,12 @@ export default function Leaderboard() {
             <span className="lb-row-pct">{score.pct}%</span>
           </>
         )}
+        {gameType === 'kingdomMaps_timed' && (
+          <>
+            <span className="lb-row-score">{score.time}s</span>
+            <span className="lb-row-pct">{score.accuracy}%</span>
+          </>
+        )}
       </div>
     );
   }
@@ -150,6 +158,20 @@ export default function Leaderboard() {
           </SubSection>
         )}
 
+        {cloudData.kingdomMaps_timed.length > 0 && (
+          <SubSection icon="🗺️" title="Kingdom Maps Timed">
+            <div className="lb-rows">
+              {cloudData.kingdomMaps_timed.map((score, i) => renderCloudScore(score, i, 'kingdomMaps_timed'))}
+            </div>
+          </SubSection>
+        )}
+
+        {cloudData.kingdomMaps_timed.length === 0 && (
+          <SubSection icon="🗺️" title="Kingdom Maps Timed">
+            <EmptyRows />
+          </SubSection>
+        )}
+
         {cloudData.flashcard.length > 0 && (
           <SubSection icon="🔖" title="Kingdom Flashcard">
             <div className="lb-rows">
@@ -158,7 +180,7 @@ export default function Leaderboard() {
           </SubSection>
         )}
 
-        {cloudData.speed.length === 0 && cloudData.flashcard.length === 0 && (
+        {cloudData.speed.length === 0 && cloudData.flashcard.length === 0 && cloudData.kingdomMaps_timed.length === 0 && (
           <p className="lb-no-scores">No cloud scores yet — start playing!</p>
         )}
       </GameSection>

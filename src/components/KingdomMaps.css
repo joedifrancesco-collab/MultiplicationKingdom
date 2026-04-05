@@ -1,0 +1,496 @@
+/* Kingdom Maps Game */
+
+.km-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Game Header ─── */
+.km-game-header {
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 8px;
+}
+
+.km-game-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin: 0;
+  text-align: center;
+}
+
+/* ── Top bar ─── */
+.km-topbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  position: sticky;
+  top: max(16px, env(safe-area-inset-top));
+  z-index: 10;
+  background: white;
+  padding: 0;
+}
+
+.km-quit-btn {
+  background: none;
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.km-quit-btn:hover {
+  opacity: 0.8;
+}
+
+.km-mute-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+
+.km-mute-btn:hover {
+  opacity: 0.7;
+}
+
+.km-mute-btn:active {
+  opacity: 0.5;
+}
+
+.km-header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.km-timer,
+.km-progress,
+.km-stats {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.km-timer {
+  color: var(--secondary);
+}
+
+/* ── Game Grid ─── */
+.km-game {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+}
+
+.km-grid {
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  gap: 0.15rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.km-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.km-header-cell {
+  background: var(--primary);
+  color: white;
+  cursor: default;
+  font-weight: bold;
+}
+
+.km-data-cell {
+  background: white;
+}
+
+.km-data-cell:hover:not(.km-editing) {
+  background: var(--bg);
+  border-color: var(--primary);
+}
+
+.km-editing {
+  border-color: var(--accent);
+  background: #fff9e6;
+  box-shadow: 0 0 8px rgba(255, 217, 61, 0.5);
+  padding: 0;
+}
+
+.km-feedback-correct {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+  animation: km-pop 0.3s ease;
+}
+
+.km-feedback-wrong {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: white;
+  animation: km-shake 0.3s ease;
+}
+
+.km-feedback-hasErrors {
+  background: #ff9800;
+  border-color: #ff9800;
+  color: white;
+  animation: km-shake 0.3s ease;
+}
+
+.km-check-error {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: white;
+  animation: km-shake 0.3s ease;
+}
+
+.km-row-completed {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+  cursor: default !important;
+  opacity: 0.8;
+}
+
+@keyframes km-pop {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes km-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+.km-cell-value {
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+/* ── Cell Input (Inline Editing) ─── */
+.km-cell-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 0;
+  font-family: inherit;
+  color: var(--primary);
+}
+
+.km-cell-input:focus {
+  outline: none;
+}
+
+/* Clear input number spinner */
+.km-cell-input::-webkit-outer-spin-button,
+.km-cell-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.km-cell-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.km-check-btn {
+  padding: 0.75rem 2rem;
+  background: var(--success);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.km-check-btn:hover:not(:disabled) {
+  background: #5ab86a;
+  transform: translateY(-2px);
+}
+
+.km-check-btn:disabled {
+  background: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.km-message {
+  padding: 0.75rem 1.5rem;
+  background: #ff9800;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* ── Celebration Screen ─── */
+.km-celebration {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.km-celebration-content {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.km-confetti {
+  font-size: 3rem;
+  animation: km-bounce 1s ease-in-out infinite;
+}
+
+@keyframes km-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.km-celebration-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: white;
+  margin: 0;
+  text-align: center;
+}
+
+.km-results {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.km-result-item {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.km-result-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.km-result-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+/* ── Celebration Grid (Multiplication Table) ─── */
+.km-celebration-grid {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  background: white;
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.km-mult-table {
+  border-collapse: collapse;
+  background-color: white;
+  overflow: hidden;
+}
+
+.km-mult-table tbody {
+  display: table;
+  width: 100%;
+}
+
+.km-mult-table tr {
+  display: table-row;
+}
+
+.km-mult-cell {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #e0e0e0;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--primary);
+  background-color: white;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.km-mult-header {
+  background-color: var(--primary);
+  color: white;
+  font-weight: 700;
+  user-select: none;
+}
+
+.km-celebration-btn {
+  padding: 0.75rem 2rem;
+  background: white;
+  color: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.km-celebration-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .km-container {
+    padding: max(12px, env(safe-area-inset-top)) 12px max(24px, env(safe-area-inset-bottom));
+    gap: 16px;
+  }
+
+  .km-grid {
+    padding: 0.75rem;
+    gap: 0.15rem;
+  }
+
+  .km-cell {
+    font-size: 0.7rem;
+    border-radius: 3px;
+  }
+
+  .km-cell-value {
+    font-size: 0.7rem;
+  }
+
+  .km-check-btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .km-celebration {
+    padding: max(12px, env(safe-area-inset-top)) 12px max(24px, env(safe-area-inset-bottom));
+    gap: 1rem;
+  }
+
+  .km-celebration-title {
+    font-size: 1.5rem;
+  }
+
+  .km-results {
+    gap: 1rem;
+  }
+
+  .km-result-item {
+    padding: 0.75rem 1rem;
+  }
+
+  .km-result-label {
+    font-size: 0.75rem;
+  }
+
+  .km-result-value {
+    font-size: 1.4rem;
+  }
+
+  .km-mult-cell {
+    width: 30px;
+    height: 30px;
+    font-size: 10px;
+  }
+
+  .km-celebration-btn {
+    padding: 0.65rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

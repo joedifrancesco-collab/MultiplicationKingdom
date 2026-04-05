@@ -1,0 +1,145 @@
+/* Kingdom Maps Mode Selection */
+
+.kmm-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top)) 20px max(40px, env(safe-area-inset-bottom));
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.kmm-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  width: 100%;
+}
+
+.kmm-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.kmm-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin: 0;
+}
+
+.kmm-subtitle {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.kmm-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Mode cards ─── */
+.kmm-mode-card {
+  width: 100%;
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+  border: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  cursor: pointer;
+  background: var(--card-bg);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.kmm-mode-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.kmm-mode-card:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.free-play-card { border-color: #6BCB77; background: #f0fff4; }
+.timed-card     { border-color: #FFD93D; background: #fffde7; }
+.row-column-card { border-color: #FF6B6B; background: #fff0f0; }
+
+.kmm-mode-icon {
+  font-size: 2.4rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.kmm-mode-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.kmm-mode-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.kmm-mode-desc {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.45;
+}
+
+.kmm-mode-arrow {
+  font-size: 1.8rem;
+  color: var(--text-light);
+  flex-shrink: 0;
+  font-weight: 300;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .kmm-container {
+    padding: max(12px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+  }
+
+  .kmm-title {
+    font-size: 1.5rem;
+  }
+
+  .kmm-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .kmm-modes {
+    gap: 12px;
+  }
+
+  .kmm-mode-card {
+    padding: 14px 12px;
+  }
+
+  .kmm-mode-icon {
+    font-size: 2rem;
+  }
+
+  .kmm-mode-title {
+    font-size: 1rem;
+  }
+
+  .kmm-mode-desc {
+    font-size: 0.75rem;
+  }
+}

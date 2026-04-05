@@ -62,6 +62,17 @@ export default function HomeScreen() {
           <div className="game-card-arrow">›</div>
         </button>
 
+        <button className="home-game-card maps-card" onClick={() => navigate('/kingdom-maps')}>
+          <div className="game-card-icon">🗺️</div>
+          <div className="game-card-body">
+            <div className="game-card-title">Kingdom Maps</div>
+            <div className="game-card-desc">
+              Fill the grid with the right products. Free play, race the clock, or find the errors!
+            </div>
+          </div>
+          <div className="game-card-arrow">›</div>
+        </button>
+
         <button className="home-game-card siege-card" onClick={() => navigate('/siege', { state: { origin: '/' } })}>
           <div className="game-card-icon">⚔️</div>
           <div className="game-card-body">

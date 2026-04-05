@@ -15,6 +15,8 @@ import KingdomSiege from './components/KingdomSiege';
 import TrainingMenu from './components/TrainingMenu';
 import TrainingTable from './components/TrainingTable';
 import Leaderboard from './components/Leaderboard';
+import KingdomMapsMode from './components/KingdomMapsMode';
+import KingdomMaps from './components/KingdomMaps';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isLoading }) {
@@ -55,6 +57,8 @@ export default function App() {
           <Route path="/training" element={<ProtectedRoute element={<TrainingMenu />} isAuthenticated={!!user} isLoading={loading} />} />
           <Route path="/training/table" element={<ProtectedRoute element={<TrainingTable />} isAuthenticated={!!user} isLoading={loading} />} />
           <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isLoading={loading} />} />
+          <Route path="/kingdom-maps" element={<ProtectedRoute element={<KingdomMapsMode />} isAuthenticated={!!user} isLoading={loading} />} />
+          <Route path="/kingdom-maps/:mode" element={<ProtectedRoute element={<KingdomMaps />} isAuthenticated={!!user} isLoading={loading} />} />
 
           {/* Catch-all - redirect to auth or home depending on auth state */}
           <Route path="*" element={user ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />
