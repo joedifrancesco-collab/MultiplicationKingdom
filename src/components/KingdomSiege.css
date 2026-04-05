@@ -29,6 +29,11 @@
   flex-shrink: 0;
 }
 
+.siege-back {
+  margin-bottom: 0 !important;
+  padding: 6px 0 !important;
+}
+
 .siege-score {
   font-size: 1.5rem;
   font-weight: 900;
@@ -46,31 +51,6 @@
   border-radius: 99px;
   box-shadow: var(--shadow);
   white-space: nowrap;
-}
-
-.siege-mult-table-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--primary);
-  background: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.siege-mult-table-btn:hover {
-  background: var(--primary);
-  transform: scale(1.1);
-}
-
-.siege-mult-table-btn:active {
-  transform: scale(0.95);
 }
 
 /* ── Battle Field ───────────────────────────────────────────────────────── */
@@ -266,37 +246,6 @@
 }
 
 /* ── Intro Screen ───────────────────────────────────────────────────────── */
-.siege-intro-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.siege-mult-table-btn-intro {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid var(--primary);
-  background: white;
-  font-size: 1.3rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.siege-mult-table-btn-intro:hover {
-  background: var(--primary);
-  transform: scale(1.1);
-}
-
-.siege-mult-table-btn-intro:active {
-  transform: scale(0.95);
-}
-
 .siege-intro {
   display: flex;
   flex-direction: column;

@@ -45,6 +45,10 @@ Defend your kingdom by solving multiplication problems before towers breach your
 - **Styling**: CSS3
 - **Minification**: R8/ProGuard (Android)
 
+## 🌐 Cross-Platform Support
+
+Built with **React 19 and Vite**, Multiplication Kingdom runs seamlessly on desktop and mobile browsers through a single, responsive codebase. The web app is instantly playable on any modern browser—no installation needed. For mobile-first users, **Capacitor bridges React to native Android**, allowing the same application to be packaged as a mobile app with access to native features like offline storage and push notifications.
+
 ## 📋 Prerequisites
 
 - **Node.js**: v18 or higher

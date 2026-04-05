@@ -112,6 +112,7 @@
 
 .kingdom-card   { border-color: var(--primary); }
 .flashcard-card { border-color: #FF9F43; }
+.maps-card      { border-color: var(--accent); }
 .siege-card     { border-color: #FF6B6B; }
 
 .game-card-icon {
