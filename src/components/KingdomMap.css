@@ -12,32 +12,6 @@
   position: relative;
 }
 
-.map-mult-table-btn {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 2px solid var(--primary);
-  background: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.map-mult-table-btn:hover {
-  background: var(--primary);
-  transform: scale(1.1);
-}
-
-.map-mult-table-btn:active {
-  transform: scale(0.95);
-}
-
 .map-title {
   font-size: 1.8rem;
   font-weight: 900;

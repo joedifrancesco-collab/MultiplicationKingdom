@@ -6,8 +6,6 @@ export default function KingdomMapsMode() {
 
   return (
     <div className="kmm-container">
-      <button className="back-btn" onClick={() => navigate('/')}>‹</button>
-
       <header className="kmm-header">
         <div className="kmm-icon">🗺️</div>
         <h1 className="kmm-title">Kingdom Maps</h1>

@@ -12,19 +12,10 @@ export default function FlashcardMenu() {
 
   return (
     <div className="fc-menu">
-      <button className="back-btn" onClick={() => navigate('/')}>‹</button>
-
       <header className="fc-menu-header">
         <div className="fc-menu-icon">🃏</div>
         <h1 className="fc-menu-title">Flashcard Challenge</h1>
         <p className="fc-menu-subtitle">All tables 1 × 1 to 12 × 12 — pick your mode!</p>
-        <button 
-          className="fc-menu-mult-table-btn" 
-          onClick={() => navigate('/training/table', { state: { origin: '/flashcards' } })}
-          title="Interactive Multiplication Table"
-        >
-          📊
-        </button>
       </header>
 
       <div className="fc-modes">

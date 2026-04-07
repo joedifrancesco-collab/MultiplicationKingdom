@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { subscribeToAuthChanges } from './store/progress';
 import ErrorBoundary from './components/ErrorBoundary';
+import NavBar from './components/NavBar';
 import AuthScreen from './components/AuthScreen';
 import HomeScreen from './components/HomeScreen';
 import KingdomMap from './components/KingdomMap';
@@ -17,6 +18,9 @@ import TrainingTable from './components/TrainingTable';
 import Leaderboard from './components/Leaderboard';
 import KingdomMapsMode from './components/KingdomMapsMode';
 import KingdomMaps from './components/KingdomMaps';
+import SpellingScreen from './components/spelling/SpellingScreen';
+import SpellingPractice from './components/spelling/SpellingPractice';
+import SpellingLeaderboard from './components/spelling/SpellingLeaderboard';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isLoading }) {
@@ -41,6 +45,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
+        <NavBar />
         <Routes>
           {/* Authentication */}
           <Route path="/auth" element={<AuthScreen />} />
@@ -59,6 +64,9 @@ export default function App() {
           <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isLoading={loading} />} />
           <Route path="/kingdom-maps" element={<ProtectedRoute element={<KingdomMapsMode />} isAuthenticated={!!user} isLoading={loading} />} />
           <Route path="/kingdom-maps/:mode" element={<ProtectedRoute element={<KingdomMaps />} isAuthenticated={!!user} isLoading={loading} />} />
+          <Route path="/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isLoading={loading} />} />
+          <Route path="/spelling/practice" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isLoading={loading} />} />
+          <Route path="/spelling/leaderboard" element={<ProtectedRoute element={<SpellingLeaderboard />} isAuthenticated={!!user} isLoading={loading} />} />
 
           {/* Catch-all - redirect to auth or home depending on auth state */}
           <Route path="*" element={user ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />

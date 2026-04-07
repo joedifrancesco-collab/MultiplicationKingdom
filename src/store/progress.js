@@ -187,6 +187,109 @@ export function getGameBests(username) {
   return users[username]?.gameBests || {};
 }
 
+// ── Spelling attempt tracking ──────────────────────────────────────────────────
+
+/**
+ * Get a unique user identifier (Firebase UID or named username)
+ */
+function getSpellingUserKey() {
+  const authUser = getCurrentAuthUser();
+  if (authUser) {
+    return authUser.uid; // Firebase UID
+  }
+  return getCurrentUser(); // Named user system
+}
+
+/**
+ * Get storage key for spelling attempts
+ */
+function getSpellingStorageKey(userKey) {
+  return `mk_spelling_${userKey}`;
+}
+
+/**
+ * Save a spelling attempt record (called when user completes a spelling practice)
+ * Data shape: { groupId, groupTitle, firstAttemptCorrectCount, totalAttemptsToComplete }
+ */
+export function saveSpellingAttempt(data) {
+  const userKey = getSpellingUserKey();
+  if (!userKey) return; // No user logged in
+  
+  const storageKey = getSpellingStorageKey(userKey);
+  
+  let attempts = [];
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) attempts = JSON.parse(raw);
+  } catch { /* ignore */ }
+  
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  
+  const attemptRecord = {
+    ...data,
+    date: today,
+    timestamp: new Date().toISOString(),
+  };
+  
+  attempts.push(attemptRecord);
+  localStorage.setItem(storageKey, JSON.stringify(attempts));
+  
+  // Sync to Firebase in background (don't block game flow)
+  const authUser = getCurrentAuthUser();
+  if (authUser) {
+    syncSpellingAttemptToFirebase(authUser, data);
+  }
+}
+
+/**
+ * Get spelling attempts for current user, organized by group and date
+ * Returns a grouped structure showing best performance per date per group
+ */
+export function getSpellingAttempts() {
+  const userKey = getSpellingUserKey();
+  if (!userKey) return {}; // No user logged in
+  
+  const storageKey = getSpellingStorageKey(userKey);
+  
+  let attempts = [];
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) attempts = JSON.parse(raw);
+  } catch { /* ignore */ }
+  
+  // Group by groupId, then by date, keeping only the best attempt per date
+  const grouped = {};
+  
+  attempts.forEach(attempt => {
+    const { groupId, groupTitle, date, totalAttemptsToComplete, firstAttemptCorrectCount } = attempt;
+    
+    if (!grouped[groupId]) {
+      grouped[groupId] = {
+        groupTitle,
+        attempts: {},
+      };
+    }
+    
+    if (!grouped[groupId].attempts[date]) {
+      grouped[groupId].attempts[date] = {
+        firstAttemptCorrectCount,
+        totalAttemptsToComplete,
+      };
+    } else {
+      // Keep the best performance (least attempts)
+      const existing = grouped[groupId].attempts[date];
+      if (totalAttemptsToComplete < existing.totalAttemptsToComplete) {
+        grouped[groupId].attempts[date] = {
+          firstAttemptCorrectCount,
+          totalAttemptsToComplete,
+        };
+      }
+    }
+  });
+  
+  return grouped;
+}
+
 // ── Firebase Firestore sync ─────────────────────────────────────────────────────
 
 /**
@@ -283,6 +386,96 @@ export async function fetchAggregatedLeaderboard(gameType) {
   }
 }
 
+/**
+ * Sync spelling attempt to Firestore.
+ * Called automatically when saveSpellingAttempt is invoked.
+ * Runs silently in background (doesn't block game flow).
+ */
+export async function syncSpellingAttemptToFirebase(authUser, data) {
+  try {
+    const user = authUser || auth.currentUser;
+    if (!user) {
+      return;
+    }
+    
+    const username = user.displayName || user.email;
+    const today = new Date().toISOString().split('T')[0];
+    
+    await addDoc(collection(db, 'spelling_attempts'), {
+      uid: user.uid,
+      email: user.email,
+      username: username,
+      groupId: data.groupId,
+      groupTitle: data.groupTitle,
+      firstAttemptCorrectCount: data.firstAttemptCorrectCount,
+      totalAttemptsToComplete: data.totalAttemptsToComplete,
+      date: today,
+      timestamp: new Date(),
+    });
+  } catch (error) {
+    console.error('Failed to sync spelling attempt to Firebase:', error.code, error.message);
+    // Fail silently - game still works offline
+  }
+}
+
+/**
+ * Fetch spelling attempts from Firestore for the current user.
+ * Returns attempts organized by group and date, keeping best performance per date.
+ */
+export async function fetchSpellingAttemptsFromFirebase() {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      return {};
+    }
+
+    const q = query(
+      collection(db, 'spelling_attempts'),
+      orderBy('timestamp', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    
+    const attempts = querySnapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(doc => doc.uid === user.uid);
+
+    // Group by groupId, then by date, keeping only the best attempt per date
+    const grouped = {};
+    
+    attempts.forEach(attempt => {
+      const { groupId, groupTitle, date, totalAttemptsToComplete, firstAttemptCorrectCount } = attempt;
+      
+      if (!grouped[groupId]) {
+        grouped[groupId] = {
+          groupTitle,
+          attempts: {},
+        };
+      }
+      
+      if (!grouped[groupId].attempts[date]) {
+        grouped[groupId].attempts[date] = {
+          firstAttemptCorrectCount,
+          totalAttemptsToComplete,
+        };
+      } else {
+        // Keep the best performance (least attempts)
+        const existing = grouped[groupId].attempts[date];
+        if (totalAttemptsToComplete < existing.totalAttemptsToComplete) {
+          grouped[groupId].attempts[date] = {
+            firstAttemptCorrectCount,
+            totalAttemptsToComplete,
+          };
+        }
+      }
+    });
+
+    return grouped;
+  } catch (error) {
+    console.error('Failed to fetch spelling attempts from Firebase:', error);
+    return {};
+  }
+}
+
 // ── Firebase Authentication ─────────────────────────────────────────────────────
 
 /**
@@ -353,6 +546,21 @@ export function getCurrentAuthUser() {
   } catch {
     return null;
   }
+}
+
+// ── Clear spelling data (for testing) ──────────────────────────────────────
+
+/**
+ * Clear all spelling attempts for the current user (for testing/cleanup)
+ */
+export function clearSpellingAttempts() {
+  const userKey = getSpellingUserKey();
+  if (!userKey) return false;
+  
+  const storageKey = getSpellingStorageKey(userKey);
+  localStorage.removeItem(storageKey);
+  console.log('Cleared spelling attempts for user:', userKey);
+  return true;
 }
 
 /**

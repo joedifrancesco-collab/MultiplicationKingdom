@@ -7,11 +7,7 @@ export default function TrainingMenu() {
   return (
     <div className="training-menu">
       <header className="tm-header">
-        <button className="back-btn" onClick={() => navigate('/')}>
-          ‹
-        </button>
         <h1 className="tm-title">Training</h1>
-        <div style={{ width: '40px' }} />
       </header>
 
       <div className="tm-body">

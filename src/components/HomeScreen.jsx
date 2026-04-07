@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentAuthUser, signOutUser, subscribeToAuthChanges } from '../store/progress';
+import { getCurrentAuthUser, subscribeToAuthChanges } from '../store/progress';
 import { redactProfanity } from '../utils/contentFilter';
 import './HomeScreen.css';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
   const [user, setUser] = useState(() => getCurrentAuthUser());
-  const [signingOut, setSigningOut] = useState(false);
 
   // Subscribe to auth state changes
   useEffect(() => {
@@ -17,24 +16,13 @@ export default function HomeScreen() {
     return () => unsubscribe();
   }, []);
 
-  async function handleSignOut() {
-    setSigningOut(true);
-    await signOutUser();
-    navigate('/auth', { replace: true });
-  }
-
   return (
     <div className="home-screen">
       <header className="home-header">
-        <button 
-          className="home-mult-table-btn" 
-          onClick={() => navigate('/training/table', { state: { origin: '/' } })}
-          title="Interactive Multiplication Table"
-        >
-          📊
-        </button>
         <div className="home-crown">👑</div>
-        <h1 className="home-title">Multiplication<br />Kingdom</h1>
+        <div className="home-title-section">
+          <h1 className="home-title">Multiplication<br />Kingdom</h1>
+        </div>
         <p className="home-subtitle">Master your times tables the fun way!</p>
         {user && <p className="home-user-email">Playing as: {redactProfanity(user.displayName || user.email)}</p>}
       </header>
@@ -84,19 +72,6 @@ export default function HomeScreen() {
           <div className="game-card-arrow">›</div>
         </button>
       </div>
-
-      <div className="home-footer">
-        <button className="home-footer-btn scores-btn" onClick={() => navigate('/leaderboard')}>
-          🏆 Leaderboard
-        </button>
-        <button 
-          className="home-footer-btn signout-btn" 
-          onClick={handleSignOut}
-          disabled={signingOut}
-        >
-          {signingOut ? '⏳ Signing Out...' : '🚪 Sign Out'}
-        </button>
-      </div>
     </div>
   );
-}
+} 

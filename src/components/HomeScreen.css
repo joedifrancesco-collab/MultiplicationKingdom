@@ -22,36 +22,17 @@
   width: 100%;
 }
 
-.home-mult-table-btn {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 2px solid var(--primary);
-  background: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.home-mult-table-btn:hover {
-  background: var(--primary);
-  transform: scale(1.1);
-}
-
-.home-mult-table-btn:active {
-  transform: scale(0.95);
-}
-
 .home-crown {
   font-size: 4rem;
   line-height: 1;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+
+.home-title-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .home-title {
@@ -145,54 +126,6 @@
   flex-shrink: 0;
   font-weight: 300;
 }
-
-/* ── Footer actions ─────────────────────────────────────────────────────── */
-
-.home-footer {
-  width: 100%;
-  display: flex;
-  gap: 12px;
-}
-
-.home-footer-btn {
-  flex: 1;
-  padding: 14px 12px;
-  border-radius: var(--radius);
-  border: 2px solid transparent;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-
-.home-footer-btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
-.home-footer-btn:active { transform: scale(0.97); }
-
-.scores-btn {
-  background: var(--accent);
-  color: #333;
-  border-color: var(--accent);
-}
-
-.signout-btn {
-  background: #ff6b6b;
-  color: #fff;
-  border-color: #ff6b6b;
-}
-
-.signout-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.signout-btn:disabled:hover {
-  transform: none;
-  box-shadow: none;
-}
-
-
-/* ── Player modal ────────────────────────────────────────────────────────── */
 
 .hs-modal-overlay {
   position: fixed;
