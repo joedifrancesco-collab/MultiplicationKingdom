@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { subscribeToAuthChanges } from './store/progress';
+import { subscribeToAuthChanges, isGuestMode } from './store/progress';
 import ErrorBoundary from './components/ErrorBoundary';
 import NavBar from './components/NavBar';
 import AuthScreen from './components/AuthScreen';
@@ -23,11 +23,11 @@ import SpellingPractice from './components/spelling/SpellingPractice';
 import SpellingLeaderboard from './components/spelling/SpellingLeaderboard';
 
 // Protected route component
-function ProtectedRoute({ element, isAuthenticated, isLoading }) {
+function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
   if (isLoading) {
     return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>Loading...</div>;
   }
-  return isAuthenticated ? element : <Navigate to="/auth" replace />;
+  return isAuthenticated || isGuest ? element : <Navigate to="/auth" replace />;
 }
 
 export default function App() {
@@ -42,6 +42,9 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
+  // Check guest mode directly (reactive to localStorage changes)
+  const isGuest = isGuestMode();
+
   return (
     <ErrorBoundary>
       <BrowserRouter>
@@ -50,26 +53,26 @@ export default function App() {
           {/* Authentication */}
           <Route path="/auth" element={<AuthScreen />} />
 
-          {/* Protected Routes - require authentication */}
-          <Route path="/" element={<ProtectedRoute element={<HomeScreen />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/kingdom" element={<ProtectedRoute element={<KingdomMap />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/kingdom/:id" element={<ProtectedRoute element={<KingdomScreen />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/kingdom/:id/flashcard" element={<ProtectedRoute element={<Flashcard />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/kingdom/:id/speed" element={<ProtectedRoute element={<SpeedChallenge />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/flashcards" element={<ProtectedRoute element={<FlashcardMenu />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/flashcards/play" element={<ProtectedRoute element={<FlashcardGame />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/siege" element={<ProtectedRoute element={<KingdomSiege />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/training" element={<ProtectedRoute element={<TrainingMenu />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/training/table" element={<ProtectedRoute element={<TrainingTable />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/kingdom-maps" element={<ProtectedRoute element={<KingdomMapsMode />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/kingdom-maps/:mode" element={<ProtectedRoute element={<KingdomMaps />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/spelling/practice" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isLoading={loading} />} />
-          <Route path="/spelling/leaderboard" element={<ProtectedRoute element={<SpellingLeaderboard />} isAuthenticated={!!user} isLoading={loading} />} />
+          {/* Protected Routes - require authentication or guest mode */}
+          <Route path="/" element={<ProtectedRoute element={<HomeScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/kingdom" element={<ProtectedRoute element={<KingdomMap />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/kingdom/:id" element={<ProtectedRoute element={<KingdomScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/kingdom/:id/flashcard" element={<ProtectedRoute element={<Flashcard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/kingdom/:id/speed" element={<ProtectedRoute element={<SpeedChallenge />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/flashcards" element={<ProtectedRoute element={<FlashcardMenu />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/flashcards/play" element={<ProtectedRoute element={<FlashcardGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/siege" element={<ProtectedRoute element={<KingdomSiege />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/training" element={<ProtectedRoute element={<TrainingMenu />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/training/table" element={<ProtectedRoute element={<TrainingTable />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/kingdom-maps" element={<ProtectedRoute element={<KingdomMapsMode />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/kingdom-maps/:mode" element={<ProtectedRoute element={<KingdomMaps />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/spelling/practice" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/spelling/leaderboard" element={<ProtectedRoute element={<SpellingLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
 
-          {/* Catch-all - redirect to auth or home depending on auth state */}
-          <Route path="*" element={user ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />
+          {/* Catch-all - redirect to auth or home depending on auth state or guest mode */}
+          <Route path="*" element={user || isGuest ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { signOutUser, getCurrentAuthUser } from '../store/progress';
+import { signOutUser, getCurrentAuthUser, isGuestMode, clearGuestMode } from '../store/progress';
 import './NavBar.css';
 
 export default function NavBar() {
@@ -10,6 +10,7 @@ export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const user = getCurrentAuthUser();
+  const guest = isGuestMode();
 
   // Handle window resize to detect mobile/desktop
   useEffect(() => {
@@ -25,6 +26,11 @@ export default function NavBar() {
     setMenuOpen(false);
   }, [location.pathname]);
 
+  // Reset signingOut state when user or guest status changes
+  useEffect(() => {
+    setSigningOut(false);
+  }, [user, guest]);
+
   // Don't show navbar on auth page (moved after hooks)
   if (location.pathname === '/auth') {
     return null;
@@ -32,8 +38,13 @@ export default function NavBar() {
 
   async function handleSignOut() {
     setSigningOut(true);
-    await signOutUser();
-    navigate('/auth', { replace: true });
+    if (guest) {
+      clearGuestMode();
+      navigate('/auth', { replace: true });
+    } else {
+      await signOutUser();
+      navigate('/auth', { replace: true });
+    }
   }
 
   const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
@@ -136,8 +147,14 @@ export default function NavBar() {
                   onClick={handleSignOut}
                   disabled={signingOut}
                 >
-                  {signingOut ? '⏳ Signing Out...' : '🚪 Sign Out'}
+                  {signingOut ? '⏳ Exiting...' : guest ? '👤 Exit Guest' : '🚪 Sign Out'}
                 </button>
+
+                {guest && (
+                  <div className="mobile-nav-guest-indicator">
+                    👤 Playing as Guest
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -189,9 +206,9 @@ export default function NavBar() {
           className="nav-btn signout-nav-btn" 
           onClick={handleSignOut}
           disabled={signingOut}
-          title="Sign Out"
+          title={guest ? 'Exit Guest Mode' : 'Sign Out'}
         >
-          {signingOut ? '⏳' : '🚪'} {signingOut ? 'Signing Out...' : 'Sign Out'}
+          {signingOut ? '⏳' : guest ? '👤' : '🚪'} {signingOut ? 'Exiting...' : guest ? 'Exit Guest' : 'Sign Out'}
         </button>
       </div>
     </nav>

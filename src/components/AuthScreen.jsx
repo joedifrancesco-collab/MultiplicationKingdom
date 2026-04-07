@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signUpUser, signInUser } from '../store/progress';
+import { signUpUser, signInUser, setGuestMode } from '../store/progress';
 import { redactProfanity } from '../utils/contentFilter';
 import './AuthScreen.css';
 
@@ -13,6 +13,11 @@ export default function AuthScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const handleGuestMode = () => {
+    setGuestMode();
+    navigate('/');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -159,6 +164,17 @@ export default function AuthScreen() {
               {isSignUp ? 'Sign In' : 'Create One'}
             </button>
           </p>
+        </div>
+
+        <div className="auth-guest-section">
+          <button
+            type="button"
+            onClick={handleGuestMode}
+            className="guest-button"
+          >
+            👤 Play as Guest
+          </button>
+          <p className="guest-note">Or sign in to save your progress and compete on the leaderboard</p>
         </div>
 
         {isSignUp && (

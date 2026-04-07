@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentAuthUser, subscribeToAuthChanges } from '../store/progress';
+import { getCurrentAuthUser, subscribeToAuthChanges, isGuestMode } from '../store/progress';
 import { redactProfanity } from '../utils/contentFilter';
 import './HomeScreen.css';
 
 export default function HomeScreen() {
   const navigate = useNavigate();
   const [user, setUser] = useState(() => getCurrentAuthUser());
+  const guest = isGuestMode();
 
   // Subscribe to auth state changes
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function HomeScreen() {
           <h1 className="home-title">Multiplication<br />Kingdom</h1>
         </div>
         <p className="home-subtitle">Master your times tables the fun way!</p>
+        {guest && <p className="home-user-email">Playing as: <span className="guest-badge">guest</span></p>}
         {user && <p className="home-user-email">Playing as: {redactProfanity(user.displayName || user.email)}</p>}
       </header>
 

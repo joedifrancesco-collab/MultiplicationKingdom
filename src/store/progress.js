@@ -11,6 +11,7 @@ import {
 const KEY = 'mk_progress';
 const USERS_KEY = 'mk_users';
 const CURRENT_USER_KEY = 'mk_current_user';
+const GUEST_MODE_KEY = 'mk_guest_mode';
 
 function defaultProgress() {
   return {
@@ -48,6 +49,29 @@ export function setCurrentUser(username) {
   } else {
     localStorage.removeItem(CURRENT_USER_KEY);
   }
+}
+
+// ── Guest Mode ──────────────────────────────────────────────────────────────
+
+/**
+ * Set guest mode - allows user to play without authentication
+ */
+export function setGuestMode() {
+  localStorage.setItem(GUEST_MODE_KEY, 'true');
+}
+
+/**
+ * Check if currently in guest mode
+ */
+export function isGuestMode() {
+  return localStorage.getItem(GUEST_MODE_KEY) === 'true';
+}
+
+/**
+ * Clear guest mode (for logout)
+ */
+export function clearGuestMode() {
+  localStorage.removeItem(GUEST_MODE_KEY);
 }
 
 /**
@@ -530,9 +554,11 @@ export async function signInUser(email, password) {
  */
 export async function signOutUser() {
   try {
+    clearGuestMode();
     await signOut(auth);
     return { success: true };
   } catch (error) {
+    clearGuestMode();
     return { success: false, error: error.message };
   }
 }

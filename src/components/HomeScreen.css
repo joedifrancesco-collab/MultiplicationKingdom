@@ -58,6 +58,13 @@
   border-radius: 8px;
 }
 
+.guest-badge {
+  background: var(--accent);
+  color: #333;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
 
 .home-games {
   width: 100%;
