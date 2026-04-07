@@ -11,11 +11,6 @@ export default function NavBar() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const user = getCurrentAuthUser();
 
-  // Don't show navbar on auth page
-  if (location.pathname === '/auth') {
-    return null;
-  }
-
   // Handle window resize to detect mobile/desktop
   useEffect(() => {
     const handleResize = () => {
@@ -29,6 +24,11 @@ export default function NavBar() {
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
+
+  // Don't show navbar on auth page (moved after hooks)
+  if (location.pathname === '/auth') {
+    return null;
+  }
 
   async function handleSignOut() {
     setSigningOut(true);
