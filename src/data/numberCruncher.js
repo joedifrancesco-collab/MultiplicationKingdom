@@ -5,17 +5,16 @@
 
 /**
  * Difficulty levels: 2 digits → 7 digits
- * Early levels allow digit repetition, later levels don't
+ * Each level requires 25 correct entries before advancing
+ * Levels 1 allows repeats, others do not
  */
 const DIFFICULTY_LEVELS = [
   { level: 1, digits: 2, allowRepeat: true },
-  { level: 2, digits: 2, allowRepeat: false },
-  { level: 3, digits: 3, allowRepeat: true },
-  { level: 4, digits: 3, allowRepeat: false },
-  { level: 5, digits: 4, allowRepeat: false },
-  { level: 6, digits: 5, allowRepeat: false },
-  { level: 7, digits: 6, allowRepeat: false },
-  { level: 8, digits: 7, allowRepeat: false },
+  { level: 2, digits: 3, allowRepeat: false },
+  { level: 3, digits: 4, allowRepeat: false },
+  { level: 4, digits: 5, allowRepeat: false },
+  { level: 5, digits: 6, allowRepeat: false },
+  { level: 6, digits: 7, allowRepeat: false },
 ];
 
 const TIME_PER_CHALLENGE = 5000; // 5 seconds in milliseconds

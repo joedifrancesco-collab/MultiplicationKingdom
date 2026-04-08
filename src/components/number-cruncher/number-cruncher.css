@@ -179,6 +179,25 @@
   font-family: 'Courier New', monospace;
 }
 
+.nc-level-section {
+  text-align: center;
+  flex: 1;
+}
+
+.nc-level-label {
+  font-size: 0.7rem;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.nc-level-value {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #667eea;
+  font-family: 'Courier New', monospace;
+}
+
 .nc-counter-section {
   text-align: right;
 }

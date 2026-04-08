@@ -218,11 +218,15 @@ export default function NumberCruncherGame() {
 
   const renderGame = () => (
     <>
-      {/* Header with Counter and Timer */}
+      {/* Header with Counter, Level, and Timer */}
       <div className="nc-game-header">
         <div className="nc-timer-section-header">
           <div className="nc-timer-label-header">Time</div>
           <div className="nc-timer-display-header">{timeLeft}s</div>
+        </div>
+        <div className="nc-level-section">
+          <div className="nc-level-label">Level</div>
+          <div className="nc-level-value">{level}/{correctAtCurrentLevel}/25</div>
         </div>
         <div className="nc-counter-section">
           <div className="nc-counter-label">Correct</div>
@@ -318,13 +322,17 @@ export default function NumberCruncherGame() {
           <span className="nc-result-label">Max Level Reached:</span>
           <span className="nc-result-value">
             {maxLevelReached} (
-            {maxLevelReached <= 2
+            {maxLevelReached === 1
               ? '2-digit'
-              : maxLevelReached <= 4
+              : maxLevelReached === 2
               ? '3-digit'
-              : maxLevelReached <= 6
-              ? '4-5 digit'
-              : '6-7 digit'}
+              : maxLevelReached === 3
+              ? '4-digit'
+              : maxLevelReached === 4
+              ? '5-digit'
+              : maxLevelReached === 5
+              ? '6-digit'
+              : '7-digit'}
             )
           </span>
         </div>
