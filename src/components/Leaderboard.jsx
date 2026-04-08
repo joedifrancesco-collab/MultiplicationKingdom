@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { fetchAggregatedLeaderboard } from '../store/progress';
 import { redactProfanity } from '../utils/contentFilter';
@@ -49,7 +48,6 @@ function SubSection({ icon, title, children }) {
 }
 
 export default function Leaderboard() {
-  const navigate = useNavigate();
 
   // Cloud leaderboard data
   const [cloudData, setCloudData] = useState({

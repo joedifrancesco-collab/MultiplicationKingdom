@@ -604,3 +604,172 @@ export function subscribeToAuthChanges(callback) {
     return () => {};
   }
 }
+
+// ── Number Cruncher attempt tracking ─────────────────────────────────────
+
+/**
+ * Get a unique user identifier (Firebase UID or named username)
+ * For Number Cruncher, guests can be identified by 3-char name
+ */
+function getNumberCruncherUserKey() {
+  const authUser = getCurrentAuthUser();
+  if (authUser) {
+    return authUser.uid; // Firebase UID
+  }
+  return getCurrentUser(); // Named user system or guest
+}
+
+/**
+ * Get storage key for number cruncher attempts
+ */
+function getNumberCruncherStorageKey(userKey) {
+  return `mk_number_cruncher_${userKey}`;
+}
+
+/**
+ * Save a Number Cruncher attempt record
+ * Data shape: { score, correctCount, maxLevel, timeElapsed, date }
+ */
+export function saveNumberCruncherAttempt(data) {
+  const userKey = getNumberCruncherUserKey();
+  if (!userKey) return; // No user logged in
+  
+  const storageKey = getNumberCruncherStorageKey(userKey);
+  
+  let attempts = [];
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) attempts = JSON.parse(raw);
+  } catch { /* ignore */ }
+  
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  
+  const attemptRecord = {
+    ...data,
+    date: today,
+    timestamp: new Date().toISOString(),
+  };
+  
+  attempts.push(attemptRecord);
+  localStorage.setItem(storageKey, JSON.stringify(attempts));
+  
+  // Sync to Firebase in background (don't block game flow)
+  const authUser = getCurrentAuthUser();
+  if (authUser) {
+    syncNumberCruncherAttemptToFirebase(authUser, data);
+  }
+}
+
+/**
+ * Get Number Cruncher attempts for current user
+ * Returns array of all attempts, newest first
+ */
+export function getNumberCruncherAttempts() {
+  const userKey = getNumberCruncherUserKey();
+  if (!userKey) return []; // No user logged in
+  
+  const storageKey = getNumberCruncherStorageKey(userKey);
+  
+  let attempts = [];
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) attempts = JSON.parse(raw);
+  } catch { /* ignore */ }
+  
+  // Sort by timestamp descending (newest first) and limit to reasonable number
+  return attempts
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+    .slice(0, 1000); // Keep last 1000 attempts
+}
+
+/**
+ * Get best Number Cruncher score (highest score)
+ * Returns the attempt record with the best score
+ */
+export function getNumberCruncherBestScore() {
+  const attempts = getNumberCruncherAttempts();
+  if (attempts.length === 0) return null;
+  return attempts.reduce((best, current) => 
+    current.score > best.score ? current : best
+  );
+}
+
+/**
+ * Sync Number Cruncher attempt to Firestore.
+ * Called automatically when saveNumberCruncherAttempt is invoked.
+ * Runs silently in background (doesn't block game flow).
+ */
+export async function syncNumberCruncherAttemptToFirebase(authUser, data) {
+  try {
+    const user = authUser || auth.currentUser;
+    if (!user) {
+      return;
+    }
+    
+    const username = user.displayName || user.email;
+    const today = new Date().toISOString().split('T')[0];
+    
+    await addDoc(collection(db, 'number_cruncher_attempts'), {
+      uid: user.uid,
+      email: user.email,
+      username: username,
+      score: data.score,
+      correctCount: data.correctCount,
+      maxLevel: data.maxLevel,
+      timeElapsed: data.timeElapsed,
+      date: today,
+      timestamp: new Date(),
+    });
+  } catch (error) {
+    console.error('Failed to sync number cruncher attempt to Firebase:', error.code, error.message);
+    // Fail silently - game still works offline
+  }
+}
+
+/**
+ * Fetch Number Cruncher leaderboard from Firestore
+ * Returns top scores from all users, sorted by score (descending)
+ */
+export async function fetchNumberCruncherLeaderboard(topN = 50) {
+  try {
+    const q = query(
+      collection(db, 'number_cruncher_attempts'),
+      orderBy('timestamp', 'desc'),
+      limit(topN * 2) // Fetch more to deduplicate per user
+    );
+    const querySnapshot = await getDocs(q);
+    
+    const allAttempts = querySnapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }));
+    
+    // Group by username and keep only the best score per user
+    const bestByPlayer = {};
+    allAttempts.forEach(attempt => {
+      const playerKey = attempt.username || attempt.email || 'Anonymous';
+      if (!bestByPlayer[playerKey] || attempt.score > bestByPlayer[playerKey].score) {
+        bestByPlayer[playerKey] = attempt;
+      }
+    });
+    
+    // Convert to array and sort by score (descending)
+    return Object.values(bestByPlayer)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, topN);
+  } catch (error) {
+    console.error('Failed to fetch number cruncher leaderboard from Firebase:', error);
+    return [];
+  }
+}
+
+/**
+ * Clear all Number Cruncher attempts for the current user (for testing/cleanup)
+ */
+export function clearNumberCruncherAttempts() {
+  const userKey = getNumberCruncherUserKey();
+  if (!userKey) return false;
+  
+  const storageKey = getNumberCruncherStorageKey(userKey);
+  localStorage.removeItem(storageKey);
+  console.log('Cleared number cruncher attempts for user:', userKey);
+  return true;
+}

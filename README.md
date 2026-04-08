@@ -5,9 +5,10 @@ Master multiplication tables the fun way! An engaging educational game for stude
 ## 🎮 Features
 
 ### 🏰 Conquest
-Explore 12 magical lands, each dedicated to one multiplication table (1-12). Each land offers two game modes:
+Explore 12 magical lands, each dedicated to one multiplication table (1-12). Each land offers three game modes:
 - **Flashcard Mode** - Test your knowledge at your own pace
 - **Speed Challenge** - Race against the clock
+- **Match Game** - Match problems to their answers
 
 Earn stars by completing lands and track your progress!
 
@@ -19,6 +20,15 @@ Practice multiplication with flexible modes:
 
 Work through all 12 times tables (1×1 to 12×12).
 
+### 🧮 Number Cruncher
+Fast-paced number entry training game with calculator aesthetics. Players enter multi-digit numbers (2-7 digits) within 5-second time limits. Features 8 progressive difficulty levels with scoring and leaderboards.
+
+### 📝 Spelling Practice
+Build spelling skills through interactive spelling tests with:
+- **Spelling Practice Mode** - Complete word lists with immediate feedback
+- **Spelling Leaderboard** - Track your spelling progress (cloud+local storage)
+- **Peek Hints** - Learn from mistakes with answer previews
+
 ### ⚔️ Kingdom Siege
 Defend your kingdom by solving multiplication problems before towers breach your defenses. How long can you survive?
 
@@ -27,14 +37,16 @@ Defend your kingdom by solving multiplication problems before towers breach your
 - Customizable volume and mute toggle in every game
 - Procedural tone fallback system (works without audio files)
 
-### �👥 User Profiles & Leaderboard
+### 👥 User Profiles & Cloud Leaderboard
 - Create and manage multiple player profiles
 - Track personal high scores across all game modes
-- View leaderboards organized by game type:
+- Cloud-synced leaderboards for:
   - **Conquest** (Speed Challenge & Flashcard Mode)
   - **Flashcard Challenge** (Timed, Sprint, Practice)
   - **Kingdom Siege**
-- All progress saved locally on your device
+  - **Number Cruncher**
+  - **Spelling Attempts**
+- All progress saved locally on your device + synced to Firebase
 
 ## 🛠 Tech Stack
 
@@ -42,6 +54,8 @@ Defend your kingdom by solving multiplication problems before towers breach your
 - **Build Tool**: Vite
 - **Mobile**: Capacitor for Android deployment
 - **State Management**: React Context / localStorage
+- **Cloud Backend**: Firebase Firestore (leaderboards + data sync)
+- **Authentication**: Firebase Auth
 - **Styling**: CSS3
 - **Minification**: R8/ProGuard (Android)
 
@@ -110,22 +124,43 @@ Upload both to Google Play Console with your release notes.
 
 ```
 src/
-├── components/          # React components
+├── components/          # React components (one .jsx + one .css file per component)
 │   ├── HomeScreen.jsx
 │   ├── KingdomMap.jsx
 │   ├── KingdomScreen.jsx
 │   ├── Flashcard.jsx
 │   ├── SpeedChallenge.jsx
+│   ├── MatchGame.jsx
 │   ├── FlashcardMenu.jsx
 │   ├── FlashcardGame.jsx
 │   ├── KingdomSiege.jsx
-│   └── Leaderboard.jsx  # Multi-user leaderboard
+│   ├── Leaderboard.jsx
+│   ├── NavBar.jsx
+│   ├── number-cruncher/
+│   │   ├── NumberCruncherScreen.jsx
+│   │   ├── NumberCruncherGame.jsx
+│   │   ├── NumberCruncherLeaderboard.jsx
+│   │   └── number-cruncher.css
+│   ├── spelling/
+│   │   ├── SpellingScreen.jsx
+│   │   ├── SpellingPractice.jsx
+│   │   ├── SpellingLeaderboard.jsx
+│   │   └── SpellingPractice.css
+│   └── ErrorBoundary.jsx
 ├── data/
-│   └── questions.js      # All multiplication questions (1-12 tables)
+│   ├── questions.js      # All multiplication questions (1-12 tables)
+│   └── words.js          # Spelling words database
+├── config/
+│   └── firebase.js       # Firebase Firestore initialization
 ├── store/
-│   └── progress.js       # User profiles & game progress tracking
-├── App.jsx               # Main router
-└── index.css             # Global styles
+│   └── progress.js       # User profiles, progress tracking, Firebase sync
+├── hooks/
+│   └── useSound.js       # Sound effects hook
+├── utils/
+│   ├── soundManager.js
+│   └── contentFilter.js
+├── App.jsx               # Main router & authentication
+└── index.css             # Global styles & theme variables
 android/                  # Capacitor Android project
 public/                   # Static assets & manifest
 ```
@@ -153,6 +188,34 @@ ESLint is configured for React best practices. Check for issues:
 ```bash
 npm run lint
 ```
+
+## 🔥 Firebase Configuration (Leaderboards)
+
+**Status:** Firebase Firestore is integrated for cloud-synced leaderboards.
+
+### First-Time Setup
+1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
+2. Enable Firestore Database and Firebase Authentication
+3. Update `src/config/firebase.js` with your Firebase credentials
+4. Deploy Firestore security rules:
+   ```bash
+   firebase deploy --only firestore:rules
+   ```
+   Rules allow authenticated users to read/write their own game data while maintaining public leaderboard access.
+
+### Data Collections
+- `leaderboard/{document}` - Multiplication game scores (public reads)
+- `spelling_attempts/{document}` - Spelling test results (authenticated reads)
+- `number_cruncher_attempts/{document}` - Number Cruncher scores (public reads)
+- `users/{username}` - User profile data (public reads for signup validation)
+
+### How It Works
+- **Offline First**: All scores save to localStorage immediately
+- **Background Sync**: Scores sync to Firebase when online
+- **Fallback**: If Firebase is unavailable, local leaderboard still works
+- **Public Leaderboards**: Game data is world-viewable; spelling data is private per user
+
+**See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) and [FIRESTORE_RULES_UPDATE.md](./FIRESTORE_RULES_UPDATE.md) for detailed instructions.**
 
 ## 🌐 Web Deployment
 

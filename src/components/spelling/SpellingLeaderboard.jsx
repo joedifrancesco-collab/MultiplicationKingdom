@@ -4,17 +4,12 @@ import './SpellingLeaderboard.css';
 
 export default function SpellingLeaderboard() {
   const [spellingData, setSpellingData] = useState({});
-  const [username, setUsername] = useState('');
 
   useEffect(() => {
-    // Get username from either Firebase or named user system
-    const authUser = getCurrentAuthUser();
-    const namedUser = getCurrentUser();
-    const displayName = authUser?.displayName || namedUser || 'User';
-    setUsername(displayName);
-
     // Load spelling attempts - try Firebase first, then fall back to local storage
     const loadAttempts = async () => {
+      const authUser = getCurrentAuthUser();
+      
       if (authUser) {
         // Try to load from Firebase
         try {
@@ -35,6 +30,11 @@ export default function SpellingLeaderboard() {
 
     loadAttempts();
   }, []);
+
+  // Get username from either Firebase or named user system
+  const authUser = getCurrentAuthUser();
+  const namedUser = getCurrentUser();
+  const username = authUser?.displayName || namedUser || 'User';
 
   const groupIds = Object.keys(spellingData);
   const hasAttempts = groupIds.length > 0;

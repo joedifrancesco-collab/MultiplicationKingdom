@@ -1,0 +1,646 @@
+/* Number Cruncher Game - Calculator Theme Stylesheet */
+
+.nc-screen {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.nc-hub {
+  background: white;
+  border-radius: var(--radius, 16px);
+  padding: 40px;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.nc-hub-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.nc-hub-beta {
+  display: inline-block;
+  background: #ff6b6b;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.nc-hub-description {
+  color: #666;
+  font-size: 1rem;
+  margin: 20px 0 30px 0;
+  line-height: 1.5;
+}
+
+.nc-hub-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nc-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.nc-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.nc-btn:active {
+  transform: translateY(0);
+}
+
+/* Game Container */
+.nc-game-container {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Warm-up Screen */
+.nc-warmup {
+  text-align: center;
+  padding: 60px 30px;
+}
+
+.nc-warmup-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.nc-warmup-text {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 15px 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.nc-warmup-emoji {
+  font-size: 3rem;
+  margin: 30px 0 20px 0;
+}
+
+.nc-start-btn {
+  background: #6BCB77;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background 0.2s;
+}
+
+.nc-start-btn:hover {
+  background: #5db865;
+}
+
+/* Game Header - Timer and Counter */
+.nc-game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.nc-timer-section {
+  flex: 1;
+}
+
+.nc-timer-label {
+  font-size: 0.7rem;
+  color: #999;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+.nc-timer-display {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  font-family: 'Courier New', monospace;
+}
+
+.nc-timer-display.warning {
+  color: #ff9800;
+}
+
+.nc-timer-display.danger {
+  color: #f44336;
+}
+
+.nc-timer-section-header {
+  text-align: center;
+}
+
+.nc-timer-label-header {
+  font-size: 0.7rem;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.nc-timer-display-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  font-family: 'Courier New', monospace;
+}
+
+.nc-counter-section {
+  text-align: right;
+}
+
+.nc-counter-label {
+  font-size: 0.7rem;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.nc-counter-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #6BCB77;
+  font-family: 'Courier New', monospace;
+}
+
+/* Progress Bar (Timer visual indicator) */
+.nc-progress-bar-container {
+  width: 100%;
+  height: 18px;
+  background: #eee;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 4px;
+  border: 2px solid #333;
+}
+
+.nc-progress-bar {
+  height: 100%;
+  background: #808080;
+  transition: width 0.05s linear;
+  border-radius: 6px;
+}
+
+/* Calculator Display */
+.nc-calculator {
+  background: white;
+  border-radius: 8px;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+.nc-display-section {
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 0;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.nc-display-label {
+  font-size: 0.65rem;
+  color: #999;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+  width: 100%;
+}
+
+.nc-display-digits {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-height: 32px;
+  align-items: center;
+  width: 100%;
+}
+
+.nc-display-digit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  color: #333;
+  transition: all 0.1s;
+}
+
+.nc-display-digit.placeholder {
+  background: #e8e8e8;
+  color: #999;
+}
+
+.nc-display-digit.correct {
+  background: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+.nc-display-digit.incorrect {
+  background: #f44336;
+  color: white;
+}
+
+/* Calculator Keypad Container */
+.nc-keypad-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* Calculator Keypad */
+.nc-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: fit-content;
+}
+
+.nc-key {
+  aspect-ratio: 1;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background: #f9f9f9;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #333;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.05s;
+  font-family: 'Courier New', monospace;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.nc-key-spacer {
+  display: none;
+}
+
+.nc-key-enter {
+  grid-column: 2 / 4;
+  background: #f9f9f9;
+  color: #333;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-color: #ddd;
+  aspect-ratio: auto;
+}
+
+.nc-key:hover {
+  background: #f0f0f0;
+}
+
+.nc-key.pressed {
+  background: #80deea;
+  color: #00838f;
+  border-color: #00838f;
+  box-shadow: 0 0 6px rgba(128, 222, 234, 0.6), inset 0 0 3px rgba(0, 0, 0, 0.1);
+  transform: scale(0.96);
+}
+
+/* Bottom Controls Row - HIDDEN */
+.nc-bottom-controls {
+  display: none;
+}
+
+.nc-control-btn {
+  display: none;
+}
+
+.nc-enter-btn {
+  display: none;
+}
+
+/* Input Field (hidden) */
+.nc-input-field {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+/* Message Display */
+.nc-message {
+  text-align: center;
+  font-size: 1rem;
+  margin: 6px 0;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nc-message > div {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.nc-message .success {
+  color: #4caf50;
+}
+
+.nc-message .error {
+  color: #f44336;
+}
+
+/* Game Over Screen */
+.nc-game-over {
+  text-align: center;
+  padding: 40px 30px;
+}
+
+.nc-game-over-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.nc-game-over-emoji {
+  font-size: 3rem;
+  margin: 20px 0;
+}
+
+.nc-results {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 30px 0;
+  text-align: left;
+}
+
+.nc-result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 1rem;
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap;
+}
+
+.nc-result-row:last-child {
+  border-bottom: none;
+}
+
+.nc-result-label {
+  color: #666;
+  font-weight: 500;
+}
+
+.nc-result-value {
+  color: #333;
+  font-weight: bold;
+}
+
+.nc-game-over-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.nc-game-over-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nc-game-over-btn.play-again {
+  background: #6BCB77;
+  color: white;
+}
+
+.nc-game-over-btn.play-again:hover {
+  background: #5db865;
+}
+
+.nc-game-over-btn.home {
+  background: #ecf0f1;
+  color: #333;
+  border: 2px solid #ddd;
+}
+
+.nc-game-over-btn.home:hover {
+  background: #bdc3c7;
+}
+
+.nc-guest-name-input {
+  width: 100%;
+  max-width: 150px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.nc-guest-name-input::placeholder {
+  opacity: 0.5;
+}
+
+/* Leaderboard */
+.nc-leaderboard {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.nc-leaderboard-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.nc-leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.nc-leaderboard-header {
+  background: #f5f5f5;
+  font-weight: bold;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.nc-leaderboard-header th {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+.nc-leaderboard-header th:nth-child(2),
+.nc-leaderboard-header th:nth-child(3) {
+  text-align: right;
+}
+
+.nc-leaderboard-row {
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s;
+}
+
+.nc-leaderboard-row:hover {
+  background: #f9f9f9;
+}
+
+.nc-leaderboard-row:nth-child(2) {
+  /* First place */
+  background: #fffde7;
+}
+
+.nc-leaderboard-row:nth-child(3) {
+  /* Second place */
+  background: #f0f0f0;
+}
+
+.nc-leaderboard-row:nth-child(4) {
+  /* Third place */
+  background: #fff3e0;
+}
+
+.nc-leaderboard-row td {
+  padding: 15px 12px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.nc-leaderboard-rank {
+  font-weight: bold;
+  color: #667eea;
+}
+
+.nc-leaderboard-score {
+  text-align: right;
+  font-weight: bold;
+  color: #6BCB77;
+}
+
+.nc-leaderboard-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+.nc-back-btn {
+  background: #ecf0f1;
+  color: #333;
+  border: 2px solid #ddd;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.nc-back-btn:hover {
+  background: #bdc3c7;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .nc-hub {
+    padding: 20px;
+  }
+
+  .nc-hub-title {
+    font-size: 2rem;
+  }
+
+  .nc-game-container {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .nc-game-header {
+    gap: 10px;
+  }
+
+  .nc-timer-display,
+  .nc-counter-value {
+    font-size: 1.3rem;
+  }
+
+  .nc-display-digit {
+    min-width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+  }
+
+  .nc-key {
+    font-size: 1rem;
+  }
+
+  .nc-control-btn {
+    font-size: 0.8rem;
+  }
+
+  .nc-leaderboard-row td {
+    font-size: 0.95rem;
+    padding: 12px 8px;
+  }
+}
+

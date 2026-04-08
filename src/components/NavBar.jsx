@@ -22,11 +22,13 @@ export default function NavBar() {
   }, []);
 
   // Close menu when navigation occurs
+  // This intentional state reset is appropriate as a side effect of navigation
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
 
   // Reset signingOut state when user or guest status changes
+  // This intentional state reset is appropriate as a side effect of auth state changes
   useEffect(() => {
     setSigningOut(false);
   }, [user, guest]);

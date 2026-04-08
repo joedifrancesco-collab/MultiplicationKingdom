@@ -21,6 +21,9 @@ import KingdomMaps from './components/KingdomMaps';
 import SpellingScreen from './components/spelling/SpellingScreen';
 import SpellingPractice from './components/spelling/SpellingPractice';
 import SpellingLeaderboard from './components/spelling/SpellingLeaderboard';
+import NumberCruncherScreen from './components/number-cruncher/NumberCruncherScreen';
+import NumberCruncherGame from './components/number-cruncher/NumberCruncherGame';
+import NumberCruncherLeaderboard from './components/number-cruncher/NumberCruncherLeaderboard';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
@@ -70,6 +73,9 @@ export default function App() {
           <Route path="/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/spelling/practice" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/spelling/leaderboard" element={<ProtectedRoute element={<SpellingLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/number-cruncher" element={<ProtectedRoute element={<NumberCruncherScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/number-cruncher/play" element={<ProtectedRoute element={<NumberCruncherGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/number-cruncher/leaderboard" element={<ProtectedRoute element={<NumberCruncherLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
 
           {/* Catch-all - redirect to auth or home depending on auth state or guest mode */}
           <Route path="*" element={user || isGuest ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SPELLING_WORDS } from '../data/words';
 import './SpellingPractice.css';
@@ -73,7 +73,7 @@ export default function SpellingPractice() {
     inputRefs.current[0]?.focus();
   };
 
-  const handlePeek = (index, word) => {
+  const handlePeek = (index) => {
     // Show the answer for PEEK_DURATION_MS milliseconds
     setPeekingIndices(prev => new Set([...prev, index]));
     
@@ -90,15 +90,6 @@ export default function SpellingPractice() {
         return newSet;
       });
     }, PEEK_DURATION_MS);
-  };
-
-  const handleRetry = () => {
-    setGraded(false);
-    setResults(null);
-    setPeekingIndices(new Set());
-    Object.values(peekTimeoutsRef.current).forEach(timeout => clearTimeout(timeout));
-    peekTimeoutsRef.current = {};
-    inputRefs.current[0]?.focus();
   };
 
   const handleQuit = () => {
@@ -170,7 +161,7 @@ export default function SpellingPractice() {
                   {!currentResult.correct && !peekingIndices.has(index) && (
                     <button
                       className="sp-peek-btn"
-                      onClick={() => handlePeek(index, word)}
+                      onClick={() => handlePeek(index)}
                       title="Peek at the correct answer for 1 second"
                     >
                       Hint

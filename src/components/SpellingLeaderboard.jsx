@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import './SpellingLeaderboard.css';
 
 export default function SpellingLeaderboard() {
-  const navigate = useNavigate();
 
   return (
     <div className="spelling-leaderboard">
