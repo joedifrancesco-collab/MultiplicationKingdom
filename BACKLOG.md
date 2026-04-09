@@ -7,6 +7,14 @@ Prioritized list of features, improvements, and fixes for the educational multip
 
 ## Recently Completed ✅
 
+### Bug Fixes (Current Session)
+- [x] **Fix HomeScreen Double User Display** — Removed duplicate "guest" and logged-in user labels showing simultaneously on Home Page (added !guest condition)
+- [x] **Incognito/Private Browsing Support** — Implemented three-layer storage fallback (localStorage → sessionStorage → in-memory flag) to handle storage unavailability in private/incognito modes
+- [x] **Preserve Redirect Destination After Auth** — Fixed redirect flow to forward users to their intended destination after guest mode or login (e.g., navigate to /number-cruncher/play first, then auth, then land on Number Cruncher)
+- [x] **Single-Click Guest Mode** — Replaced polling interval-based detection with custom event system ('guestModeChanged') for instant guest mode state updates
+- [x] **Form Accessibility** — Added autocomplete attributes to all form fields (email, username, new-password, current-password) to eliminate browser validation warnings
+- [x] **Number Cruncher Keystroke Validation** — Changed game to evaluate input after each keystroke instead of requiring Enter key press; incorrect digit ends game instantly; correct sequence advances to next number
+
 ### User-Requested Features
 - [x] **Add Username to Authentication** — Modify signup to collect email, username, and password; store and display username on Home Page and Leaderboard instead of email
 - [x] **Privacy Policy Notice on Signup** — Add brief statement on signup page: "We will never sell or share your information" with link to PRIVACY_POLICY.md
@@ -31,11 +39,11 @@ Prioritized list of features, improvements, and fixes for the educational multip
 ## Near-Term / In Progress
 
 ### User-Requested
-- [ ] **Sound Effects** — Audio feedback system implemented with mute button in FlashcardGame and SpeedChallenge. Ready for audio files: download MP3s from free sources (Freesound, Zapsplat, Pixabay), place in public/sounds/, and integrate into remaining game modes (MatchGame, KingdomSiege, Flashcard Mode in Conquest)
+- [x] **Sound Effects** — Audio feedback system implemented with mute button in FlashcardGame and SpeedChallenge. Ready for audio files: download MP3s from free sources (Freesound, Zapsplat, Pixabay), place in public/sounds/, and integrate into remaining game modes (MatchGame, KingdomSiege, Flashcard Mode in Conquest)
 - [ ] **Create Teacher Dashboard** — Build admin interface for classroom management: view class progress, assign kingdoms, track student completion
 
 ### Suggested
-- [ ] **Rework Interactive Multiplication Table** — Improve UX, consider additional features or refinements
+
 
 ---
 

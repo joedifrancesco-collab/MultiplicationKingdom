@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { signUpUser, signInUser, setGuestMode } from '../store/progress';
 import { redactProfanity } from '../utils/contentFilter';
 import './AuthScreen.css';
 
 export default function AuthScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -16,13 +17,18 @@ export default function AuthScreen() {
 
   const handleGuestMode = () => {
     setGuestMode();
-    navigate('/');
+    // Navigate to the page the user was trying to access, or home if coming directly to auth
+    const from = location.state?.from?.pathname || '/';
+    navigate(from);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    // Determine redirect destination
+    const from = location.state?.from?.pathname || '/';
 
     try {
       if (isSignUp) {
@@ -55,7 +61,7 @@ export default function AuthScreen() {
 
         const result = await signUpUser(email, username, password);
         if (result.success) {
-          navigate('/');
+          navigate(from);
         } else {
           setError(result.error);
         }
@@ -63,7 +69,7 @@ export default function AuthScreen() {
         // Sign in
         const result = await signInUser(email, password);
         if (result.success) {
-          navigate('/');
+          navigate(from);
         } else {
           setError(result.error);
         }
@@ -94,6 +100,7 @@ export default function AuthScreen() {
               placeholder="your@email.com"
               required
               disabled={loading}
+              autoComplete="email"
             />
           </div>
 
@@ -108,6 +115,7 @@ export default function AuthScreen() {
                 placeholder="Your display name"
                 required
                 disabled={loading}
+                autoComplete="username"
               />
             </div>
           )}
@@ -122,6 +130,7 @@ export default function AuthScreen() {
               placeholder="••••••"
               required
               disabled={loading}
+              autoComplete={isSignUp ? "new-password" : "current-password"}
             />
           </div>
 
@@ -136,6 +145,7 @@ export default function AuthScreen() {
                 placeholder="••••••"
                 required
                 disabled={loading}
+                autoComplete="new-password"
               />
             </div>
           )}

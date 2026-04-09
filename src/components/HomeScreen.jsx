@@ -26,7 +26,7 @@ export default function HomeScreen() {
         </div>
         <p className="home-subtitle">Master your times tables the fun way!</p>
         {guest && <p className="home-user-email">Playing as: <span className="guest-badge">guest</span></p>}
-        {user && <p className="home-user-email">Playing as: {redactProfanity(user.displayName || user.email)}</p>}
+        {!guest && user && <p className="home-user-email">Playing as: {redactProfanity(user.displayName || user.email)}</p>}
       </header>
 
       <div className="home-games">

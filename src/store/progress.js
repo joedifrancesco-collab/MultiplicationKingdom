@@ -13,6 +13,12 @@ const USERS_KEY = 'mk_users';
 const CURRENT_USER_KEY = 'mk_current_user';
 const GUEST_MODE_KEY = 'mk_guest_mode';
 
+// Fallback in-memory flag for when storage is unavailable (incognito mode)
+let inMemoryGuestMode = false;
+
+// Custom event for guest mode changes
+const guestModeChangeEvent = new Event('guestModeChanged');
+
 function defaultProgress() {
   return {
     kingdoms: Array.from({ length: 12 }, (_, i) => ({
@@ -31,23 +37,63 @@ export function getUsers() {
     const raw = localStorage.getItem(USERS_KEY);
     return raw ? JSON.parse(raw) : {};
   } catch {
-    return {};
+    // localStorage not available, try sessionStorage
+    try {
+      const raw = sessionStorage.getItem(USERS_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
   }
 }
 
 function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  try {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  } catch {
+    // localStorage not available, try sessionStorage
+    try {
+      sessionStorage.setItem(USERS_KEY, JSON.stringify(users));
+    } catch {
+      // Both storage mechanisms unavailable - continue without persistence
+    }
+  }
 }
 
 export function getCurrentUser() {
-  return localStorage.getItem(CURRENT_USER_KEY) || null;
+  try {
+    return localStorage.getItem(CURRENT_USER_KEY) || null;
+  } catch {
+    try {
+      return sessionStorage.getItem(CURRENT_USER_KEY) || null;
+    } catch {
+      return null;
+    }
+  }
 }
 
 export function setCurrentUser(username) {
   if (username) {
-    localStorage.setItem(CURRENT_USER_KEY, username);
+    try {
+      localStorage.setItem(CURRENT_USER_KEY, username);
+    } catch {
+      try {
+        sessionStorage.setItem(CURRENT_USER_KEY, username);
+      } catch {
+        // Both storage mechanisms unavailable
+      }
+    }
   } else {
-    localStorage.removeItem(CURRENT_USER_KEY);
+    try {
+      localStorage.removeItem(CURRENT_USER_KEY);
+    } catch {
+      // ignore
+    }
+    try {
+      sessionStorage.removeItem(CURRENT_USER_KEY);
+    } catch {
+      // ignore
+    }
   }
 }
 
@@ -55,23 +101,88 @@ export function setCurrentUser(username) {
 
 /**
  * Set guest mode - allows user to play without authentication
+ * Uses localStorage primarily, but falls back to sessionStorage and then in-memory flag
+ * Dispatches guestModeChanged event for immediate notification
  */
 export function setGuestMode() {
-  localStorage.setItem(GUEST_MODE_KEY, 'true');
+  inMemoryGuestMode = true;
+  
+  try {
+    localStorage.setItem(GUEST_MODE_KEY, 'true');
+  } catch {
+    // localStorage not available (incognito/private mode)
+    try {
+      sessionStorage.setItem(GUEST_MODE_KEY, 'true');
+    } catch {
+      // Both storage mechanisms unavailable - use in-memory flag
+      // This allows guest mode to work in incognito windows
+    }
+  }
+  
+  // Notify App.jsx immediately of the change
+  try {
+    window.dispatchEvent(guestModeChangeEvent);
+  } catch {
+    // dispatchEvent might fail in some environments
+  }
 }
 
 /**
  * Check if currently in guest mode
+ * Checks localStorage, sessionStorage, and falls back to in-memory flag
  */
 export function isGuestMode() {
-  return localStorage.getItem(GUEST_MODE_KEY) === 'true';
+  // Check in-memory flag first (works even if storage is completely unavailable)
+  if (inMemoryGuestMode) {
+    return true;
+  }
+  
+  try {
+    if (localStorage.getItem(GUEST_MODE_KEY) === 'true') {
+      inMemoryGuestMode = true;
+      return true;
+    }
+  } catch {
+    // localStorage not available
+  }
+  
+  try {
+    if (sessionStorage.getItem(GUEST_MODE_KEY) === 'true') {
+      inMemoryGuestMode = true;
+      return true;
+    }
+  } catch {
+    // sessionStorage not available
+  }
+  
+  return false;
 }
 
 /**
  * Clear guest mode (for logout)
+ * Dispatches guestModeChanged event immediately
  */
 export function clearGuestMode() {
-  localStorage.removeItem(GUEST_MODE_KEY);
+  inMemoryGuestMode = false;
+  
+  try {
+    localStorage.removeItem(GUEST_MODE_KEY);
+  } catch {
+    // localStorage not available
+  }
+  
+  try {
+    sessionStorage.removeItem(GUEST_MODE_KEY);
+  } catch {
+    // sessionStorage not available
+  }
+  
+  // Notify App.jsx immediately of the change
+  try {
+    window.dispatchEvent(guestModeChangeEvent);
+  } catch {
+    // dispatchEvent might fail in some environments
+  }
 }
 
 /**
@@ -114,7 +225,12 @@ export function getProgress() {
     const raw = localStorage.getItem(KEY);
     return raw ? JSON.parse(raw) : defaultProgress();
   } catch {
-    return defaultProgress();
+    try {
+      const raw = sessionStorage.getItem(KEY);
+      return raw ? JSON.parse(raw) : defaultProgress();
+    } catch {
+      return defaultProgress();
+    }
   }
 }
 
@@ -127,7 +243,15 @@ export function saveProgress(progress) {
     saveUsers(users);
     return;
   }
-  localStorage.setItem(KEY, JSON.stringify(progress));
+  try {
+    localStorage.setItem(KEY, JSON.stringify(progress));
+  } catch {
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify(progress));
+    } catch {
+      // Both storage mechanisms unavailable - progress won't persist
+    }
+  }
 }
 
 export function awardStars(kingdomId, stars) {

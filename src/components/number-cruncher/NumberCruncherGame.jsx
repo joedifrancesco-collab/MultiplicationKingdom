@@ -42,8 +42,26 @@ export default function NumberCruncherGame() {
     // Check if user is logged in or guest
     const authUser = getCurrentAuthUser();
     if (!authUser) {
-      const guestName = localStorage.getItem('mk_nc_guest_name') || 'Guest';
-      localStorage.setItem('mk_current_user', guestName);
+      let guestName = 'Guest';
+      try {
+        guestName = localStorage.getItem('mk_nc_guest_name') || 'Guest';
+      } catch {
+        try {
+          guestName = sessionStorage.getItem('mk_nc_guest_name') || 'Guest';
+        } catch {
+          // storage unavailable
+        }
+      }
+      
+      try {
+        localStorage.setItem('mk_current_user', guestName);
+      } catch {
+        try {
+          sessionStorage.setItem('mk_current_user', guestName);
+        } catch {
+          // storage unavailable
+        }
+      }
     }
 
     saveNumberCruncherAttempt(attempt);
@@ -83,15 +101,17 @@ export default function NumberCruncherGame() {
   const handleKeyDown = (e) => {
     if (phase !== GAME_PHASES.PLAYING) return;
 
-    // Highlight key on keypad (1-9 only)
+    // Highlight key on keypad (1-9 only and Enter)
     if (e.key >= '1' && e.key <= '9') {
       setPressedKey(e.key);
       setTimeout(() => setPressedKey(null), 100);
     }
 
+    // Enter key is now disabled (decorative only)
     if (e.key === 'Enter') {
       e.preventDefault();
-      submitNumber();
+      // Do nothing - Enter key is disabled
+      return;
     } else if (e.key === 'Backspace' || e.key === 'Delete') {
       e.preventDefault();
       setUserInput((prev) => prev.slice(0, -1));
@@ -100,21 +120,38 @@ export default function NumberCruncherGame() {
       e.preventDefault();
       const newInput = userInput + e.key;
       if (newInput.length <= currentNumber.length) {
-        setUserInput(newInput);
+        // Validate this digit immediately
+        validateAndAdvance(newInput);
       }
     }
   };
 
-  const submitNumber = () => {
-    if (userInput.trim() === '') return;
+  // Validate input after each keystroke
+  const validateAndAdvance = (newInput) => {
+    // Check if the new digit matches the target
+    const enteredIndex = newInput.length - 1;
+    const targetDigit = currentNumber[enteredIndex];
+    const enteredDigit = newInput[enteredIndex];
 
-    const isCorrect = validateInput(userInput, currentNumber);
+    if (enteredDigit !== targetDigit) {
+      // Wrong digit! Game over
+      setUserInput(newInput); // Show the wrong digit
+      setMessage('✗');
+      setTimeout(() => {
+        endGame();
+      }, 300);
+      return;
+    }
 
-    if (isCorrect) {
-      // Correct! Show success and advance
+    // Digit is correct
+    setUserInput(newInput);
+
+    // Check if all digits are entered correctly
+    if (newInput.length === currentNumber.length) {
+      // All correct! Advance
       setMessage('✓');
       setCorrectCount((prev) => prev + 1);
-      
+
       // Track entries at current level
       const newCorrectAtLevel = correctAtCurrentLevel + 1;
       setCorrectAtCurrentLevel(newCorrectAtLevel);
@@ -136,11 +173,11 @@ export default function NumberCruncherGame() {
         setCurrentNumber(generateNumber(newLevel));
         if (inputRef.current) inputRef.current.focus();
       }, 300);
-    } else {
-      // Incorrect! Game over
-      setMessage('✗');
-      endGame();
     }
+  };
+
+  const submitNumber = () => {
+    // This function is no longer used - validation happens on each keystroke
   };
 
   const startGame = () => {
@@ -218,15 +255,11 @@ export default function NumberCruncherGame() {
 
   const renderGame = () => (
     <>
-      {/* Header with Counter, Level, and Timer */}
+      {/* Header with Counter and Timer */}
       <div className="nc-game-header">
         <div className="nc-timer-section-header">
           <div className="nc-timer-label-header">Time</div>
           <div className="nc-timer-display-header">{timeLeft}s</div>
-        </div>
-        <div className="nc-level-section">
-          <div className="nc-level-label">Level</div>
-          <div className="nc-level-value">{level}/{correctAtCurrentLevel}/25</div>
         </div>
         <div className="nc-counter-section">
           <div className="nc-counter-label">Correct</div>
@@ -275,7 +308,8 @@ export default function NumberCruncherGame() {
                 
                 const newInput = userInput + String(num);
                 if (newInput.length <= currentNumber.length) {
-                  setUserInput(newInput);
+                  // Validate this digit immediately
+                  validateAndAdvance(newInput);
                 }
               }}
             >
@@ -283,10 +317,12 @@ export default function NumberCruncherGame() {
             </div>
           ))}
           <div
-            className={`nc-key nc-key-enter ${pressedKey === 'Enter' ? 'pressed' : ''}`}
+            className={`nc-key nc-key-enter disabled ${pressedKey === 'Enter' ? 'pressed' : ''}`}
+            title="Enter key is disabled - digits evaluate as you type"
             onClick={() => {
+              // Enter button is disabled (decorative only)
               if (phase !== GAME_PHASES.PLAYING) return;
-              handleKeyDown({ key: 'Enter', preventDefault: () => {} });
+              // Do nothing
             }}
           >
             ENTER
@@ -314,28 +350,6 @@ export default function NumberCruncherGame() {
       </div>
 
       <div className="nc-results">
-        <div className="nc-result-row">
-          <span className="nc-result-label">Numbers Entered:</span>
-          <span className="nc-result-value">{correctCount}</span>
-        </div>
-        <div className="nc-result-row">
-          <span className="nc-result-label">Max Level Reached:</span>
-          <span className="nc-result-value">
-            {maxLevelReached} (
-            {maxLevelReached === 1
-              ? '2-digit'
-              : maxLevelReached === 2
-              ? '3-digit'
-              : maxLevelReached === 3
-              ? '4-digit'
-              : maxLevelReached === 4
-              ? '5-digit'
-              : maxLevelReached === 5
-              ? '6-digit'
-              : '7-digit'}
-            )
-          </span>
-        </div>
         <div className="nc-result-row">
           <span className="nc-result-label">Score:</span>
           <span className="nc-result-value">{calculateScore(correctCount)}</span>

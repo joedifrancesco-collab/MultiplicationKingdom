@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { subscribeToAuthChanges, isGuestMode } from './store/progress';
 import ErrorBoundary from './components/ErrorBoundary';
 import NavBar from './components/NavBar';
@@ -27,14 +27,16 @@ import NumberCruncherLeaderboard from './components/number-cruncher/NumberCrunch
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
+  const location = useLocation();
   if (isLoading) {
     return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>Loading...</div>;
   }
-  return isAuthenticated || isGuest ? element : <Navigate to="/auth" replace />;
+  return isAuthenticated || isGuest ? element : <Navigate to="/auth" state={{ from: location }} replace />;
 }
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [isGuest, setIsGuest] = useState(isGuestMode());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,8 +47,19 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Check guest mode directly (reactive to localStorage changes)
-  const isGuest = isGuestMode();
+  // Monitor guest mode changes
+  useEffect(() => {
+    // Listen for guest mode changes (immediate notification via custom event)
+    const handleGuestModeChange = () => {
+      setIsGuest(isGuestMode());
+    };
+    
+    window.addEventListener('guestModeChanged', handleGuestModeChange);
+    
+    return () => {
+      window.removeEventListener('guestModeChanged', handleGuestModeChange);
+    };
+  }, []);
 
   return (
     <ErrorBoundary>
