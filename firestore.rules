@@ -40,6 +40,16 @@ service cloud.firestore {
       allow update, delete: if request.auth.uid == resource.data.uid;
     }
 
+    // ── Spelling Word Groups Collection ───────────────────────────────────
+    // Word groups for spelling practice (created by teachers)
+    // Allow anyone to read (students browse available word lists)
+    // Allow anyone to create/update/delete (teacher password protection in UI)
+    // TODO: In production, restrict to authenticated teachers with specific role
+    match /spelling_word_groups/{document=**} {
+      allow read: if true;
+      allow create, update, delete: if true;
+    }
+
     // ── Deny all other access ─────────────────────────────────────────────
     match /{document=**} {
       allow read, write: if false;
