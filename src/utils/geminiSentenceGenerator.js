@@ -4,7 +4,6 @@
  */
 
 const GEMINI_API_KEY = import.meta.env.VITE_GOOGLE_GEMINI_API_KEY;
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 /**
  * Call Google Gemini API to generate contextual sentences
@@ -13,7 +12,7 @@ const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/
  */
 export async function generateSentencesWithAI(words) {
   if (!GEMINI_API_KEY) {
-    throw new Error('Google Gemini API key not configured. Set VITE_GOOGLE_GEMINI_API_KEY in .env');
+    throw new Error('Google Gemini API key not configured. Set VITE_GOOGLE_GEMINI_API_KEY in .env.local');
   }
 
   if (words.length === 0) {
@@ -38,7 +37,8 @@ word3|Sentence about word3 in context.
 Do NOT include any other text, explanations, or formatting. Just the word|sentence pairs.`;
 
   try {
-    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+    // Try using the Google Generative AI SDK approach
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
