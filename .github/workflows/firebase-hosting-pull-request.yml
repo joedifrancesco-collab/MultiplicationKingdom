@@ -24,6 +24,13 @@ jobs:
         run: npm run lint
 
       - name: Build the app
+        env:
+          VITE_FIREBASE_API_KEY: AIzaSyCDBQg-OUAMA5IE6GqAvMkZ3bUFr1L5cPE
+          VITE_FIREBASE_AUTH_DOMAIN: multiplication-kingdom-e8c53.firebaseapp.com
+          VITE_FIREBASE_PROJECT_ID: multiplication-kingdom-e8c53
+          VITE_FIREBASE_STORAGE_BUCKET: multiplication-kingdom-e8c53.firebasestorage.app
+          VITE_FIREBASE_MESSAGING_SENDER_ID: '21184528155'
+          VITE_FIREBASE_APP_ID: '1:21184528155:web:a065544b566da6a2ce9dbe'
         run: npm run build
 
       - name: Deploy preview to Firebase
