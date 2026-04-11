@@ -2,6 +2,9 @@ name: Deploy to Firebase Hosting on PR
 
 'on': pull_request
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
@@ -15,15 +18,18 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Lint the code
+        run: npm run lint
 
       - name: Build the app
         run: npm run build
 
       - name: Deploy preview to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MULTIPLICATION_KINGDOM_E8C53 }}'
-          channelId: live
-          projectId: multiplication-kingdom-e8c53
+        env:
+          FIREBASE_SERVICE_ACCOUNT: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+        run: |
+          node -e "require('fs').writeFileSync(process.env.RUNNER_TEMP + '/sa_key.json', process.env.FIREBASE_SERVICE_ACCOUNT)"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa_key.json"
+          npx firebase-tools hosting:channel:deploy pr-${{ github.event.pull_request.number }} --project multiplication-kingdom-e8c53
