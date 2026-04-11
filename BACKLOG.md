@@ -35,6 +35,12 @@ Prioritized list of features, improvements, and fixes for the educational multip
 - [x] **Remove Home Button from Flashcard Results** — Removed "Home" button from Flashcard Challenge's Play Again screen; added back icon button in top-left corner instead
 - [x] **Mobile & Desktop UX Polish** — Fixed back icon alignment consistency, adjusted mult table icon positioning, added Quit buttons to Kingdom Siege and SpeedChallenge, skip KingdomScreen during Conquest (direct to Speed Challenge), fixed Flashcard keypad hiding on wrong answers, made topbar sticky, reduced question card height for better mobile screen space
 
+### Spelling Word Manager (NEW FEATURE - COMPLETED)
+- [x] **Spelling Word Admin Panel** — Create teacher-only interface for managing word groups with password protection (teacher123); CRUD operations (create, read, archive, delete, restore) with Firestore integration
+- [x] **Sentence Generation (Template-Based)** — Auto-generate learning-focused sentences for spelling words using 15 universal templates as fallback
+- [x] **AI-Powered Sentence Generation** — Integrate Google Gemini API for contextual, meaning-focused sentences; verified working with test words (should, sing, sister, concert); produces age-appropriate, pedagogically sound sentences
+- [x] **Firebase Deployment** — Deploy AI integration to Firebase Hosting; add .env file for build-time environment variables
+
 ### Infrastructure & Tooling (Suggested)
 - [x] **Firestore Security Rules** — Created comprehensive Firestore rules allowing authenticated users to write scores and read usernames for signup validation
 - [x] **Clear Leaderboard Utility** — Built script (`scripts/clearLeaderboard.js`) to clear leaderboard from Firestore for testing; includes setup documentation
@@ -49,6 +55,7 @@ Prioritized list of features, improvements, and fixes for the educational multip
 - [ ] **Create Teacher Dashboard** — Build admin interface for classroom management: view class progress, assign kingdoms, track student completion
 
 ### Suggested
+- [ ] **API Key Security Hardening** — Gemini API key is currently committed to .env for Firebase build access. Recommended: Add API restrictions in Google Cloud Console (limit to Generative Language API only) and Application restrictions (limit to Firebase domain only). Consider future refactor to use secure environment management (e.g., Firebase Secrets, Cloud Functions middleware). For classroom use, current setup is acceptable with usage monitoring.
 
 
 ---
