@@ -117,6 +117,18 @@
   color: white;
 }
 
+.sa-button-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.sa-button-group .sa-btn {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+}
+
 /* Admin Panel */
 .sa-header {
   background: white;

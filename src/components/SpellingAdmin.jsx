@@ -8,6 +8,7 @@ import {
   deleteSpellingWordGroup,
 } from '../store/progress';
 import { parseWordList, generateSentencesForWords } from '../utils/sentenceGenerator';
+import { generateSentencesWithAI } from '../utils/geminiSentenceGenerator';
 import './SpellingAdmin.css';
 
 const ADMIN_PASSWORD = 'teacher123'; // Change to your preferred password
@@ -27,6 +28,7 @@ export default function SpellingAdmin() {
   const [generatedWords, setGeneratedWords] = useState([]);
   const [parseErrors, setParseErrors] = useState([]);
   const [creatingGroup, setCreatingGroup] = useState(false);
+  const [generatingWithAI, setGeneratingWithAI] = useState(false);
 
   const handlePasswordSubmit = () => {
     setPasswordError('');
@@ -76,6 +78,35 @@ export default function SpellingAdmin() {
     // Generate sentences for all words
     const generated = generateSentencesForWords(words);
     setGeneratedWords(generated);
+  };
+
+  const handleGenerateWithAI = async () => {
+    setError('');
+    setParseErrors([]);
+
+    const { words, errors } = parseWordList(wordListInput);
+
+    if (errors.length > 0) {
+      setParseErrors(errors);
+    }
+
+    if (words.length === 0) {
+      setError('No valid words found. Please check your input.');
+      return;
+    }
+
+    setGeneratingWithAI(true);
+    try {
+      const generated = await generateSentencesWithAI(words);
+      setGeneratedWords(generated);
+    } catch (err) {
+      setError(`AI generation failed: ${err.message}`);
+      // Fallback to template-based generation
+      const fallback = generateSentencesForWords(words);
+      setGeneratedWords(fallback);
+    } finally {
+      setGeneratingWithAI(false);
+    }
   };
 
   const handleEditSentence = (index, newSentence) => {
@@ -236,13 +267,23 @@ export default function SpellingAdmin() {
           <p className="sa-hint">Enter each word on a new line (numbered or plain). Example: 1. apple, 2. banana or just "apple, banana"</p>
         </div>
 
-        <button
-          className="sa-btn sa-btn-secondary"
-          onClick={handleGenerateSentences}
-          disabled={!wordListInput.trim()}
-        >
-          📝 Generate Sentences
-        </button>
+        <div className="sa-button-group">
+          <button
+            className="sa-btn sa-btn-secondary"
+            onClick={handleGenerateSentences}
+            disabled={!wordListInput.trim()}
+          >
+            📝 Generate Sentences
+          </button>
+          <button
+            className="sa-btn sa-btn-primary"
+            onClick={handleGenerateWithAI}
+            disabled={!wordListInput.trim() || generatingWithAI}
+            title="Uses AI to create contextual sentences (requires Google Gemini API key)"
+          >
+            {generatingWithAI ? '🤖 Generating...' : '🤖 Generate with AI'}
+          </button>
+        </div>
 
         {/* Show parse errors */}
         {parseErrors.length > 0 && (
