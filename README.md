@@ -120,6 +120,27 @@ cd android
 
 Upload both to Google Play Console with your release notes.
 
+## 🌍 Web Hosting
+
+### Firebase Hosting (Recommended)
+The app is hosted on **Firebase Hosting** with automatic SPA routing:
+
+**Live URL:** https://multiplication-kingdom-e8c53.web.app
+
+**Features:**
+- ⚡ Lightning-fast global CDN (no cold starts)
+- 🔒 Automatic HTTPS
+- ♻️ Automatic deployments on every `git push` to main
+- 📊 Same Firebase project as your backend
+
+**Deploy manually:**
+```bash
+npm run build
+firebase deploy --only hosting
+```
+
+**Deploy automatically:** Push to `main` branch and GitHub Actions will deploy automatically (see `.github/workflows/firebase-hosting-*.yml`)
+
 ## 📂 Project Structure
 
 ```

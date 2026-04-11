@@ -7,7 +7,13 @@ Prioritized list of features, improvements, and fixes for the educational multip
 
 ## Recently Completed ✅
 
-### Bug Fixes (Current Session)
+### Infrastructure & Deployment (Current Session)
+- [x] **Migrate to Firebase Hosting** — Moved from Render Static Site → Web Service → Firebase Hosting for better SPA routing and instant loads (no cold starts)
+- [x] **Enable SPA Routing on Firebase** — Added rewrites in firebase.json to serve index.html for all routes
+- [x] **Express Server for Render** — Created server.cjs (CommonJS) for SPA routing during Render Web Service hosting (still available if needed)
+- [x] **Setup GitHub Actions for Firebase** — Configured automatic deployments to Firebase Hosting on every push to main branch
+
+### Bug Fixes (Previous Session)
 - [x] **Fix HomeScreen Double User Display** — Removed duplicate "guest" and logged-in user labels showing simultaneously on Home Page (added !guest condition)
 - [x] **Incognito/Private Browsing Support** — Implemented three-layer storage fallback (localStorage → sessionStorage → in-memory flag) to handle storage unavailability in private/incognito modes
 - [x] **Preserve Redirect Destination After Auth** — Fixed redirect flow to forward users to their intended destination after guest mode or login (e.g., navigate to /number-cruncher/play first, then auth, then land on Number Cruncher)
