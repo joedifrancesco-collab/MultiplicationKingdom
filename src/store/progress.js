@@ -1,4 +1,4 @@
-import { collection, addDoc, query, orderBy, limit, getDocs, doc, setDoc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, limit, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc, where } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import {
   createUserWithEmailAndPassword,
@@ -896,4 +896,105 @@ export function clearNumberCruncherAttempts() {
   localStorage.removeItem(storageKey);
   console.log('Cleared number cruncher attempts for user:', userKey);
   return true;
+}
+
+// ── Spelling Word Groups (Firestore) ─────────────────────────────────────────
+
+/**
+ * Create a new spelling word group in Firestore
+ * Data shape: { title, words: [{ word, sentence }, ...] }
+ * Returns the new group with id, createdAt, isArchived fields added
+ */
+export async function createSpellingWordGroup(groupData) {
+  try {
+    const newGroup = {
+      ...groupData,
+      createdAt: new Date(),
+      isArchived: false,
+    };
+    const docRef = await addDoc(collection(db, 'spelling_word_groups'), newGroup);
+    return { success: true, id: docRef.id, ...newGroup };
+  } catch (error) {
+    console.error('Failed to create spelling word group:', error.message);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Fetch all spelling word groups from Firestore
+ * Returns array of all groups (both active and archived), sorted by creation date (newest first)
+ * Throws error if Firestore is unavailable
+ */
+export async function fetchSpellingWordGroups() {
+  try {
+    const q = query(
+      collection(db, 'spelling_word_groups'),
+      orderBy('createdAt', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error('Failed to fetch spelling word groups:', error.message);
+    throw error; // Propagate error so caller can show error message
+  }
+}
+
+/**
+ * Archive a spelling word group (hide from practice but keep for review)
+ */
+export async function archiveSpellingWordGroup(groupId) {
+  try {
+    await updateDoc(doc(db, 'spelling_word_groups', groupId), {
+      isArchived: true,
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to archive spelling word group:', error.message);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Restore (unarchive) a spelling word group
+ */
+export async function restoreSpellingWordGroup(groupId) {
+  try {
+    await updateDoc(doc(db, 'spelling_word_groups', groupId), {
+      isArchived: false,
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to restore spelling word group:', error.message);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Update a spelling word group (change title or words)
+ */
+export async function updateSpellingWordGroup(groupId, updates) {
+  try {
+    await updateDoc(doc(db, 'spelling_word_groups', groupId), updates);
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to update spelling word group:', error.message);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Delete a spelling word group permanently
+ */
+export async function deleteSpellingWordGroup(groupId) {
+  try {
+    await deleteDoc(doc(db, 'spelling_word_groups', groupId));
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to delete spelling word group:', error.message);
+    return { success: false, error: error.message };
+  }
 }

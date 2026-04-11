@@ -21,6 +21,7 @@ import KingdomMaps from './components/KingdomMaps';
 import SpellingScreen from './components/spelling/SpellingScreen';
 import SpellingPractice from './components/spelling/SpellingPractice';
 import SpellingLeaderboard from './components/spelling/SpellingLeaderboard';
+import SpellingAdmin from './components/SpellingAdmin';
 import NumberCruncherScreen from './components/number-cruncher/NumberCruncherScreen';
 import NumberCruncherGame from './components/number-cruncher/NumberCruncherGame';
 import NumberCruncherLeaderboard from './components/number-cruncher/NumberCruncherLeaderboard';
@@ -84,8 +85,9 @@ export default function App() {
           <Route path="/kingdom-maps" element={<ProtectedRoute element={<KingdomMapsMode />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/kingdom-maps/:mode" element={<ProtectedRoute element={<KingdomMaps />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/spelling/practice" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/spelling/practice/:groupId" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/spelling/leaderboard" element={<ProtectedRoute element={<SpellingLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/spelling-admin" element={<SpellingAdmin />} />
           <Route path="/number-cruncher" element={<ProtectedRoute element={<NumberCruncherScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/number-cruncher/play" element={<ProtectedRoute element={<NumberCruncherGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/number-cruncher/leaderboard" element={<ProtectedRoute element={<NumberCruncherLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />

@@ -25,8 +25,42 @@ export const SPELLING_WORD_GROUPS = [
       { word: 'embryos', sentence: 'The embryos were studied in the science lab.' },
       { word: 'heredity', sentence: 'Heredity determines many of our physical traits.' },
     ],
+    isArchived: false,
   },
 ];
 
 // Backwards compatibility: export current words for existing components
 export const SPELLING_WORDS = SPELLING_WORD_GROUPS[0].words;
+
+/**
+ * Fetch spelling word groups from Firestore
+ * Falls back to hardcoded SPELLING_WORD_GROUPS if Firestore is unavailable
+ * Filters out archived groups unless explicitly requested
+ * 
+ * @param {boolean} includeArchived - Include archived groups in the result
+ * @returns {Promise<Array>} Array of word group objects
+ */
+export async function fetchSpellingWordsFromFirebase(includeArchived = false) {
+  try {
+    // Import here to avoid circular dependency
+    const { fetchSpellingWordGroups } = await import('../store/progress.js');
+    
+    let groups = await fetchSpellingWordGroups();
+    
+    // Filter archived groups based on parameter
+    if (!includeArchived) {
+      groups = groups.filter(g => !g.isArchived);
+    }
+    
+    // Return empty array if Firestore has no groups, so we can fall back to hardcoded
+    if (groups.length === 0) {
+      return SPELLING_WORD_GROUPS;
+    }
+    
+    return groups;
+  } catch (error) {
+    // Firestore unavailable - return hardcoded fallback
+    console.warn('Firestore unavailable, using fallback word groups:', error.message);
+    return SPELLING_WORD_GROUPS;
+  }
+}
