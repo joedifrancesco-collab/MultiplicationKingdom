@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { generateNumber, validateInput, getNextLevel, calculateScore, MAX_LEVEL } from '../../data/numberCruncher';
+import { generateNumber, getNextLevel, calculateScore, MAX_LEVEL } from '../../data/numberCruncher';
 import { saveNumberCruncherAttempt, getCurrentAuthUser } from '../../store/progress';
 import '../number-cruncher/number-cruncher.css';
 
@@ -174,10 +174,6 @@ export default function NumberCruncherGame() {
         if (inputRef.current) inputRef.current.focus();
       }, 300);
     }
-  };
-
-  const submitNumber = () => {
-    // This function is no longer used - validation happens on each keystroke
   };
 
   const startGame = () => {
