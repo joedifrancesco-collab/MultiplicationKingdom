@@ -8,6 +8,7 @@ import {
   deleteSpellingWordGroup,
   updateSpellingWordGroup,
 } from '../store/progress';
+import { parseWordList, generateSentencesForWords } from '../utils/sentenceGenerator';
 import './SpellingAdmin.css';
 
 const ADMIN_PASSWORD = 'teacher123'; // Change to your preferred password
@@ -23,7 +24,9 @@ export default function SpellingAdmin() {
 
   // Form state for new group
   const [newGroupTitle, setNewGroupTitle] = useState('');
-  const [newGroupWords, setNewGroupWords] = useState('');
+  const [wordListInput, setWordListInput] = useState('');
+  const [generatedWords, setGeneratedWords] = useState([]);
+  const [parseErrors, setParseErrors] = useState([]);
   const [creatingGroup, setCreatingGroup] = useState(false);
 
   // Fetch groups on mount (if authenticated)
@@ -56,41 +59,55 @@ export default function SpellingAdmin() {
     setLoading(false);
   };
 
+  const handleGenerateSentences = () => {
+    setError('');
+    setParseErrors([]);
+
+    const { words, errors } = parseWordList(wordListInput);
+
+    if (errors.length > 0) {
+      setParseErrors(errors);
+    }
+
+    if (words.length === 0) {
+      setError('No valid words found. Please check your input.');
+      return;
+    }
+
+    // Generate sentences for all words
+    const generated = generateSentencesForWords(words);
+    setGeneratedWords(generated);
+  };
+
+  const handleEditSentence = (index, newSentence) => {
+    const updated = [...generatedWords];
+    updated[index].sentence = newSentence;
+    setGeneratedWords(updated);
+  };
+
   const handleCreateGroup = async () => {
     if (!newGroupTitle.trim()) {
       setError('Please enter a group title');
       return;
     }
-    if (!newGroupWords.trim()) {
-      setError('Please enter at least one word');
+    if (generatedWords.length === 0) {
+      setError('No words to create. Generate sentences first.');
       return;
     }
 
     setCreatingGroup(true);
     setError('');
     try {
-      // Parse words: expect format "word1|word1 sentence, word2|word2 sentence, ..."
-      const words = newGroupWords
-        .split(',')
-        .map(line => {
-          const [word, sentence] = line.split('|').map(s => s.trim());
-          return { word, sentence: sentence || '' };
-        })
-        .filter(w => w.word);
-
-      if (words.length === 0) {
-        setError('No valid words parsed. Use format: "word|sentence, word|sentence"');
-        return;
-      }
-
       const result = await createSpellingWordGroup({
         title: newGroupTitle.trim(),
-        words,
+        words: generatedWords,
       });
 
       if (result.success) {
         setNewGroupTitle('');
-        setNewGroupWords('');
+        setWordListInput('');
+        setGeneratedWords([]);
+        setParseErrors([]);
         await loadGroups();
       } else {
         setError(`Failed to create group: ${result.error}`);
@@ -209,24 +226,64 @@ export default function SpellingAdmin() {
         </div>
 
         <div className="sa-form-group">
-          <label className="sa-label">Words (format: word|sentence, word|sentence, ...)</label>
+          <label className="sa-label">Word List (paste a numbered list)</label>
           <textarea
             className="sa-textarea"
-            placeholder={`example|This is an example sentence, picture|I hung a picture on the wall, place|This is my favorite place`}
-            value={newGroupWords}
-            onChange={(e) => setNewGroupWords(e.target.value)}
-            rows={4}
+            placeholder={`1. apple\n2. banana\n3. cat\n4. dog\n5. elephant`}
+            value={wordListInput}
+            onChange={(e) => setWordListInput(e.target.value)}
+            rows={5}
           />
-          <p className="sa-hint">Separate each word-sentence pair with a comma. Use pipe (|) to separate word from sentence.</p>
+          <p className="sa-hint">Enter each word on a new line (numbered or plain). Example: 1. apple, 2. banana or just "apple, banana"</p>
         </div>
 
         <button
-          className="sa-btn sa-btn-primary"
-          onClick={handleCreateGroup}
-          disabled={creatingGroup}
+          className="sa-btn sa-btn-secondary"
+          onClick={handleGenerateSentences}
+          disabled={!wordListInput.trim()}
         >
-          {creatingGroup ? 'Creating...' : 'Create Group'}
+          📝 Generate Sentences
         </button>
+
+        {/* Show parse errors */}
+        {parseErrors.length > 0 && (
+          <div className="sa-parse-warnings">
+            {parseErrors.map((err, idx) => (
+              <div key={idx} className="sa-warning">{err}</div>
+            ))}
+          </div>
+        )}
+
+        {/* Preview generated words with edit capability */}
+        {generatedWords.length > 0 && (
+          <div className="sa-preview-section">
+            <h3 className="sa-preview-title">✨ Generated Sentences (edit as needed)</h3>
+            <div className="sa-preview-list">
+              {generatedWords.map((item, idx) => (
+                <div key={idx} className="sa-preview-item">
+                  <div className="sa-preview-word">{item.word}</div>
+                  <input
+                    type="text"
+                    className="sa-preview-sentence"
+                    value={item.sentence}
+                    onChange={(e) => handleEditSentence(idx, e.target.value)}
+                    placeholder="Edit sentence here..."
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {generatedWords.length > 0 && (
+          <button
+            className="sa-btn sa-btn-primary"
+            onClick={handleCreateGroup}
+            disabled={creatingGroup}
+          >
+            {creatingGroup ? 'Creating...' : `✅ Create Group (${generatedWords.length} words)`}
+          </button>
+        )}
       </section>
 
       {/* List Groups Section */}
