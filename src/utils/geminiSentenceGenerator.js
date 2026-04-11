@@ -37,8 +37,8 @@ word3|Sentence about word3 in context.
 Do NOT include any other text, explanations, or formatting. Just the word|sentence pairs.`;
 
   try {
-    // Try using the Google Generative AI SDK approach
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+    // Use the official Gemini API endpoint with correct model name
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
