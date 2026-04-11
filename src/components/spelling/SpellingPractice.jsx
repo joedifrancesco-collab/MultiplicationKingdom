@@ -149,7 +149,7 @@ export default function SpellingPractice() {
         totalAttemptsToComplete: submitCount,
       });
     }
-  }, [allCorrect, firstAttemptCorrectCount, submitCount, currentGroup?.id, currentGroup?.title]);
+  }, [allCorrect, firstAttemptCorrectCount, submitCount, currentGroup]);
 
   if (loading) {
     return (

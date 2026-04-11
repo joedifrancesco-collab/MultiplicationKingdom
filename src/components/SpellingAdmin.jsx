@@ -6,7 +6,6 @@ import {
   archiveSpellingWordGroup,
   restoreSpellingWordGroup,
   deleteSpellingWordGroup,
-  updateSpellingWordGroup,
 } from '../store/progress';
 import { parseWordList, generateSentencesForWords } from '../utils/sentenceGenerator';
 import './SpellingAdmin.css';
@@ -28,13 +27,6 @@ export default function SpellingAdmin() {
   const [generatedWords, setGeneratedWords] = useState([]);
   const [parseErrors, setParseErrors] = useState([]);
   const [creatingGroup, setCreatingGroup] = useState(false);
-
-  // Fetch groups on mount (if authenticated)
-  useEffect(() => {
-    if (authenticated) {
-      loadGroups();
-    }
-  }, [authenticated]);
 
   const handlePasswordSubmit = () => {
     setPasswordError('');
@@ -58,6 +50,13 @@ export default function SpellingAdmin() {
     }
     setLoading(false);
   };
+
+  // Fetch groups on mount (if authenticated)
+  useEffect(() => {
+    if (authenticated) {
+      loadGroups();
+    }
+  }, [authenticated]);
 
   const handleGenerateSentences = () => {
     setError('');

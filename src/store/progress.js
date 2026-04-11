@@ -1,4 +1,4 @@
-import { collection, addDoc, query, orderBy, limit, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc, where } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, limit, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import {
   createUserWithEmailAndPassword,
