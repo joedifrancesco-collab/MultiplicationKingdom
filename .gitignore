@@ -17,8 +17,7 @@ serviceAccountKey.json
 *.json.key
 .firebaserc
 
-# Environment variables with secrets
-.env
+# Environment variables with secrets (but .env is needed for Vite build)
 .env.local
 .env.*.local
 
