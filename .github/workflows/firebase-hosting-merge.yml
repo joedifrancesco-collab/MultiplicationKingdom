@@ -37,7 +37,7 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
         run: |
-          echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/sa_key.json"
+          node -e "require('fs').writeFileSync(process.env.RUNNER_TEMP + '/sa_key.json', process.env.FIREBASE_SERVICE_ACCOUNT)"
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa_key.json"
           npx firebase-tools deploy --only hosting --project multiplication-kingdom-e8c53
 
