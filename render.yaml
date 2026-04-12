@@ -1,11 +1,11 @@
 services:
-  - type: web
+  - type: static
     name: multiplication-kingdom
-    env: node
+    env: static
     region: oregon
     plan: free
-    buildCommand: npm install
-    startCommand: npm start
+    buildCommand: echo "No build needed for static redirect"
+    publishPath: public-redirect
     envVars:
       - key: NODE_ENV
         value: production
