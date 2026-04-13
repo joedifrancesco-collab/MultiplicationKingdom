@@ -238,6 +238,7 @@ export default function SpellingPractice() {
                   value={inputs[index]}
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   placeholder="Type the word..."
+                  spellCheck="false"
                 />
               )}
               {graded && currentResult && (
