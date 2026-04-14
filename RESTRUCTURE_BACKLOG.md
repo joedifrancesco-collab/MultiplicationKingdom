@@ -149,7 +149,8 @@ Replace all game-specific leaderboards with UnifiedLeaderboard:
 
 #### Sprint 4.1: Device Flag System
 Create device metadata for each game:
-- [ ] Add to appsettings.json: `gamePlatforms: { "multiplicationFlashcard": "both", "speedChallenge": "both", "matchGame": "both", "kingdomSiege": "desktop", ... }`
+- [ ] Add to appsettings.json: `gamePlatforms: { "multiplicationFlashcard": "both", "speedChallenge": "both", "matchGame": "both", "kingdomSiege": "both", ... }`
+- [ ] **Note:** All games set to "both" for MVP; can restrict later if needed
 - [ ] Add hook: `useDeviceType()` — returns "mobile", "tablet", "desktop" based on viewport
 - [ ] Create `GameCard.jsx` component that:
   - Shows game thumbnail
@@ -288,19 +289,19 @@ Finalize and document:
 
 ## Sprint Schedule
 
-| Sprint | Phase | Duration | Goal |
-|--------|-------|----------|------|
-| 0.1–0.3 | Setup | Weeks 1–2 | Foundation ready |
-| 1.1–1.4 | Migration | Weeks 3–5 | Files reorganized |
-| 2.1–2.3 | Refactor | Weeks 6–7 | Code clean, routable |
-| 3.1–3.3 | Leaderboards | Weeks 8–9 | Unified system, guest mode |
-| 4.1–4.2 | Device Flags | Week 10 | Platform awareness |
-| 5.1–5.4 | Navigation | Weeks 11–12 | Responsive nav |
-| 6.1–6.3 | Settings | Week 13 | Parametrized |
-| 7.1–7.3 | Testing | Weeks 14–15 | QA sign-off |
-| 8.1–8.3 | Merge Prep | Week 16 | Ready to merge |
+| Sprint | Phase | Goal | Status |
+|--------|-------|------|--------|
+| 0.1–0.3 | Setup | Foundation ready | — |
+| 1.1–1.4 | Migration | Files reorganized | — |
+| 2.1–2.3 | Refactor | Code clean, routable | — |
+| 3.1–3.3 | Leaderboards | Unified system, guest mode | — |
+| 4.1–4.2 | Device Flags | Platform awareness | — |
+| 5.1–5.4 | Navigation | Responsive nav | **🛑 STOP at 5.1** |
+| 6.1–6.3 | Settings | Parametrized | — |
+| 7.1–7.3 | Testing | QA sign-off | — |
+| 8.1–8.3 | Merge Prep | Ready to merge | — |
 
-**Estimated Total:** 16 weeks (4 months)
+**Timeline:** Sprint-based (no time pressure, iterate at your pace)
 
 ---
 
@@ -339,32 +340,21 @@ refactor: move spelling to src/subjects/language-arts-kingdom/
 
 ---
 
-## Decision Points Needing Your Input
+## Decisions Locked In ✅
 
-1. **Navigation:**
-   - Desktop: Sidebar or top navbar?
-   - Mobile: Hamburger menu or bottom tabs?
-   - → **Sprint 5.1–5.2 will create spec docs for your review**
+✅ **Subject Organization:** Keep "Kingdom" suffix (Math Kingdom, Language Arts Kingdom)  
+✅ **Mobile Navigation:** Hamburger menu (collapsible)  
+✅ **Device Flags:** All games set to "both" (desktop + mobile) for now  
+✅ **Timeline:** Sprint-based (not week-based) — "just you and me, no pressure"  
 
-2. **Subject Organization:**
-   - Keep "Kingdom" suffix (Math Kingdom, Language Arts Kingdom)?
-   - Or simplify to "Math", "Language Arts"?
-   - → Decide before Sprint 1.1
+## 🛑 STOP POINT: Phase 5 Sprint 5.1 — Navigation Design
 
-3. **Leaderboard Privacy:**
-   - Always signed-in users see only their scores?
-   - Or show "Friends" leaderboard (future feature)?
-   - → Currently spec'd as "only user's scores", can expand later
+**When Sprint 5.1 begins, we will PAUSE** to create wireframes and discuss:
+- Desktop navigation structure (sidebar vs top navbar)
+- Mobile navigation flow (hamburger implementation details)
+- Expected to be collaborative design phase
 
-4. **Device Flags:**
-   - Should kingdom siege be desktop-only, or both?
-   - What about number cruncher?
-   - → List these out before Sprint 4.1
-
-5. **Timeline Flexibility:**
-   - Is 4 months acceptable, or do you want to compress/expand?
-   - Any phases that are higher priority?
-   - → Let me know, I can adjust sprint sizes
+**Resuming:** After Sprint 5.1 decision, continue with Sprint 5.2 (mobile spec) and beyond.
 
 ---
 
