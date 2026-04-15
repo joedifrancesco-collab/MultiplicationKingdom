@@ -1,0 +1,197 @@
+/* GameCard Component Styles */
+
+.gc-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  width: 100%;
+  border: 2px solid var(--primary, #6C63FF);
+  background: white;
+  border-radius: var(--radius, 16px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  font-size: 16px;
+  text-align: left;
+}
+
+.gc-card:hover:not(:disabled) {
+  background: var(--primary, #6C63FF);
+  color: white;
+  transform: translateX(4px);
+  box-shadow: 0 8px 24px rgba(108, 99, 255, 0.25);
+}
+
+.gc-card:active:not(:disabled) {
+  transform: translateX(2px);
+}
+
+.gc-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gc-card:focus-visible {
+  outline: 2px solid var(--accent, #FFD93D);
+  outline-offset: 2px;
+}
+
+/* Icon */
+.gc-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 48px;
+}
+
+/* Content */
+.gc-content {
+  flex: 1;
+  min-width: 0; /* Prevent text overflow */
+}
+
+.gc-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0;
+  color: inherit;
+}
+
+.gc-card:hover .gc-title {
+  color: white;
+}
+
+.gc-description {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #666;
+  margin-top: 4px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-lines: 1;
+}
+
+.gc-card:hover .gc-description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Arrow indicator */
+.gc-arrow {
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--primary, #6C63FF);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.gc-card:hover .gc-arrow {
+  color: white;
+  transform: translateX(4px);
+}
+
+/* Unavailable state */
+.gc-card.gc-unavailable {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: #ccc;
+}
+
+.gc-card.gc-unavailable:hover {
+  background: white;
+  transform: none;
+  box-shadow: none;
+}
+
+.gc-card.gc-unavailable .gc-arrow {
+  color: #ccc;
+}
+
+/* Disabled state */
+.gc-card.gc-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════════════════════════ */
+/* RESPONSIVE DESIGN */
+/* ═══════════════════════════════════════════════════════════════════ */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1023px) {
+  .gc-card {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .gc-icon {
+    font-size: 28px;
+    min-width: 44px;
+    height: 44px;
+  }
+
+  .gc-title {
+    font-size: 15px;
+  }
+
+  .gc-description {
+    font-size: 12px;
+  }
+
+  .gc-arrow {
+    font-size: 20px;
+  }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+  .gc-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .gc-icon {
+    font-size: 24px;
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .gc-title {
+    font-size: 14px;
+  }
+
+  .gc-description {
+    font-size: 11px;
+    display: none; /* Hide description on small screens */
+  }
+
+  .gc-arrow {
+    font-size: 18px;
+  }
+}
+
+/* Small phone (< 360px) */
+@media (max-width: 359px) {
+  .gc-card {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .gc-icon {
+    font-size: 20px;
+    min-width: 36px;
+    height: 36px;
+  }
+
+  .gc-title {
+    font-size: 13px;
+  }
+
+  .gc-arrow {
+    font-size: 16px;
+  }
+}
