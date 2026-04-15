@@ -153,23 +153,34 @@ Replace all game-specific leaderboards with UnifiedLeaderboard:
 
 ### Phase 4: Device Compatibility & Platform Awareness (Week 10)
 
-#### Sprint 4.1: Device Flag System
+#### Sprint 4.1: Device Flag System ✅ COMPLETE
 Create device metadata for each game:
-- [ ] Add to appsettings.json: `gamePlatforms: { "multiplicationFlashcard": "both", "speedChallenge": "both", "matchGame": "both", "kingdomSiege": "both", ... }`
-- [ ] **Note:** All games set to "both" for MVP; can restrict later if needed
-- [ ] Add hook: `useDeviceType()` — returns "mobile", "tablet", "desktop" based on viewport
-- [ ] Create `GameCard.jsx` component that:
-  - Shows game thumbnail
-  - Shows platform badge (🖥️, 📱, or both)
-  - Disables card if device not supported
+- [x] Verified appsettings.json already has platform metadata for all 9 games
+- [x] All games set to "both" (mobile + desktop) for MVP ✅
+- [x] Created useDeviceType hook: returns "mobile" | "tablet" | "desktop" based on viewport ✅
+  - Mobile: < 768px
+  - Tablet: 768px - 1024px
+  - Desktop: >= 1024px
+  - Listens to resize events, updates dynamically
+- [x] Created GameCard.jsx component ✅
+  - Shows game thumbnail (icon + title + description)
+  - Shows platform badge (🖥️ desktop, 📱 mobile, both together)
+  - Auto-hides if device not supported (mobile), shows greyed-out (desktop)
+  - Responsive design: only 4 breakpoints, descriptions hidden on mobile
   - Shows tooltip: "This game is not available on [device]"
-- [ ] **Commit:** `feat: add device compatibility flags and platform-aware UI`
+  - Platform-aware with showUnavailable prop for testing
+- [x] Integrated GameCard into KingdomScreen with useDeviceType ✅
+- [x] **Commits created:**
+  - `8c65acd` feat: add device detection & useDeviceType hook + GameCard
+  - `26c29e5` enhance: add platform badges to GameCard
+  - `8cf90b6` enhance: add showUnavailable prop for device testing
 
 #### Sprint 4.2: Test on Multiple Devices
 - [ ] Test desktop (1920x1080)
 - [ ] Test tablet (768x1024)
 - [ ] Test mobile (375x667)
-- [ ] Verify disabled games appear greyed out
+- [ ] Verify disabled games appear greyed out (desktop) or hidden (mobile)
+- [ ] Verify GameCard responsive behavior across breakpoints
 - [ ] **Commit:** `test: verify device compatibility flags work across viewports`
 
 **End of Phase 4:** Each game has platform flags, UI adapts to device, incompatible games disabled.
