@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { subscribeToAuthChanges, isGuestMode } from './store/progress';
+import { subscribeToAuthChanges, isGuestMode, hasGuestScores } from './store/progress';
 import ErrorBoundary from './shared/components/ErrorBoundary';
 import NavBar from './shared/components/NavBar';
 import AuthScreen from './shared/components/AuthScreen';
 import HomeScreen from './shared/components/HomeScreen';
+import SaveScoresModal from './shared/components/SaveScoresModal';
 import KingdomMap from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMap';
 import KingdomScreen from './subjects/math-kingdom/multiplication-kingdom/components/KingdomScreen';
 import Flashcard from './subjects/math-kingdom/multiplication-kingdom/components/Flashcard';
@@ -40,6 +41,8 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [isGuest, setIsGuest] = useState(isGuestMode());
   const [loading, setLoading] = useState(true);
+  const [showSaveScoresModal, setShowSaveScoresModal] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
 
   useEffect(() => {
     const unsubscribe = subscribeToAuthChanges((authUser) => {
@@ -62,6 +65,45 @@ export default function App() {
       window.removeEventListener('guestModeChanged', handleGuestModeChange);
     };
   }, []);
+
+  // Show modal on app exit if guest has scores
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isGuest && hasGuestScores()) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isGuest]);
+
+  // Handle route changes - show modal if navigating away from game routes with unsaved scores
+  useEffect(() => {
+    if (isGuest && hasGuestScores()) {
+      // Don't show modal on auth or home routes
+      const currentPath = window.location.pathname;
+      const gameRoutes = [
+        '/subjects/math-kingdom/multiplication-kingdom',
+        '/subjects/language-arts-kingdom/spelling',
+        '/number-cruncher',
+      ];
+      
+      const isOnGameRoute = gameRoutes.some(route => currentPath.startsWith(route));
+      
+      if (isOnGameRoute && pendingNavigation) {
+        console.log('Detected navigation from game route with unsaved scores');
+        setShowSaveScoresModal(true);
+      }
+    }
+  }, [isGuest, pendingNavigation]);
+
+  const handleSignUpFromModal = () => {
+    setShowSaveScoresModal(false);
+    // Navigate to auth with mode=signup parameter
+    window.location.href = '/auth?mode=signup&from=guest-scores';
+  };
 
   return (
     <ErrorBoundary>
@@ -138,6 +180,13 @@ export default function App() {
           {/* Catch-all - redirect to auth or home depending on auth state or guest mode */}
           <Route path="*" element={user || isGuest ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />
         </Routes>
+        
+        {/* Guest Score Save Modal */}
+        <SaveScoresModal
+          isOpen={showSaveScoresModal}
+          onClose={() => setShowSaveScoresModal(false)}
+          onSignUp={handleSignUpFromModal}
+        />
       </BrowserRouter>
     </ErrorBoundary>
   );

@@ -304,6 +304,12 @@ function isBetter(gameType, next, prev) {
 }
 
 export function saveGameScore(gameType, data) {
+  // If guest mode, save to session storage
+  if (isGuestMode()) {
+    saveGuestScore(gameType, data);
+    return;
+  }
+
   // Try to save to Firebase if user is authenticated
   const authUser = getCurrentAuthUser();
   if (authUser) {
@@ -1039,3 +1045,121 @@ export async function deleteSpellingWordGroup(groupId) {
     return { success: false, error: error.message };
   }
 }
+
+// ── Guest Mode Score Persistence ────────────────────────────────────────
+
+const GUEST_SCORES_KEY = 'mk_guest_scores';
+
+/**
+ * Save a game score for guest users (to sessionStorage)
+ * Called by saveGameScore() when user is in guest mode
+ * @param {string} gameType - Game type (flashcard, speed, siege, etc.)
+ * @param {object} data - Score data (correct, total, seconds, etc.)
+ */
+export function saveGuestScore(gameType, data) {
+  try {
+    let scores = [];
+    try {
+      const stored = sessionStorage.getItem(GUEST_SCORES_KEY);
+      scores = stored ? JSON.parse(stored) : [];
+    } catch {
+      scores = [];
+    }
+
+    // Add new score with timestamp
+    scores.push({
+      gameType,
+      score: data,
+      timestamp: new Date().toISOString(),
+    });
+
+    // Save back to sessionStorage
+    sessionStorage.setItem(GUEST_SCORES_KEY, JSON.stringify(scores));
+  } catch (error) {
+    console.error('Failed to save guest score:', error);
+  }
+}
+
+/**
+ * Get all game scores for current guest session
+ * @returns {Array} Array of {gameType, score, timestamp}
+ */
+export function getGuestScores() {
+  try {
+    const stored = sessionStorage.getItem(GUEST_SCORES_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error('Failed to get guest scores:', error);
+    return [];
+  }
+}
+
+/**
+ * Check if guest has any unsaved scores in session
+ * @returns {boolean}
+ */
+export function hasGuestScores() {
+  const scores = getGuestScores();
+  return scores.length > 0;
+}
+
+/**
+ * Clear all guest scores from session storage
+ * Called after user signs up and transfers scores to Firestore
+ */
+export function clearGuestScores() {
+  try {
+    sessionStorage.removeItem(GUEST_SCORES_KEY);
+  } catch (error) {
+    console.error('Failed to clear guest scores:', error);
+  }
+}
+
+/**
+ * Transfer guest session scores to Firestore when user signs up
+ * Called from sign-up flow after user is authenticated
+ * @param {object} user - Firebase auth user
+ * @returns {Promise<object>} {success, transferred, failed}
+ */
+export async function transferGuestScoresToFirebase(user) {
+  if (!user) {
+    return { success: false, transferred: 0, failed: 0, error: 'No user provided' };
+  }
+
+  const scores = getGuestScores();
+  if (scores.length === 0) {
+    return { success: true, transferred: 0, failed: 0 };
+  }
+
+  let transferred = 0;
+  let failed = 0;
+
+  for (const scoreEntry of scores) {
+    try {
+      const username = user.displayName || user.email;
+      
+      // Add to Firestore leaderboard collection (same schema as syncScoreToFirebase)
+      await addDoc(collection(db, 'leaderboard'), {
+        uid: user.uid,
+        email: user.email,
+        username: username,
+        gameType: scoreEntry.gameType,
+        ...scoreEntry.score,
+        timestamp: new Date(scoreEntry.timestamp),
+      });
+
+      transferred++;
+    } catch (error) {
+      console.error(`Failed to transfer ${scoreEntry.gameType} score:`, error);
+      failed++;
+    }
+  }
+
+  // Clear guest scores after transfer
+  if (transferred > 0) {
+    clearGuestScores();
+  }
+
+  return { success: true, transferred, failed };
+}
+

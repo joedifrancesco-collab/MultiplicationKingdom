@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { signUpUser, signInUser, setGuestMode } from "../../store/progress";
+import { signUpUser, signInUser, setGuestMode, transferGuestScoresToFirebase } from "../../store/progress";
 import { redactProfanity } from '../utils/contentFilter';
 import './AuthScreen.css';
 
@@ -61,6 +61,10 @@ export default function AuthScreen() {
 
         const result = await signUpUser(email, username, password);
         if (result.success) {
+          // Transfer guest scores to Firebase if any
+          if (result.user) {
+            await transferGuestScoresToFirebase(result.user);
+          }
           navigate(from);
         } else {
           setError(result.error);
