@@ -1,6 +1,6 @@
-# 👑 Multiplication Kingdom
+# 👑 Learning Kingdom
 
-**Master multiplication tables the fun way!** An engaging educational game for students ages 7–12, built with React 19 + Vite. Explore 12 magical kingdoms, earn stars across three game modes per kingdom, and track progress on cloud-synced leaderboards. Available on web and Android via Capacitor.
+**Master essential skills the fun way!** An engaging multi-subject educational platform for students ages 7–12, built with React 19 + Vite. Currently includes Multiplication Kingdom (12 kingdoms, one per times table) and Spelling, with plans for Language Arts and beyond. Earn stars, track progress on cloud-synced leaderboards, and play on web or Android.
 
 **🎮 Play now:** [multiplication-kingdom-e8c53.web.app](https://multiplication-kingdom-e8c53.web.app)
 
@@ -70,7 +70,7 @@ Defend your kingdom from invading towers by solving multiplication problems befo
 
 ## 🌐 Cross-Platform Support
 
-Built as a **single responsive React codebase**, Multiplication Kingdom runs seamlessly across all devices:
+Built as a **single responsive React codebase**, Learning Kingdom runs seamlessly across all devices:
 
 - **Web** — Instant play on any modern browser (Chrome, Safari, Firefox, Edge). No installation needed.
 - **Android** — Packaged via **Capacitor**, providing native app experience with offline storage and access to device features.

@@ -1,6 +1,6 @@
 {
-  "name": "Multiplication Kingdom",
-  "short_name": "MathKingdom",
+  "name": "Learning Kingdom",
+  "short_name": "LK",
   "description": "A fun multiplication table learning game for kids aged 7-10",
   "start_url": "/",
   "display": "standalone",

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Multiplication Kingdom</string>
-    <string name="title_activity_main">Multiplication Kingdom</string>
-    <string name="package_name">com.multiplicationkingdom.app</string>
-    <string name="custom_url_scheme">com.multiplicationkingdom.app</string>
+    <string name="app_name">Learning Kingdom</string>
+    <string name="title_activity_main">Learning Kingdom</string>
+    <string name="package_name">com.learningkingdom.app</string>
+    <string name="custom_url_scheme">com.learningkingdom.app</string>
 </resources>

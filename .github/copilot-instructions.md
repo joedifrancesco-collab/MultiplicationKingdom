@@ -1,6 +1,6 @@
-# Multiplication Kingdom — Copilot Instructions
+# Learning Kingdom — Copilot Instructions
 
-An educational multiplication game for ages 7–12, built with React 19 + Vite. Students explore 12 kingdoms (one per times table), earning stars by completing three game modes per kingdom. Available on web and Android via Capacitor.
+A modular educational platform for ages 7–12, built with React 19 + Vite. Currently includes multiplication (12 kingdoms, one per times table) and spelling, with plans for additional subjects. Available on web and Android via Capacitor.
 
 ---
 
