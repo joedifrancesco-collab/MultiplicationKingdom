@@ -1,11 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
 import { getProgress } from '../../../../store/progress';
+import GameCard from '../../../../shared/components/GameCard';
+import useDeviceType from '../../../../hooks/useDeviceType';
 import './KingdomScreen.css';
 
 export default function KingdomScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const deviceType = useDeviceType();
   const kingdomId = parseInt(id, 10);
   const kingdom = KINGDOMS[kingdomId - 1];
   const progress = getProgress();
@@ -29,23 +32,33 @@ export default function KingdomScreen() {
       </div>
 
       <div className="mode-buttons">
-        {/* ARCHIVED: Flashcard Challenge button removed from Conquest game
-        <button className="mode-btn flashcard" onClick={() => navigate(`/kingdom/${id}/flashcard`)}>
-          <span className="mode-icon">🃏</span>
-          <div className="mode-text">
-            <span className="mode-label">Flashcard Practice</span>
-            <span className="mode-desc">Learn at your own pace</span>
-          </div>
-        </button>
-        */}
+        {/* Game modes using GameCard component with device type awareness */}
+        <GameCard
+          icon="⚡"
+          title="Speed Challenge"
+          description="Beat the clock!"
+          onClick={() => navigate(`/kingdom/${id}/speed`)}
+          platforms="both"
+          deviceType={deviceType}
+        />
 
-        <button className="mode-btn speed" onClick={() => navigate(`/kingdom/${id}/speed`)}>
-          <span className="mode-icon">⚡</span>
-          <div className="mode-text">
-            <span className="mode-label">Speed Challenge</span>
-            <span className="mode-desc">Beat the clock!</span>
-          </div>
-        </button>
+        <GameCard
+          icon="🔀"
+          title="Match Game"
+          description="Find the matching pairs"
+          onClick={() => navigate(`/kingdom/${id}/match`)}
+          platforms="both"
+          deviceType={deviceType}
+        />
+
+        <GameCard
+          icon="⚔️"
+          title="Kingdom Siege"
+          description="Defend the kingdom!"
+          onClick={() => navigate(`/kingdom/${id}/siege`)}
+          platforms="both"
+          deviceType={deviceType}
+        />
       </div>
     </div>
   );
