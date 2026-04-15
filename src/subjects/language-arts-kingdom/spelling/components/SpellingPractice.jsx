@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchSpellingWordsFromFirebase } from '../../data/words';
-import { saveSpellingAttempt } from '../../store/progress';
+import { fetchSpellingWordsFromFirebase } from '../data/words';
+import { saveSpellingAttempt } from '../../../../store/progress';
 import './SpellingPractice.css';
 
 const PEEK_DURATION_MS = 1000; // How long to show the answer when peeking

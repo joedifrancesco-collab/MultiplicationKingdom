@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getSpellingAttempts, getCurrentUser, getCurrentAuthUser, fetchSpellingAttemptsFromFirebase } from '../../store/progress';
+import { getSpellingAttempts, getCurrentUser, getCurrentAuthUser, fetchSpellingAttemptsFromFirebase } from '../../../../store/progress';
 import './SpellingLeaderboard.css';
 
 export default function SpellingLeaderboard() {

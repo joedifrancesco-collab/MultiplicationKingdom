@@ -6,9 +6,9 @@ import {
   archiveSpellingWordGroup,
   restoreSpellingWordGroup,
   deleteSpellingWordGroup,
-} from '../store/progress';
-import { parseWordList, generateSentencesForWords } from '../utils/sentenceGenerator';
-import { generateSentencesWithAI } from '../utils/geminiSentenceGenerator';
+} from '../../../../store/progress';
+import { parseWordList, generateSentencesForWords } from '../../../../shared/utils/sentenceGenerator';
+import { generateSentencesWithAI } from '../../../../shared/utils/geminiSentenceGenerator';
 import './SpellingAdmin.css';
 
 const ADMIN_PASSWORD = 'teacher123'; // Change to your preferred password

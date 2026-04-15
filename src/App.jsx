@@ -18,10 +18,10 @@ import TrainingTable from './subjects/math-kingdom/multiplication-kingdom/compon
 import Leaderboard from './shared/components/Leaderboard';
 import KingdomMapsMode from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMapsMode';
 import KingdomMaps from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMaps';
-import SpellingScreen from './components/spelling/SpellingScreen';
-import SpellingPractice from './components/spelling/SpellingPractice';
-import SpellingLeaderboard from './components/spelling/SpellingLeaderboard';
-import SpellingAdmin from './components/SpellingAdmin';
+import SpellingScreen from './subjects/language-arts-kingdom/spelling/components/SpellingScreen';
+import SpellingPractice from './subjects/language-arts-kingdom/spelling/components/SpellingPractice';
+import SpellingLeaderboard from './subjects/language-arts-kingdom/spelling/components/SpellingLeaderboard';
+import SpellingAdmin from './subjects/language-arts-kingdom/spelling/components/SpellingAdmin';
 import NumberCruncherScreen from './components/number-cruncher/NumberCruncherScreen';
 import NumberCruncherGame from './components/number-cruncher/NumberCruncherGame';
 import NumberCruncherLeaderboard from './components/number-cruncher/NumberCruncherLeaderboard';

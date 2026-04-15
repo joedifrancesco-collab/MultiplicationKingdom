@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchSpellingWordsFromFirebase } from '../../data/words';
+import { fetchSpellingWordsFromFirebase } from '../data/words';
 import './SpellingScreen.css';
 
 export default function SpellingScreen() {
