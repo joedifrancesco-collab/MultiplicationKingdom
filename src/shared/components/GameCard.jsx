@@ -1,6 +1,21 @@
 import './GameCard.css';
 
 /**
+ * Get platform badge emoji
+ * @param {string} platforms - "both" | "mobile" | "desktop" | "tablet"
+ * @returns {string} emoji badge
+ */
+function getPlatformBadge(platforms) {
+  const badges = {
+    'both': '🖥️📱',
+    'desktop': '🖥️',
+    'mobile': '📱',
+    'tablet': '📱',
+  };
+  return badges[platforms] || '🖥️';
+}
+
+/**
  * GameCard - Reusable card component for game selection
  * 
  * Props:
@@ -11,6 +26,7 @@ import './GameCard.css';
  *   - platforms: "both" | "mobile" | "desktop" | "tablet"
  *   - deviceType: current device type ("mobile" | "tablet" | "desktop")
  *   - disabled: optional boolean to disable the card
+ *   - showBadge: show platform badge (default: true)
  */
 export default function GameCard({
   icon = '🎮',
@@ -20,6 +36,7 @@ export default function GameCard({
   platforms = 'both',
   deviceType = 'desktop',
   disabled = false,
+  showBadge = true,
 }) {
   // Check if game is available on current device
   const isAvailable =
@@ -36,18 +53,25 @@ export default function GameCard({
     }
   };
 
+  const platformTooltip = !isAvailable 
+    ? `Not available on ${deviceType}. Supported platforms: ${platforms}`
+    : `Available on: ${platforms}`;
+
   return (
     <button
       className={`gc-card ${disabled ? 'gc-disabled' : ''} ${!isAvailable ? 'gc-unavailable' : ''}`}
       onClick={handleClick}
       disabled={disabled || !isAvailable}
-      title={!isAvailable ? `Not available on ${deviceType}` : ''}
+      title={platformTooltip}
     >
       <div className="gc-icon">{icon}</div>
       <div className="gc-content">
         <div className="gc-title">{title}</div>
         <div className="gc-description">{description}</div>
       </div>
+      {showBadge && (
+        <div className="gc-badge">{getPlatformBadge(platforms)}</div>
+      )}
       <div className="gc-arrow">›</div>
     </button>
   );
