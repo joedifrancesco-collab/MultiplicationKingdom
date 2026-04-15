@@ -72,25 +72,66 @@ export default function App() {
 
           {/* Protected Routes - require authentication or guest mode */}
           <Route path="/" element={<ProtectedRoute element={<HomeScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/kingdom" element={<ProtectedRoute element={<KingdomMap />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/kingdom/:id" element={<ProtectedRoute element={<KingdomScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/kingdom/:id/flashcard" element={<ProtectedRoute element={<Flashcard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/kingdom/:id/speed" element={<ProtectedRoute element={<SpeedChallenge />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/flashcards" element={<ProtectedRoute element={<FlashcardMenu />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/flashcards/play" element={<ProtectedRoute element={<FlashcardGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/siege" element={<ProtectedRoute element={<KingdomSiege />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/training" element={<ProtectedRoute element={<TrainingMenu />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/training/table" element={<ProtectedRoute element={<TrainingTable />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/kingdom-maps" element={<ProtectedRoute element={<KingdomMapsMode />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/kingdom-maps/:mode" element={<ProtectedRoute element={<KingdomMaps />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/spelling/practice/:groupId" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/spelling/leaderboard" element={<ProtectedRoute element={<SpellingLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/spelling-admin" element={<SpellingAdmin />} />
+          
+          {/* ═════════════════════════════════════════════════════════════ */}
+          {/* MATH KINGDOM - Multiplication Kingdom */}
+          {/* ═════════════════════════════════════════════════════════════ */}
+          
+          {/* New structured routes aligned with folder organization */}
+          <Route path="/subjects/math-kingdom/multiplication-kingdom" element={<ProtectedRoute element={<KingdomMap />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/:id" element={<ProtectedRoute element={<KingdomScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/:id/flashcard" element={<ProtectedRoute element={<Flashcard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/:id/speed" element={<ProtectedRoute element={<SpeedChallenge />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/:id/match" element={<ProtectedRoute element={<MatchGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/flashcards" element={<ProtectedRoute element={<FlashcardMenu />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/flashcards/play" element={<ProtectedRoute element={<FlashcardGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/siege" element={<ProtectedRoute element={<KingdomSiege />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/training" element={<ProtectedRoute element={<TrainingMenu />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/training/table" element={<ProtectedRoute element={<TrainingTable />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/maps" element={<ProtectedRoute element={<KingdomMapsMode />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/maps/:mode" element={<ProtectedRoute element={<KingdomMaps />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          
+          {/* Legacy routes for backward compatibility - redirect to new routes */}
+          <Route path="/kingdom" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom" replace />} />
+          <Route path="/kingdom/:id" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/:id" replace />} />
+          <Route path="/kingdom/:id/flashcard" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/:id/flashcard" replace />} />
+          <Route path="/kingdom/:id/speed" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/:id/speed" replace />} />
+          <Route path="/kingdom/:id/match" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/:id/match" replace />} />
+          <Route path="/flashcards" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/flashcards" replace />} />
+          <Route path="/flashcards/play" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/flashcards/play" replace />} />
+          <Route path="/siege" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/siege" replace />} />
+          <Route path="/training" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/training" replace />} />
+          <Route path="/training/table" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/training/table" replace />} />
+          <Route path="/kingdom-maps" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/maps" replace />} />
+          <Route path="/kingdom-maps/:mode" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/maps/:mode" replace />} />
+          
+          {/* ═════════════════════════════════════════════════════════════ */}
+          {/* LANGUAGE ARTS KINGDOM - Spelling */}
+          {/* ═════════════════════════════════════════════════════════════ */}
+          
+          {/* New structured routes aligned with folder organization */}
+          <Route path="/subjects/language-arts-kingdom/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/language-arts-kingdom/spelling/practice/:groupId" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/language-arts-kingdom/spelling/leaderboard" element={<ProtectedRoute element={<SpellingLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/language-arts-kingdom/spelling/admin" element={<SpellingAdmin />} />
+          
+          {/* Legacy routes for backward compatibility - redirect to new routes */}
+          <Route path="/spelling" element={<Navigate to="/subjects/language-arts-kingdom/spelling" replace />} />
+          <Route path="/spelling/practice/:groupId" element={<Navigate to="/subjects/language-arts-kingdom/spelling/practice/:groupId" replace />} />
+          <Route path="/spelling/leaderboard" element={<Navigate to="/subjects/language-arts-kingdom/spelling/leaderboard" replace />} />
+          <Route path="/spelling-admin" element={<Navigate to="/subjects/language-arts-kingdom/spelling/admin" replace />} />
+          
+          {/* ═════════════════════════════════════════════════════════════ */}
+          {/* NUMBER CRUNCHER (Temporary location) */}
+          {/* ═════════════════════════════════════════════════════════════ */}
           <Route path="/number-cruncher" element={<ProtectedRoute element={<NumberCruncherScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/number-cruncher/play" element={<ProtectedRoute element={<NumberCruncherGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/number-cruncher/leaderboard" element={<ProtectedRoute element={<NumberCruncherLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          
+          {/* ═════════════════════════════════════════════════════════════ */}
+          {/* SHARED */}
+          {/* ═════════════════════════════════════════════════════════════ */}
+          <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
 
           {/* Catch-all - redirect to auth or home depending on auth state or guest mode */}
           <Route path="*" element={user || isGuest ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />
