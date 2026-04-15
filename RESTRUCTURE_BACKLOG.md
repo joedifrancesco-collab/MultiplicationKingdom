@@ -208,28 +208,36 @@ Create device metadata for each game:
 
 ### Phase 5: Navigation Redesign (Weeks 11–12)
 
-#### Sprint 5.1: Desktop Navigation Spec
+#### Sprint 5.1: Desktop Navigation Spec 📋 DESIGN DOCUMENT COMPLETE
 Design desktop nav:
-- [ ] Left sidebar (subject menu) or top navbar with dropdowns?
-- [ ] Show all subjects + games in expanded view
-- [ ] Highlight current subject/game
-- [ ] Link to leaderboard, settings, profile
-- [ ] **Decision document:** NAVIGATION_SPEC.md (ask for feedback before coding)
+- [x] Documented two options: sidebar vs. top navbar with dropdowns ✅
+- [x] Pros/cons for each approach ✅
+- [x] Subject/game highlighting concepts ✅
+- [x] Links to leaderboard, settings, profile planned ✅
+- [x] **Decision document:** NAVIGATION_SPEC.md created (awaiting feedback) ✅
 
-#### Sprint 5.2: Mobile Navigation Spec
+#### Sprint 5.2: Mobile Navigation Spec 📋 DESIGN DOCUMENT COMPLETE
 Design mobile nav:
-- [ ] Hamburger menu (collapsible sidebar) or bottom tab navigation?
-- [ ] One-level hierarchy: Home → Subject → Game
-- [ ] Minimize cognitive load (fewer taps to reach a game)
-- [ ] Back button to return to subject
-- [ ] **Decision document:** NAVIGATION_SPEC.md (add mobile section)
+- [x] Documented two options: hamburger + bottom tabs vs. full-screen hamburger ✅
+- [x] Gaming mode navigation strategy ✅
+- [x] Subject nesting approach (sub-items vs. cards) ✅
+- [x] Mobile thumb-friendly UX considerations ✅
+- [x] **Decision document:** NAVIGATION_SPEC.md created (awaiting feedback) ✅
 
 #### Sprint 5.3: Implement Responsive Navigation
-- [ ] Create `src/shared/components/ResponsiveNav.jsx`
-- [ ] Desktop mode: Sidebar nav
-- [ ] Mobile mode: Hamburger + bottom nav
-- [ ] Transitions between breakpoints
-- [ ] Active state highlighting
+Blocked pending design feedback on NAVIGATION_SPEC.md:
+- [ ] **6 Key Design Questions (see NAVIGATION_SPEC.md):**
+  1. Sidebar or top navbar for desktop?
+  2. Hamburger + bottom tabs or full-screen hamburger for mobile?
+  3. Minimal nav during gameplay or persistent nav?
+  4. Subject nesting: sub-items or cards?
+  5. Quick access shortcuts?
+  6. Nav styling (colors, progress indicators)?
+- [ ] Once approved, create `src/shared/components/ResponsiveNav.jsx`
+- [ ] Desktop mode: Sidebar or top navbar (based on decision)
+- [ ] Mobile mode: Chosen navigation approach
+- [ ] Transitions between breakpoints (≥ 768px vs < 768px)
+- [ ] Active state highlighting (current subject/game)
 - [ ] **Commit:** `feat: implement responsive navigation for desktop and mobile`
 
 #### Sprint 5.4: Route Navigation Integration
