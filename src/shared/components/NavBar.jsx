@@ -73,7 +73,7 @@ export default function NavBar() {
 
   const navItems = [
     { label: '🏠 Home', path: '/', key: 'home' },
-    { label: '🏆 Leaderboard', path: '/leaderboard', key: 'leaderboard' },
+    { label: '🏆 Leaderboard', path: '/unified-leaderboard', key: 'leaderboard' },
     { label: '📊 Times Table', path: '/training/table', key: 'table' },
   ];
 

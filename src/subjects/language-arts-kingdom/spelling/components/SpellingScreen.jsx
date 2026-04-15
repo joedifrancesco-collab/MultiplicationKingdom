@@ -73,7 +73,7 @@ export default function SpellingScreen() {
 
         {/* Leaderboard Card */}
         <div className="ss-section">
-          <button className="spelling-game-card" onClick={() => navigate('/spelling/leaderboard')}>
+          <button className="spelling-game-card" onClick={() => navigate('/unified-leaderboard')}>
             <div className="game-card-icon">🏆</div>
             <div className="game-card-body">
               <div className="game-card-title">Leaderboard</div>

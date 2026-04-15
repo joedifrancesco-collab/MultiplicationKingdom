@@ -54,7 +54,7 @@ export default function NumberCruncherScreen() {
             </button>
             <button
               className="nc-btn"
-              onClick={() => navigate('/number-cruncher/leaderboard')}
+              onClick={() => navigate('/unified-leaderboard')}
             >
               🏆 Leaderboard
             </button>

@@ -16,17 +16,14 @@ import FlashcardGame from './subjects/math-kingdom/multiplication-kingdom/compon
 import KingdomSiege from './subjects/math-kingdom/multiplication-kingdom/components/KingdomSiege';
 import TrainingMenu from './subjects/math-kingdom/multiplication-kingdom/components/TrainingMenu';
 import TrainingTable from './subjects/math-kingdom/multiplication-kingdom/components/TrainingTable';
-import Leaderboard from './shared/components/Leaderboard';
 import UnifiedLeaderboard from './shared/components/UnifiedLeaderboard';
 import KingdomMapsMode from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMapsMode';
 import KingdomMaps from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMaps';
 import SpellingScreen from './subjects/language-arts-kingdom/spelling/components/SpellingScreen';
 import SpellingPractice from './subjects/language-arts-kingdom/spelling/components/SpellingPractice';
-import SpellingLeaderboard from './subjects/language-arts-kingdom/spelling/components/SpellingLeaderboard';
 import SpellingAdmin from './subjects/language-arts-kingdom/spelling/components/SpellingAdmin';
 import NumberCruncherScreen from './components/number-cruncher/NumberCruncherScreen';
 import NumberCruncherGame from './components/number-cruncher/NumberCruncherGame';
-import NumberCruncherLeaderboard from './components/number-cruncher/NumberCruncherLeaderboard';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
@@ -155,13 +152,13 @@ export default function App() {
           {/* New structured routes aligned with folder organization */}
           <Route path="/subjects/language-arts-kingdom/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/language-arts-kingdom/spelling/practice/:groupId" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/subjects/language-arts-kingdom/spelling/leaderboard" element={<ProtectedRoute element={<SpellingLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/language-arts-kingdom/spelling/admin" element={<SpellingAdmin />} />
           
           {/* Legacy routes for backward compatibility - redirect to new routes */}
           <Route path="/spelling" element={<Navigate to="/subjects/language-arts-kingdom/spelling" replace />} />
           <Route path="/spelling/practice/:groupId" element={<Navigate to="/subjects/language-arts-kingdom/spelling/practice/:groupId" replace />} />
-          <Route path="/spelling/leaderboard" element={<Navigate to="/subjects/language-arts-kingdom/spelling/leaderboard" replace />} />
+          <Route path="/subjects/language-arts-kingdom/spelling/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
+          <Route path="/spelling/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
           <Route path="/spelling-admin" element={<Navigate to="/subjects/language-arts-kingdom/spelling/admin" replace />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
@@ -169,12 +166,12 @@ export default function App() {
           {/* ═════════════════════════════════════════════════════════════ */}
           <Route path="/number-cruncher" element={<ProtectedRoute element={<NumberCruncherScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/number-cruncher/play" element={<ProtectedRoute element={<NumberCruncherGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
-          <Route path="/number-cruncher/leaderboard" element={<ProtectedRoute element={<NumberCruncherLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/number-cruncher/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
           {/* SHARED */}
           {/* ═════════════════════════════════════════════════════════════ */}
-          <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
           <Route path="/unified-leaderboard" element={<ProtectedRoute element={<UnifiedLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
 
           {/* Catch-all - redirect to auth or home depending on auth state or guest mode */}
