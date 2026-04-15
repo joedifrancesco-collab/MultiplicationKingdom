@@ -133,13 +133,19 @@ Create unified leaderboard system:
 - [x] If sign up, transfer session scores to Firestore
 - [x] **Commit:** `feat: add guest mode with score save prompt` ✅
 
-#### Sprint 3.3: Migrate Existing Leaderboards
+#### Sprint 3.3: Migrate Existing Leaderboards ✅ COMPLETE
 Replace all game-specific leaderboards with UnifiedLeaderboard:
-- [ ] Remove MultiplicationTable leaderboard
-- [ ] Remove SpellingLeaderboard
-- [ ] Remove KingdomSiege leaderboard
-- [ ] Replace with UnifiedLeaderboard in each game
-- [ ] **Commit:** `refactor: migrate all leaderboards to unified system`
+- [x] Remove MultiplicationTable leaderboard (not in use)
+- [x] Remove SpellingLeaderboard from routes
+- [x] Remove KingdomSiege leaderboard (not in use)
+- [x] Remove NumberCruncherLeaderboard from routes
+- [x] Redirect all old leaderboard routes to /unified-leaderboard
+- [x] Update NumberCruncherScreen navigation
+- [x] Update SpellingScreen navigation (both locations)
+- [x] Update NavBar leaderboard link
+- [x] Maintain backward compatibility (old routes redirect)
+- [x] Build size decreased: 683 KB JS (206 KB gzip)
+- [x] **Commit:** `feat: migrate all leaderboards to unified system` ✅
 
 **End of Phase 3:** Single unified leaderboard, guest mode with save prompt, backward-compatible auth.
 
