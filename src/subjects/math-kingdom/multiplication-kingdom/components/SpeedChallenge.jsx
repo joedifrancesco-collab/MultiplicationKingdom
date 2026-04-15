@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
-import useSound from '../../../shared/hooks/useSound';
-import useGameLoop from '../../../shared/hooks/useGameLoop';
+import useSound from '../../../../shared/hooks/useSound';
+import useGameLoop from '../../../../shared/hooks/useGameLoop';
 import './SpeedChallenge.css';
 
 const TIME_LIMIT = 30;

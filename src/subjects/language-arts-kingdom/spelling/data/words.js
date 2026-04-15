@@ -43,7 +43,7 @@ export const SPELLING_WORDS = SPELLING_WORD_GROUPS[0].words;
 export async function fetchSpellingWordsFromFirebase(includeArchived = false) {
   try {
     // Import here to avoid circular dependency
-    const { fetchSpellingWordGroups } = await import('../store/progress.js');
+    const { fetchSpellingWordGroups } = await import('../../../../store/progress.js');
     
     let groups = await fetchSpellingWordGroups();
     

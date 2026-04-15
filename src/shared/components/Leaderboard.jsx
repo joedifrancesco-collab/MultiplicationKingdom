@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchAggregatedLeaderboard } from '../store/progress';
+import { fetchAggregatedLeaderboard } from "../../store/progress";
 import { redactProfanity } from '../utils/contentFilter';
 import './Leaderboard.css';
 

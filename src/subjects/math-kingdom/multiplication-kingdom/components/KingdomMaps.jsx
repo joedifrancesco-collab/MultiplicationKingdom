@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { KINGDOM_MAPS_CONFIG } from '../config/kingdomMapsConfig';
-import { saveGameScore } from '../../../store/progress';
-import useSound from '../../../shared/hooks/useSound';
+import { getSetting } from '../../../../config/appSettings';
+import { saveGameScore } from '../../../../store/progress';
+import useSound from '../../../../shared/hooks/useSound';
 import './KingdomMaps.css';
 
-const { gridSize, timedModePenalty, feedbackDuration, modes } = KINGDOM_MAPS_CONFIG;
+const gridSize = getSetting('games.kingdomMaps.gridSize');
+const timedModePenalty = getSetting('games.kingdomMaps.timedModePenalty');
+const feedbackDuration = getSetting('games.kingdomMaps.feedbackDuration');
+const modes = getSetting('games.kingdomMaps.modes');
 
 export default function KingdomMaps() {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { signUpUser, signInUser, setGuestMode } from '../store/progress';
+import { signUpUser, signInUser, setGuestMode } from "../../store/progress";
 import { redactProfanity } from '../utils/contentFilter';
 import './AuthScreen.css';
 

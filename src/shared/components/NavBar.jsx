@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { signOutUser, getCurrentAuthUser, isGuestMode, clearGuestMode } from '../store/progress';
+import { signOutUser, getCurrentAuthUser, isGuestMode, clearGuestMode } from "../../store/progress";
 import './NavBar.css';
 
 export default function NavBar() {

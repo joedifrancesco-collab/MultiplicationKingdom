@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
-import { awardStars, saveGameScore } from '../../../store/progress';
+import { awardStars, saveGameScore } from '../../../../store/progress';
 import './MatchGame.css';
 
 function buildCards(questions) {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentAuthUser, subscribeToAuthChanges, isGuestMode } from '../store/progress';
+import { getCurrentAuthUser, subscribeToAuthChanges, isGuestMode } from "../../store/progress";
 import { redactProfanity } from '../utils/contentFilter';
 import './HomeScreen.css';
 

@@ -1,5 +1,5 @@
 import { collection, addDoc, query, orderBy, limit, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db, auth } from '../config/firebase';
+import { db, auth } from '../shared/config/firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
