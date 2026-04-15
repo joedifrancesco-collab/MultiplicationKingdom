@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
-import { getProgress } from '../store/progress';
+import { getProgress } from '../../../store/progress';
 import './KingdomScreen.css';
 
 export default function KingdomScreen() {

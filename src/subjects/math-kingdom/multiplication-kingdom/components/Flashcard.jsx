@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
-import { saveGameScore } from '../store/progress';
-import useSound from '../shared/hooks/useSound';
+import { saveGameScore } from '../../../store/progress';
+import useSound from '../../../shared/hooks/useSound';
 import './Flashcard.css';
 
 export default function Flashcard() {

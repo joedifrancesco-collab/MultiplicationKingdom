@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ALL_QUESTIONS } from '../data/questions';
-import { saveGameScore } from '../store/progress';
-import useSound from '../shared/hooks/useSound';
+import { saveGameScore } from '../../../store/progress';
+import useSound from '../../../shared/hooks/useSound';
 import './KingdomSiege.css';
 
 // ── Config ───────────────────────────────────────────────────────────────────
