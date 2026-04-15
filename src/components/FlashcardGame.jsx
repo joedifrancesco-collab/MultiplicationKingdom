@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ALL_QUESTIONS } from '../data/questions';
 import { saveGameScore } from '../store/progress';
-import useSound from '../hooks/useSound';
+import useSound from '../shared/hooks/useSound';
 import './FlashcardGame.css';
 
 function shuffle(arr) {
