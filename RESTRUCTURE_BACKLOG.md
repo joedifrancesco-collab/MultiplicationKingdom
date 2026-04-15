@@ -125,13 +125,13 @@ Create unified leaderboard system:
 - [x] Add "View Global Stats" toggle (future feature) — disabled for MVP
 - [x] **Commit:** `feat: create unified leaderboard component` ✅
 
-#### Sprint 3.2: Guest Mode & Score Persistence
-- [ ] Add `isGuest` flag to progress.js
-- [ ] When guest plays → scores stored in sessionStorage
-- [ ] On app exit (or navigating to home), if guest has scores → show "Save Your Scores" modal
-- [ ] Modal offers: "Sign Up Now" or "Play as Guest Again"
-- [ ] If sign up, transfer session scores to Firestore
-- [ ] **Commit:** `feat: add guest mode with score save prompt`
+#### Sprint 3.2: Guest Mode & Score Persistence ✅ COMPLETE
+- [x] Add `isGuest` flag to progress.js (already implemented)
+- [x] When guest plays → scores stored in sessionStorage
+- [x] On app exit (or navigating to home), if guest has scores → show "Save Your Scores" modal
+- [x] Modal offers: "Sign Up Now" or "Play as Guest Again"
+- [x] If sign up, transfer session scores to Firestore
+- [x] **Commit:** `feat: add guest mode with score save prompt` ✅
 
 #### Sprint 3.3: Migrate Existing Leaderboards
 Replace all game-specific leaderboards with UnifiedLeaderboard:
