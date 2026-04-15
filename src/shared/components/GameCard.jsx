@@ -27,6 +27,7 @@ function getPlatformBadge(platforms) {
  *   - deviceType: current device type ("mobile" | "tablet" | "desktop")
  *   - disabled: optional boolean to disable the card
  *   - showBadge: show platform badge (default: true)
+ *   - showUnavailable: show unavailable games in greyed-out state (default: false for mobile, true for desktop)
  */
 export default function GameCard({
   icon = '🎮',
@@ -37,13 +38,19 @@ export default function GameCard({
   deviceType = 'desktop',
   disabled = false,
   showBadge = true,
+  showUnavailable = null, // null = auto (true on desktop, false on mobile)
 }) {
   // Check if game is available on current device
   const isAvailable =
     platforms === 'both' ||
     platforms === deviceType;
 
-  if (!isAvailable && !disabled) {
+  // Auto-detect showUnavailable based on device type (show greyed on desktop, hide on mobile)
+  const shouldShowUnavailable = showUnavailable === null 
+    ? deviceType === 'desktop'
+    : showUnavailable;
+
+  if (!isAvailable && !disabled && !shouldShowUnavailable) {
     return null; // Hide card if not available on this device
   }
 
