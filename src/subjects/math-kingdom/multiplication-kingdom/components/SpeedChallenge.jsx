@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
-import { awardStars, saveGameScore } from '../../../store/progress';
 import useSound from '../../../shared/hooks/useSound';
+import useGameLoop from '../../../shared/hooks/useGameLoop';
 import './SpeedChallenge.css';
 
 const TIME_LIMIT = 30;
@@ -22,85 +22,72 @@ function calcStars(score, total) {
 export default function SpeedChallenge() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { play, toggleMute, isMuted } = useSound();
+  const { toggleMute, isMuted } = useSound();
   const kingdomId = parseInt(id, 10);
   const { questions } = KINGDOMS[kingdomId - 1];
 
   const [shuffled] = useState(() => shuffle(questions));
-  const [index, setIndex] = useState(0);
   const [input, setInput] = useState('');
-  const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
-  const [done, setDone] = useState(false);
-  const [feedback, setFeedback] = useState(null);
-  const [earnedStars, setEarnedStars] = useState(0);
-  const [soundMuted, setSoundMuted] = useState(isMuted);
   const inputRef = useRef(null);
 
+  // Use game loop hook for core state and logic
+  const gameLoop = useGameLoop({
+    questions: shuffled,
+    validateAnswer: (question, answer) => {
+      return parseInt(answer.trim(), 10) === question.answer;
+    },
+    calcStars,
+    gameType: 'speed',
+    metadata: {
+      kingdomId,
+      kingdomName: KINGDOMS[kingdomId - 1].name,
+    },
+    autoAdvance: true,
+    advanceDelay: 400,
+  });
+
+  // Timer effect
   useEffect(() => {
-    if (done) return;
+    if (gameLoop.done) return;
     const timer = setInterval(() => {
       setTimeLeft(t => {
-        if (t <= 1) { setDone(true); return 0; }
+        if (t <= 1) {
+          gameLoop.endGameNow();
+          return 0;
+        }
         return t - 1;
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [done]);
+  }, [gameLoop.done, gameLoop]);
 
+  // Focus input on question change
   useEffect(() => {
-    if (!done) return;
-    const stars = calcStars(score, shuffled.length);
-    awardStars(kingdomId, stars);
-    saveGameScore('speed', { stars, correct: score, total: shuffled.length, kingdomId, kingdomName: KINGDOMS[kingdomId - 1].name });
-    setEarnedStars(stars);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [done]);
-
-  useEffect(() => {
-    if (!done) inputRef.current?.focus();
-  }, [index, done]);
+    if (!gameLoop.done) inputRef.current?.focus();
+  }, [gameLoop.index, gameLoop.done]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    const current = shuffled[index];
-    const isCorrect = parseInt(input.trim(), 10) === current.answer;
-    setFeedback(isCorrect ? 'correct' : 'wrong');
-    
-    // Play sound feedback
-    if (isCorrect) {
-      play('correct');
-    } else {
-      play('wrong');
-    }
-    
-    if (isCorrect) setScore(s => s + 1);
-    setTimeout(() => {
-      setFeedback(null);
-      setInput('');
-      if (index + 1 >= shuffled.length) {
-        setDone(true);
-      } else {
-        setIndex(i => i + 1);
-      }
-    }, 400);
+    gameLoop.submitAnswer(input);
+    setInput('');
   }
 
   function handleMuteToggle() {
     toggleMute();
-    setSoundMuted(!soundMuted);
+    gameLoop.toggleMute();
   }
 
-  if (done) {
-    const unlocked = earnedStars >= 1 && kingdomId < 12;
+  if (gameLoop.done) {
+    const unlocked = gameLoop.earnedStars >= 1 && kingdomId < 12;
     return (
       <div className="speed-done">
-        <div className="done-emoji">{earnedStars === 3 ? '🏆' : earnedStars >= 1 ? '🎉' : '💪'}</div>
+        <div className="done-emoji">{gameLoop.earnedStars === 3 ? '🏆' : gameLoop.earnedStars >= 1 ? '🎉' : '💪'}</div>
         <h2>Time&apos;s Up!</h2>
-        <p className="final-score">{score} / {shuffled.length} correct</p>
+        <p className="final-score">{gameLoop.score} / {shuffled.length} correct</p>
         <div className="stars-earned">
           {[1, 2, 3].map(s => (
-            <span key={s} className={s <= earnedStars ? 'star filled' : 'star empty'}>★</span>
+            <span key={s} className={s <= gameLoop.earnedStars ? 'star filled' : 'star empty'}>★</span>
           ))}
         </div>
         {unlocked && <p className="unlock-msg">🎉 Kingdom {kingdomId + 1} unlocked!</p>}
@@ -112,7 +99,7 @@ export default function SpeedChallenge() {
     );
   }
 
-  const current = shuffled[index];
+  const current = shuffled[gameLoop.index];
   const timerDanger = timeLeft <= 10;
 
   return (
@@ -120,13 +107,13 @@ export default function SpeedChallenge() {
       <div className="speed-topbar">
         <button className="speed-quit-btn" onClick={() => navigate('/kingdom')}>✕ Quit</button>
         <div className={`timer ${timerDanger ? 'danger' : ''}`}>{timeLeft}s</div>
-        <div className="speed-score">Score: {score}</div>
-        <button className="speed-mute-btn" onClick={handleMuteToggle} title={soundMuted ? 'Unmute' : 'Mute'}>
-          {soundMuted ? '🔇' : '🔊'}
+        <div className="speed-score">Score: {gameLoop.score}</div>
+        <button className="speed-mute-btn" onClick={handleMuteToggle} title={gameLoop.soundMuted ? 'Unmute' : 'Mute'}>
+          {gameLoop.soundMuted ? '🔇' : '🔊'}
         </button>
       </div>
 
-      <div className={`speed-question ${feedback || ''}`}>
+      <div className={`speed-question ${gameLoop.feedback || ''}`}>
         {current.question} = ?
       </div>
 
@@ -146,7 +133,7 @@ export default function SpeedChallenge() {
 
       <div className="speed-progress">
         {shuffled.map((_, i) => (
-          <div key={i} className={`dot ${i < index ? 'done' : i === index ? 'current' : ''}`} />
+          <div key={i} className={`dot ${i < gameLoop.index ? 'done' : i === gameLoop.index ? 'current' : ''}`} />
         ))}
       </div>
     </div>
