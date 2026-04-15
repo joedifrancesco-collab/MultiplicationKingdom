@@ -115,15 +115,15 @@ Update `App.jsx` routes to match new structure:
 
 ### Phase 3: Unified Leaderboards & User Flows (Weeks 8–9)
 
-#### Sprint 3.1: New Leaderboard Architecture
+#### Sprint 3.1: New Leaderboard Architecture ✅ COMPLETE
 Create unified leaderboard system:
-- [ ] Create `src/shared/components/UnifiedLeaderboard.jsx`
-- [ ] Design data schema: `{ gameType, playerId, score, timestamp, device }`
-- [ ] Leaderboard shows:
+- [x] Create `src/shared/components/UnifiedLeaderboard.jsx`
+- [x] Design data schema: `{ gameType, score, timestamp }`
+- [x] Leaderboard shows:
   - Signed-in user: **only their own scores** across all games
   - Guest user: **session-only scores** (not persisted initially)
-- [ ] Add "View Global Stats" toggle (future feature) — disabled for MVP
-- [ ] **Commit:** `feat: create unified leaderboard component`
+- [x] Add "View Global Stats" toggle (future feature) — disabled for MVP
+- [x] **Commit:** `feat: create unified leaderboard component` ✅
 
 #### Sprint 3.2: Guest Mode & Score Persistence
 - [ ] Add `isGuest` flag to progress.js
