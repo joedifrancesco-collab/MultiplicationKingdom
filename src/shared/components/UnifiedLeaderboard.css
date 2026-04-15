@@ -1,0 +1,349 @@
+/* ═══════════════════════════════════════════════════════════════════════════════ */
+/* UNIFIED LEADERBOARD STYLES */
+/* ═══════════════════════════════════════════════════════════════════════════════ */
+
+.ub-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+.ub-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.ub-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary, #6C63FF);
+  margin: 0 0 15px 0;
+  letter-spacing: -0.5px;
+}
+
+.ub-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.ub-toggle-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid var(--primary, #6C63FF);
+  background: white;
+  color: var(--primary, #6C63FF);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ub-toggle-btn:hover:not(.ub-toggle-disabled) {
+  background: var(--primary, #6C63FF);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.ub-toggle-btn.ub-toggle-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-color: #ccc;
+  color: #999;
+}
+
+.ub-guest-badge {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 193, 7, 0.1);
+  color: #ff9800;
+  border-radius: 6px;
+  border: 1px solid #ffb74d;
+}
+
+/* LOADING STATE */
+.ub-loading {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
+  color: var(--primary, #6C63FF);
+  animation: fade-in 0.3s ease-in;
+}
+
+/* EMPTY STATE */
+.ub-empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.05), rgba(107, 203, 119, 0.05));
+  border-radius: 16px;
+  border: 2px dashed #ddd;
+  animation: fade-in 0.3s ease-in;
+}
+
+.ub-empty-icon {
+  font-size: 64px;
+  margin: 0 0 15px 0;
+}
+
+.ub-empty-text {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary, #6C63FF);
+  margin: 0 0 10px 0;
+}
+
+.ub-empty-hint {
+  font-size: 14px;
+  color: #999;
+  margin: 0;
+}
+
+/* SCORECARDS GRID */
+.ub-scorecards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+  animation: fade-in 0.3s ease-in;
+}
+
+/* SCORECARD */
+.ub-scorecard {
+  background: white;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.ub-scorecard:hover {
+  border-color: var(--primary, #6C63FF);
+  box-shadow: 0 4px 16px rgba(108, 99, 255, 0.1);
+  transform: translateY(-4px);
+}
+
+.ub-scorecard-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.08), rgba(107, 203, 119, 0.08));
+  border-bottom: 2px solid #eee;
+}
+
+.ub-scorecard-icon {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ub-scorecard-title {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ub-scorecard-date {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ub-scorecard-body {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 50px;
+}
+
+/* SCORE DETAIL */
+.ub-score-detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: var(--primary, #6C63FF);
+}
+
+.ub-score-time {
+  display: inline-block;
+  padding: 6px 10px;
+  background: rgba(108, 99, 255, 0.1);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ub-score-stars {
+  display: flex;
+  gap: 2px;
+  font-size: 18px;
+}
+
+.ub-score-stars span {
+  color: var(--accent, #FFD93D);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.ub-score-correct {
+  display: inline-block;
+  padding: 6px 10px;
+  background: rgba(107, 203, 119, 0.1);
+  border-radius: 6px;
+  font-size: 14px;
+  color: #6BCB77;
+  font-weight: 700;
+}
+
+.ub-score-total {
+  font-size: 14px;
+  color: #999;
+  font-weight: 500;
+}
+
+.ub-score-pct {
+  display: inline-block;
+  padding: 6px 10px;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 6px;
+  font-size: 13px;
+  color: #FF6B6B;
+  font-weight: 700;
+}
+
+/* INFO BOX */
+.ub-info-box {
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(107, 203, 119, 0.1));
+  border: 2px solid rgba(108, 99, 255, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.ub-info-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary, #6C63FF);
+  margin: 0 0 8px 0;
+}
+
+.ub-info-text {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ANIMATIONS */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .ub-container {
+    padding: 12px;
+  }
+
+  .ub-title {
+    font-size: 24px;
+  }
+
+  .ub-scorecards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .ub-scorecard-header {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .ub-scorecard-title {
+    font-size: 14px;
+  }
+
+  .ub-scorecard-date {
+    font-size: 11px;
+  }
+
+  .ub-scorecard-body {
+    padding: 12px;
+  }
+
+  .ub-controls {
+    gap: 10px;
+  }
+
+  .ub-toggle-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .ub-empty {
+    padding: 40px 15px;
+  }
+
+  .ub-empty-icon {
+    font-size: 48px;
+  }
+
+  .ub-empty-text {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ub-container {
+    padding: 10px;
+  }
+
+  .ub-title {
+    font-size: 20px;
+  }
+
+  .ub-scorecards {
+    grid-template-columns: 1fr;
+  }
+
+  .ub-score-detail {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ub-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ub-toggle-btn,
+  .ub-guest-badge {
+    width: 100%;
+  }
+
+  .ub-guest-badge {
+    text-align: center;
+  }
+}

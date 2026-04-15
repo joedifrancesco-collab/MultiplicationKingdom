@@ -1,4 +1,4 @@
-import { collection, addDoc, query, orderBy, limit, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, limit, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc, where } from 'firebase/firestore';
 import { db, auth } from '../shared/config/firebase';
 import {
   createUserWithEmailAndPassword,
@@ -333,6 +333,47 @@ export function saveGameScore(gameType, data) {
 export function getGameBests(username) {
   const users = getUsers();
   return users[username]?.gameBests || {};
+}
+
+/**
+ * Get all game scores for a user (unified across all games)
+ * Returns array of {gameType, score, timestamp}
+ * @param {string} userIdentifier - Firebase UID or username
+ * @returns {Promise<Array>} Array of game scores
+ */
+export async function getAllGameScores(userIdentifier) {
+  try {
+    // Query by uid (Firebase user ID)
+    const q = query(
+      collection(db, 'leaderboard'),
+      where('uid', '==', userIdentifier)
+    );
+    const snapshot = await getDocs(q);
+    
+    const scores = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        gameType: data.gameType,
+        score: {
+          correct: data.correct,
+          total: data.total,
+          pct: data.pct,
+          seconds: data.seconds,
+          stars: data.stars,
+          moves: data.moves,
+          kingdomId: data.kingdomId,
+          percentage: data.percentage,
+          score: data.score,
+        },
+        timestamp: data.timestamp ? new Date(data.timestamp).toISOString() : null,
+      };
+    });
+
+    return scores;
+  } catch (error) {
+    console.error('Failed to get all game scores:', error);
+    return [];
+  }
 }
 
 // ── Spelling attempt tracking ──────────────────────────────────────────────────

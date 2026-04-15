@@ -16,6 +16,7 @@ import KingdomSiege from './subjects/math-kingdom/multiplication-kingdom/compone
 import TrainingMenu from './subjects/math-kingdom/multiplication-kingdom/components/TrainingMenu';
 import TrainingTable from './subjects/math-kingdom/multiplication-kingdom/components/TrainingTable';
 import Leaderboard from './shared/components/Leaderboard';
+import UnifiedLeaderboard from './shared/components/UnifiedLeaderboard';
 import KingdomMapsMode from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMapsMode';
 import KingdomMaps from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMaps';
 import SpellingScreen from './subjects/language-arts-kingdom/spelling/components/SpellingScreen';
@@ -132,6 +133,7 @@ export default function App() {
           {/* SHARED */}
           {/* ═════════════════════════════════════════════════════════════ */}
           <Route path="/leaderboard" element={<ProtectedRoute element={<Leaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/unified-leaderboard" element={<ProtectedRoute element={<UnifiedLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
 
           {/* Catch-all - redirect to auth or home depending on auth state or guest mode */}
           <Route path="*" element={user || isGuest ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />
