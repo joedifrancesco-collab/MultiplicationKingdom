@@ -17,6 +17,7 @@ import KingdomSiege from './subjects/math-kingdom/multiplication-kingdom/compone
 import TrainingMenu from './subjects/math-kingdom/multiplication-kingdom/components/TrainingMenu';
 import TrainingTable from './subjects/math-kingdom/multiplication-kingdom/components/TrainingTable';
 import UnifiedLeaderboard from './shared/components/UnifiedLeaderboard';
+import TestDeviceViewport from './shared/components/TestDeviceViewport';
 import KingdomMapsMode from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMapsMode';
 import KingdomMaps from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMaps';
 import SpellingScreen from './subjects/language-arts-kingdom/spelling/components/SpellingScreen';
@@ -173,6 +174,9 @@ export default function App() {
           {/* ═════════════════════════════════════════════════════════════ */}
           <Route path="/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
           <Route path="/unified-leaderboard" element={<ProtectedRoute element={<UnifiedLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+
+          {/* Testing Routes (for development) */}
+          <Route path="/test-device-viewport" element={<TestDeviceViewport />} />
 
           {/* Catch-all - redirect to auth or home depending on auth state or guest mode */}
           <Route path="*" element={user || isGuest ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />
