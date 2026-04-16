@@ -224,28 +224,44 @@ Design mobile nav:
 - [x] Mobile thumb-friendly UX considerations ✅
 - [x] **Decision document:** NAVIGATION_SPEC.md created (awaiting feedback) ✅
 
-#### Sprint 5.3: Implement Responsive Navigation
-Blocked pending design feedback on NAVIGATION_SPEC.md:
-- [ ] **6 Key Design Questions (see NAVIGATION_SPEC.md):**
-  1. Sidebar or top navbar for desktop?
-  2. Hamburger + bottom tabs or full-screen hamburger for mobile?
-  3. Minimal nav during gameplay or persistent nav?
-  4. Subject nesting: sub-items or cards?
-  5. Quick access shortcuts?
-  6. Nav styling (colors, progress indicators)?
-- [ ] Once approved, create `src/shared/components/ResponsiveNav.jsx`
-- [ ] Desktop mode: Sidebar or top navbar (based on decision)
-- [ ] Mobile mode: Chosen navigation approach
-- [ ] Transitions between breakpoints (≥ 768px vs < 768px)
-- [ ] Active state highlighting (current subject/game)
-- [ ] **Commit:** `feat: implement responsive navigation for desktop and mobile`
+#### Sprint 5.3: Implement Responsive Navigation ✅ COMPLETE
+
+Design decisions approved (April 15, 2026):
+- [x] Desktop: Top navbar with dropdowns (not sidebar) ✅
+- [x] Mobile: Full-screen hamburger menu (not hamburger + tabs) ✅
+- [x] Persistent nav during gameplay ✅
+- [x] Subject nesting: As cards when entering subject ✅
+- [x] No quick access shortcuts for MVP ✅
+- [x] No sidebar; skip progress indicators ✅
+
+Components created:
+- [x] `src/shared/components/Breadcrumb.jsx` - Navigation path display ✅
+- [x] `src/shared/components/NavDropdown.jsx` - Desktop dropdown menus ✅
+- [x] `src/shared/components/HamburgerMenu.jsx` - Mobile full-screen menu ✅
+- [x] `src/shared/components/ResponsiveNav.jsx` - Main nav wrapper ✅
+- [x] `src/shared/components/SubjectCard.jsx` - Subject selection cards ✅
+- [x] `src/shared/components/KingdomCard.jsx` - Kingdom selection cards ✅
+- [x] `src/pages/Home.jsx` - Main landing page ✅
+- [x] `src/pages/SubjectHome.jsx` - Subject-specific pages ✅
+
+Features implemented:
+- [x] Desktop navbar with Math, Language Arts, Lab dropdowns ✅
+- [x] Mobile full-screen hamburger from left side ✅
+- [x] Breadcrumb trail (Home > Subject > Kingdom > Game) ✅
+- [x] Responsive design: 375px, 768px, 1024px, 1920px ✅
+- [x] Kingdom unlock system (1 star from previous unlocks next) ✅
+- [x] Disabled kingdom indicators (lock icons) ✅
+
+**Commit:** `feat: implement Phase 5 Sprint 5.3 - ResponsiveNav + Home + SubjectHome`
+**Build:** ✅ 704.08 KB JS (211.43 KB gzip), 118 modules
 
 #### Sprint 5.4: Route Navigation Integration
-- [ ] Update App.jsx routes for new nav structure
+- [ ] Update App.jsx routes for new nav structure ✅ PARTIAL (routes added)
 - [ ] Test navigation on all routes
 - [ ] Ensure back/forward browser buttons work
 - [ ] Test deep linking (paste URL, page loads correctly)
-- [ ] **Commit:** `refactor: integrate navigation with routes`
+- [ ] Fix HomeScreen vs Home page (keep old HomeScreen for auth redirect?)
+- [ ] **Next commit:** `refactor: integrate navigation with routes`
 
 **End of Phase 5:** Intuitive navigation, responsive, works on all devices.
 
