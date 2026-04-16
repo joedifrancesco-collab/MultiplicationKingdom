@@ -127,7 +127,7 @@ export default function ResponsiveNav() {
     <div className="responsive-nav-wrapper">
       {/* Desktop Navbar */}
       <nav className="responsive-nav desktop-nav" role="navigation" aria-label="Main navigation">
-        {/* Left: Logo */}
+        {/* Left: Logo + Breadcrumb */}
         <div className="nav-left">
           <button
             className="nav-logo"
@@ -137,6 +137,9 @@ export default function ResponsiveNav() {
             <span className="logo-icon">🧬</span>
             <span className="logo-text">Learning Kingdom</span>
           </button>
+          <div className="nav-breadcrumb-inline">
+            <Breadcrumb />
+          </div>
         </div>
 
         {/* Center: Subject Dropdowns */}
@@ -208,8 +211,10 @@ export default function ResponsiveNav() {
         subjects={hamburgerSubjects}
       />
 
-      {/* Breadcrumb Trail */}
-      <Breadcrumb />
+      {/* Mobile Breadcrumb */}
+      <div className="breadcrumb-mobile">
+        <Breadcrumb />
+      </div>
     </div>
   );
 }

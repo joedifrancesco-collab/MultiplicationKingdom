@@ -6,6 +6,15 @@
   font-size: 14px;
 }
 
+/* Inline breadcrumb (inside navbar) - override full-width styling */
+.nav-breadcrumb-inline .breadcrumb-nav {
+  width: auto;
+  padding: 0;
+  background-color: transparent;
+  border-bottom: none;
+  font-size: 13px;
+}
+
 .breadcrumb-list {
   list-style: none;
   margin: 0;
