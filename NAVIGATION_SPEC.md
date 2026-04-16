@@ -2,278 +2,509 @@
 
 **Purpose:** Plan desktop and mobile navigation before implementing Phase 5.  
 **Date:** April 15, 2026  
-**Status:** 🚧 DRAFT — Awaiting design feedback
+**Status:** ✅ APPROVED — Design decisions locked in. Ready for implementation.
 
 ---
 
-## 📐 Design Objectives
+## 📋 DESIGN DECISIONS (APPROVED)
 
-1. **Discoverability:** Users can find games, subjects, and leaderboard quickly
-2. **Simplicity:** Minimal cognitive load, intuitive hierarchy
-3. **Scalability:** Easy to add new subjects (Math, Language Arts, Science, etc.)
-4. **Responsive:** Graceful adaptation from mobile → tablet → desktop
-5. **Accessibility:** Keyboard navigation, focus states, semantic HTML
-
----
-
-## 🖥️ DESKTOP NAVIGATION (≥ 1024px)
-
-### Option 1: Left Sidebar Nav 🎯 (RECOMMENDED)
-
-```
-┌────────────────────────────────────────────────────┐
-│ 🧬 Learning Kingdom                   🔔 👤 ⚙️    │
-├─────────────┬──────────────────────────────────────┤
-│ 📚 Subjects │  Content Area                        │
-├─────────────┤                                      │
-│ 🔢 Math     │  Kingdom Selection / Game Selection  │
-│   ├ 1×      │  ▼                                   │
-│   ├ 2×      │  [Game Cards appear here]           │
-│   ├ 3×      │                                      │
-│   └ ...     │                                      │
-│             │                                      │
-│ 📖 Spelling │                                      │
-│   ├ Group A │                                      │
-│   ├ Group B │                                      │
-│   └ ...     │                                      │
-│             │                                      │
-│ 🎓 Science  │                                      │
-│   ├ Unit 1  │                                      │
-│   └ ...     │                                      │
-├─────────────┤                                      │
-│ 🏆 Leader   │                                      │
-│ ⚙️ Settings │                                      │
-│ ❓ Help     │                                      │
-└─────────────┴──────────────────────────────────────┘
-```
-
-**Pros:**
-- Always visible (no clicks needed to see menu)
-- Can show nested categories (Math → 1×, 2×, 3× times tables)
-- Familiar pattern (Figma, VS Code, Slack)
-- Easy to highlight current subject/game
-
-**Cons:**
-- Takes up 200-300px of horizontal space
-- May feel cramped on smaller desktops (< 1440px)
+| Question | Decision | Notes |
+|----------|----------|-------|
+| 1. Desktop Nav | **Top Navbar** (dropdowns) | See detailed wireframe below |
+| 2. Mobile Nav | **Full-screen Hamburger** | Slides from left, covers entire screen |
+| 3. Gaming Mode | **Keep nav visible** | Nav visible during gameplay for context switching |
+| 4. Subject Nesting | **As cards when entering subject** | Math Kingdom → shows 12 cards (1×-12×), not sub-items |
+| 5. Quick Access | **No**, not needed for MVP | Can add "Recent Games" in future |
+| 6. Styling | **No sidebar**, uncertain on progress stars | Skip progress indicators for now |
 
 ---
 
-### Option 2: Top Navbar with Dropdowns
+## 📊 NAVIGATION HIERARCHY
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│ 🧬 Learning Kingdom   [🔢 Math ▼] [📖 Spelling ▼]  🏆   │
-├──────────────────────────────────────────────────────────┤
-│                                                          │
-│  Content Area (Kingdom Selection / Game Selection)      │
-│  [Game Cards appear here]                              │
-│                                                          │
-│                                                          │
-└──────────────────────────────────────────────────────────┘
+HOME (main landing page)
+├── Text/intro content
+└── 4 Subject Groups:
+    ├── 🔢 Math
+    │   ├── ❌ Addition Kingdom (disabled)
+    │   ├── ❌ Subtraction Kingdom (disabled)
+    │   ├── ✅ Multiplication Kingdom
+    │   │   ├── 1× through 12× (12 cards)
+    │   │   ├── Training Table
+    │   │   ├── Conquest Game
+    │   │   ├── Flashcard Challenge
+    │   │   ├── Kingdom Maps
+    │   │   └── Kingdom Siege
+    │   └── ❌ Division Kingdom (disabled)
+    │
+    ├── 📖 Language Arts
+    │   ├── ✅ Spelling
+    │   │   ├── Vowels & Consonants
+    │   │   ├── Common Words
+    │   │   ├── Sight Words
+    │   │   └── Advanced Words
+    │   ├── ❌ Vocabulary (disabled)
+    │   └── ❌ Grammar (disabled)
+    │
+    ├── 🧪 Lab (Experiments)
+    │   └── ✅ Number Cruncher
+    │       ├── Game Board
+    │       ├── Results
+    │       └── Training Table
+    │
+    └── 🎓 Science (Future placeholder)
+        └── ❌ (all disabled)
 
-On "Math ▼" click, dropdown shows:
-┌─────────────────────┐
-│ 1× Times Table      │
-│ 2× Times Table      │
-│ 3× Times Table      │
-│ ...                 │
-└─────────────────────┘
+CONSTANT SECTIONS:
+├── 🏆 Achievements / Leaderboard
+├── ⚙️ Settings
+└── 👤 Profile / Account
 ```
-
-**Pros:**
-- Saves horizontal space
-- Clean, minimalist look
-- All content focused in center
-
-**Cons:**
-- Requires clicks to see submenu
-- Harder to show current location visually
-- Dropdown can feel unstable (closes on misclick)
 
 ---
 
-## 📱 MOBILE NAVIGATION (< 768px)
+## 🖥️ DESKTOP: TOP NAVBAR WITH DROPDOWNS (≥ 768px)
 
-### Option 1: Hamburger Menu + Bottom Tab Bar (RECOMMENDED)
+### NAVBAR STRUCTURE
 
 ```
-PORTRAIT:
-┌──────────────────────┐
-│ ☰  Learning Kingdom  │ ← Hamburger (tap to open sidebar)
-├──────────────────────┤
-│                      │
-│  Content Area        │
-│  (Game Selection or  │
-│   During Gameplay)   │
-│                      │
-├──────────────────────┤
-│ 🏠 📚 🏆 ⚙️          │ ← Bottom tab bar (always visible)
-│ Home Subjects Board Settings
-└──────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🏠 Learning Kingdom    Math ▼  Language Arts ▼  Lab ▼   ⭐ Achievements  👤  │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-HAMBURGER OPEN (slides from left):
-┌─────────────────────────┐
-│ 🧬 Learning Kingdom  ✕  │
-├─────────────────────────┤
-│ 🏠 Home                 │
-│ 📚 Subjects:            │
-│   🔢 Math               │
-│   📖 Spelling           │
-│   🎓 Science (future)   │
-│ 🏆 Leaderboard          │
-│ ⚙️ Settings             │
-│ ❓ Help                 │
-├─────────────────────────┤
-│ 👤 [username]           │
-│ 🔓 Sign Out             │
-└─────────────────────────┘
+NAVBAR SECTIONS:
+├─ Left (logo):      🏠 Learning Kingdom (clickable → HOME)
+├─ Center (subjects): [Subject dropdowns - only shows ENABLED subjects]
+│                    • Math ▼
+│                    • Language Arts ▼
+│                    • Lab ▼
+├─ Right (quick):    ⭐ Achievements, ⚙️ Settings, 👤 Profile
+└─ Context (below navbar): Breadcrumb trail
 ```
 
-**Pros:**
-- Bottom tab bar: always visible, thumb-friendly (mobile UX best practice)
-- Hamburger: reveals full nav without taking screen space
-- Familiar pattern (Gmail, Twitter, Instagram, Discord)
-- 4 main destinations in tabs + more in menu
+### BREADCRUMB TRAIL (New Feature)
 
-**Cons:**
-- Bottom bar takes ~60px of vertical space
-- Hamburger adds extra tap to see subjects
+```
+Below navbar, left-aligned:
+Home > Math > Multiplication Kingdom > Training Table
+
+Shows:
+- Current location path
+- Each level clickable to navigate back
+- Updates dynamically based on route
+- Mobile: Collapses to "← Back" or abbreviated breadcrumb
+```
+
+### HOME PAGE WIREFRAME
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🏠 Learning Kingdom    Math ▼  Language Arts ▼  Lab ▼   ⭐ Achievements  👤  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Home                                                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│  Welcome to Learning Kingdom!                                              │
+│  Choose a subject to get started.                                          │
+│                                                                              │
+│  ┌──────────────────────┐  ┌──────────────────────┐  ┌──────────────────────┐
+│  │ 🔢 Math              │  │ 📖 Language Arts     │  │ 🧪 Lab               │
+│  │                      │  │                      │  │                      │
+│  │ ✅ Enabled           │  │ ✅ Enabled           │  │ ✅ Enabled           │
+│  │                      │  │                      │  │                      │
+│  │ • Multiplication     │  │ • Spelling           │  │ • Number Cruncher    │
+│  │ • (3 more disabled)  │  │ • (2 more disabled)  │  │                      │
+│  │                      │  │                      │  │                      │
+│  │ [Explore →]          │  │ [Explore →]          │  │ [Explore →]          │
+│  └──────────────────────┘  └──────────────────────┘  └──────────────────────┘
+│
+│  ┌──────────────────────┐
+│  │ 🎓 Science (future)  │
+│  │                      │
+│  │ ⏳ Coming Soon       │
+│  │                      │
+│  │ Check back later!    │
+│  │                      │
+│  │ [Learn More →]       │
+│  └──────────────────────┘
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### SUBJECT HOME PAGE WIREFRAME (e.g., Math Home)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🏠 Learning Kingdom    Math ▼  Language Arts ▼  Lab ▼   ⭐ Achievements  👤  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Home > Math                                                  [← Back breadcrumb]
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│  🔢 Mathematics Kingdom                                                     │
+│  Master the fundamentals of multiplication!                               │
+│                                                                              │
+│  ┌──────────────────────┐  ┌──────────────────────┐  ┌──────────────────────┐
+│  │ ✅ Multiplication    │  │ ❌ Addition          │  │ ❌ Subtraction       │
+│  │    Kingdom           │  │    Kingdom           │  │    Kingdom           │
+│  │                      │  │                      │  │                      │
+│  │ Enabled              │  │ (Disabled)           │  │ (Disabled)           │
+│  │                      │  │ Coming Soon          │  │ Coming Soon          │
+│  │ 12 times tables      │  │                      │  │                      │
+│  │ + games              │  │ Unlock by mastering  │  │ Unlock by mastering  │
+│  │                      │  │ Multiplication!      │  │ Multiplication!      │
+│  │ [Enter →]            │  │ [?]                  │  │ [?]                  │
+│  └──────────────────────┘  └──────────────────────┘  └──────────────────────┘
+│
+│  ┌──────────────────────┐
+│  │ ❌ Division Kingdom  │
+│  │                      │
+│  │ (Disabled)           │
+│  │ Coming Soon          │
+│  │                      │
+│  │ Unlock by mastering  │
+│  │ Multiplication!      │
+│  │                      │
+│  │ [?]                  │
+│  └──────────────────────┘
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### MATH DROPDOWN MENU
+
+```
+Click "Math ▼" in navbar:
+
+┌────────────────────────────────────────┐
+│ ✅ Multiplication Kingdom              │ ← Links to /subjects/math
+│    [Shows current progress/stars]      │
+│                                        │
+│ ❌ Addition Kingdom (disabled)         │ ← Greyed out
+│                                        │
+│ ❌ Subtraction Kingdom (disabled)      │ ← Greyed out
+│                                        │
+│ ❌ Division Kingdom (disabled)         │ ← Greyed out
+│                                        │
+├────────────────────────────────────────┤
+│ [Manage Math Settings ⚙️]              │ ← Optional quick link
+└────────────────────────────────────────┘
+```
+
+### MATH KINGDOM HOME DROPDOWN (Nested Submenu - Optional)
+
+```
+Hover over "Multiplication Kingdom" in above dropdown:
+
+┌─────────────────────────────┐
+│ ✅ Multiplication Kingdom   │ ──► ┌──────────────────────────────┐
+│    [Shows current progress] │    │ 1× Times Table               │
+│                              │    │ 2× Times Table               │
+└─────────────────────────────┘    │ 3× Times Table               │
+                                   │ ...                          │
+                                   │ 12× Times Table              │
+                                   │                              │
+                                   │ [View Training Table]        │
+                                   │ [View Game List]             │
+                                   └──────────────────────────────┘
+```
 
 ---
 
-### Option 2: Full-Screen Hamburger Menu (Simpler)
+## 📱 MOBILE: FULL-SCREEN HAMBURGER (< 768px)
+
+### MOBILE HOME SCREEN
 
 ```
-CLOSED:
-┌──────────────────────┐
-│ ☰                    │
-├──────────────────────┤
-│  Content Area        │
-│                      │
-└──────────────────────┘
-
-OPEN (full screen overlay):
-┌──────────────────────┐
-│ Learning Kingdom  ✕  │
-├──────────────────────┤
-│ 🏠 Home              │
-│ 📚 Subjects:         │
-│   🔢 Math            │
-│   📖 Spelling        │
-│   🎓 Science         │
-│ 🏆 Leaderboard       │
-│ ⚙️ Settings          │
-│ ❓ Help              │
-│                      │
-│ 👤 [username]        │
-│ 🔓 Sign Out          │
-└──────────────────────┘
+┌──────────────────────────────┐
+│ ☰  Learning Kingdom       👤 │
+├──────────────────────────────┤
+│ Home                         │
+├──────────────────────────────┤
+│                              │
+│  Welcome to Learning!        │
+│  Choose a subject.           │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ 🔢 Math                │  │
+│  │ [Explore →]            │  │
+│  └────────────────────────┘  │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ 📖 Language Arts       │  │
+│  │ [Explore →]            │  │
+│  └────────────────────────┘  │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ 🧪 Lab                 │  │
+│  │ [Explore →]            │  │
+│  └────────────────────────┘  │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ 🎓 Science (Coming)    │  │
+│  │ [Learn More →]         │  │
+│  └────────────────────────┘  │
+│                              │
+└──────────────────────────────┘
 ```
 
-**Pros:**
-- Simple, no bottom bar clutter
-- Similar to Facebook, YouTube mobile
+### MOBILE HAMBURGER MENU (OPEN)
 
-**Cons:**
-- No "quick access" to common destinations (leaderboard)
-- Always requires hamburger click
-- Less thumb-friendly
+```
+┌──────────────────────────────┐
+│ 🧬 Learning Kingdom       ✕   │
+├──────────────────────────────┤
+│ 🏠 Home                      │
+│                              │
+│ 📚 Subjects                  │
+│    🔢 Math ▼                 │  ← Expandable
+│    📖 Language Arts ▼        │
+│    🧪 Lab ▼                  │
+│    🎓 Science ▼              │
+│                              │
+│ ⭐ Achievements              │
+│ ⚙️ Settings                  │
+│ ❓ Help                      │
+├──────────────────────────────┤
+│ 👤 [Username]                │
+│ 🔓 Sign Out                  │
+└──────────────────────────────┘
+```
+
+### MOBILE HAMBURGER - EXPANDED MATH
+
+```
+┌──────────────────────────────┐
+│ 🧬 Learning Kingdom       ✕   │
+├──────────────────────────────┤
+│ 🏠 Home                      │
+│                              │
+│ 📚 Subjects                  │
+│    🔢 Math ▼ (expanded)      │  ← Now shows sub-items
+│       ✅ Multiplication      │
+│       ❌ Addition            │     Indented, greyed if disabled
+│       ❌ Subtraction         │
+│       ❌ Division            │
+│    📖 Language Arts ▼        │
+│    🧪 Lab ▼                  │
+│    🎓 Science ▼              │
+│                              │
+│ ⭐ Achievements              │
+│ ⚙️ Settings                  │
+│ ❓ Help                      │
+├──────────────────────────────┤
+│ 👤 [Username]                │
+│ 🔓 Sign Out                  │
+└──────────────────────────────┘
+```
+
+### MOBILE SUBJECT HOME (Math)
+
+```
+┌──────────────────────────────┐
+│ ☰  Learning Kingdom       👤 │
+├──────────────────────────────┤
+│ Home > Math                  │  ← Breadcrumb (or "← Back")
+├──────────────────────────────┤
+│                              │
+│  🔢 Math Kingdom             │
+│  Master multiplication!      │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ ✅ Multiplication      │  │
+│  │    Kingdom             │  │
+│  │ [Enter →]              │  │
+│  └────────────────────────┘  │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ ❌ Addition Kingdom    │  │
+│  │ (Disabled)             │  │
+│  │ [?]                    │  │
+│  └────────────────────────┘  │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ ❌ Subtraction Kingdom │  │
+│  │ (Disabled)             │  │
+│  │ [?]                    │  │
+│  └────────────────────────┘  │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ ❌ Division Kingdom    │  │
+│  │ (Disabled)             │  │
+│  │ [?]                    │  │
+│  └────────────────────────┘  │
+│                              │
+└──────────────────────────────┘
+```
 
 ---
 
-## 🎮 GAMING CONTEXT
+## 🎮 GAMING MODE: PERSISTENT NAV
 
-**During gameplay (in a game):**
-
-Option A: Minimal nav (focused on game)
+**Desktop (navbar visible at top):**
 ```
-┌──────────────────────────┐
-│ ← Back to Kingdom  [⏸]   │
-├──────────────────────────┤
-│                          │
-│  GAME (fullscreen focus) │
-│                          │
-└──────────────────────────┘
-```
-
-Option B: Nav still visible (sidebar on desktop, hamburger on mobile)
-```
-Desktop: Sidebar still visible on left
-Mobile: Hamburger icon visible at top (smaller)
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🏠 Learning Kingdom    Math ▼  Language Arts ▼  Lab ▼   ⭐ Achievements  👤  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Home > Math > Multiplication Kingdom > 1× > Speed Challenge                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                          ← Back to 1× Kingdom                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│                     SPEED CHALLENGE GAME                                    │
+│                     (Full width available)                                 │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Which approach?
+**Mobile (navbar at top, game below):**
+```
+┌──────────────────────────────┐
+│ ☰  Learning Kingdom       👤 │
+├──────────────────────────────┤
+│ Home > Math > Mult ×1 ...    │
+├──────────────────────────────┤
+│ ← Back to 1× Kingdom         │
+├──────────────────────────────┤
+│                              │
+│    GAME (full width)         │
+│                              │
+└──────────────────────────────┘
+```
 
 ---
 
-## 📋 PROPOSED DECISIONS
+## 🛠️ IMPLEMENTATION ROADMAP
 
-### Desktop: **Option 1 (Sidebar Navigation)**
-- Permanently visible 200-250px sidebar
-- Collapsible on small desktops (< 1200px)
-- Shows subjects + quick links
-- Current subject/game highlighted
+### Phase 5 Sprint 5.3: Implement Responsive Navigation
 
-### Mobile: **Option 1 (Hamburger + Bottom Tab Bar)**
-- 4 main tabs: Home, Subjects, Leaderboard, Settings
-- Hamburger reveals full menu + subject nesting
-- Gaming mode: minimal nav (back button only)
+**Files to create:**
+1. `src/shared/components/ResponsiveNav.jsx` — Main navbar component
+2. `src/shared/components/ResponsiveNav.css` — Navbar styles
+3. `src/shared/components/Breadcrumb.jsx` — Breadcrumb navigation
+4. `src/shared/components/Breadcrumb.css` — Breadcrumb styles
+5. `src/shared/components/HamburgerMenu.jsx` — Mobile menu
+6. `src/shared/components/HamburgerMenu.css` — Mobile menu styles
+7. `src/shared/components/NavDropdown.jsx` — Dropdown menu (reusable)
+8. `src/pages/Home.jsx` — New home page with subject cards
+9. `src/pages/Home.css` — Home page styles
+10. `src/pages/SubjectHome.jsx` — Subject-specific home (Math, Spelling, Lab)
+11. `src/pages/SubjectHome.css` — Subject home styles
 
-### Responsive Breakpoint: 768px (existing)
-- Desktop mode ≥ 768px: Sidebar visible
-- Mobile mode < 768px: Hamburger + tabs
+**Integration points:**
+1. Wrap App.jsx content with ResponsiveNav
+2. Pass `breadcrumbs` to ResponsiveNav via context or props
+3. Hook nav dropdowns into React Router navigation
+4. Create routes:
+   - `/` → Home
+   - `/subjects/math` → SubjectHome (Math)
+   - `/subjects/spelling` → SubjectHome (Spelling)
+   - `/subjects/lab` → SubjectHome (Lab)
+   - `/subjects/math/multiplication-kingdom` → MulKingdomHome
+   - `/subjects/math/multiplication-kingdom/1` → KingdomScreen (1×)
+   - etc. (existing game routes)
 
----
-
-## 🔑 Key Design Questions
-
-**Please provide feedback on the following:**
-
-1. **Desktop Sidebar:**
-   - ✅ Prefer sidebar, OR
-   - ❌ Prefer top navbar dropdowns, OR
-   - ❓ Hybrid (sidebar collapses to icon bar on smaller desktop)?
-
-2. **Mobile Navigation:**
-   - ✅ Prefer hamburger + bottom tabs, OR
-   - ❌ Prefer full-screen hamburger only, OR
-   - ❓ Different approach?
-
-3. **Gaming Mode:**
-   - ✅ Minimal nav (back button + pause) — focus on game, OR
-   - ❌ Keep nav visible — let user switch contexts easily?
-
-4. **Subject Nesting:**
-   - Should "Multiplication Kingdom" show all 12 times tables as sub-items, OR just as a card/tile when clicked?
-   - Should "Spelling" show all word groups as sub-items, OR as cards when in Spelling screen?
-
-5. **Quick Access:**
-   - Any shortcuts we should add? (Recent games, favorite games, recent leaderboard results?)
-
-6. **Color/Styling:**
-   - Sidebar background: light (#f8f9fa), vs. dark (#2d3748), vs. accent color?
-   - Should nav items show game progress indicators (stars ⭐)?
+**Styling roadmap:**
+- Navbar: 56px height, white background, shadow
+- Breadcrumb: 32px height, centered, smaller font
+- Dropdown: smooth animation, z-index 1000
+- Mobile menu: full screen, z-index 999
+- Responsive: All components tested at 375px, 768px, 1024px, 1920px
 
 ---
 
-## 📐 Next Steps (Once Approved)
+## 📁 ROUTE HIERARCHY
 
-1. Create responsive nav component: `ResponsiveNav.jsx`
-2. Implement desktop sidebar
-3. Implement mobile hamburger + tab bar
-4. Update App.jsx routes to use ResponsiveNav wrapper
-5. Test across viewports
-6. Commit Phase 5 Sprint 5.1, 5.2, 5.3
+```
+/ → HOME
+  ├── /subjects/math → SubjectHome (Math)
+  │   ├── /subjects/math/multiplication-kingdom → MulKingdomHome (placeholder)
+  │   │   ├── /subjects/math/multiplication-kingdom/1 → KingdomScreen (1×)
+  │   │   │   ├── /kingdom/:id/flashcard
+  │   │   │   ├── /kingdom/:id/speed
+  │   │   │   ├── /kingdom/:id/match
+  │   │   │   └── /kingdom/:id/siege
+  │   │   ├── /subjects/math/multiplication-kingdom/2 → KingdomScreen (2×)
+  │   │   └── ... (3-12)
+  │   │
+  │   ├── /subjects/math/multiplication-kingdom/training → TrainingTable
+  │   └── /subjects/math/multiplication-kingdom/conquest → NumberCruncher
+  │
+  ├── /subjects/spelling → SubjectHome (Spelling)
+  │   ├── /subjects/spelling/vowels → SpellingScreen
+  │   ├── /subjects/spelling/common-words → SpellingScreen
+  │   ├── /subjects/spelling/sight-words → SpellingScreen
+  │   └── /subjects/spelling/advanced-words → SpellingScreen
+  │
+  ├── /subjects/lab → SubjectHome (Lab)
+  │   ├── /subjects/lab/number-cruncher → NumberCruncher
+  │   └── /subjects/lab/number-cruncher/training → TrainingTable
+  │
+  ├── /achievements → UnifiedLeaderboard
+  ├── /settings → SettingsPage
+  ├── /profile → ProfilePage
+  └── ...existing game routes
+```
 
 ---
 
-## 🎨 Design References
+## 🎨 COMPONENT COMPOSITION
 
-- **Desktop sidebar:** VS Code, Figma, Slack
-- **Mobile bottom nav:** Gmail, Instagram, Twitter, Discord
-- **Responsive patterns:** Material Design, Ant Design
+### ResponsiveNav.jsx
+```jsx
+<ResponsiveNav>
+  ├── Navbar (desktop)
+  │   ├── Logo (Home link)
+  │   ├── NavDropdown (Math ▼)
+  │   ├── NavDropdown (Language Arts ▼)
+  │   ├── NavDropdown (Lab ▼)
+  │   └── Quick links (Achievements, Settings, Profile)
+  │
+  ├── HamburgerButton (mobile)
+  │   └── HamburgerMenu
+  │       ├── Menu items
+  │       └── Expandable subjects
+  │
+  └── Breadcrumb
+      └── Breadcrumb trail (Home > Math > Multiplication Kingdom)
+```
+
+### Home.jsx
+```jsx
+<Home>
+  ├── Welcome text
+  └── SubjectCard[] (Math, Language Arts, Lab, Science)
+      └── Shows enabled/disabled status
+          Shows icons + quick stats
+          [Explore button]
+```
+
+### SubjectHome.jsx
+```jsx
+<SubjectHome subject="math">
+  ├── Subject title (🔢 Math Kingdom)
+  └── KingdomCard[] (Multiplication, Addition, Subtraction, Division)
+      └── Shows enabled/disabled status
+          [Enter] or [?] button
+```
 
 ---
 
-**Questions? Thoughts? Ready to proceed once we align on these design decisions! 🚀**
+## ✨ KEY FEATURES
+
+1. **Persistent Navbar:** Always visible on desktop, hamburger on mobile
+2. **Breadcrumb Navigation:** Shows path → clickable to go back
+3. **Hierarchical Structure:** Home → Subject → Kingdom → Game
+4. **Disabled States:** Greyed-out kingdoms with lock icons + "Coming Soon"
+5. **Progress Indicators:** (Optional) Stars or progress bars in nav
+6. **Gaming Mode:** Nav stays visible to encourage context switching
+7. **Responsive:** All components tested on mobile, tablet, desktop
+
+---
+
+**Ready to begin implementation! 🚀**
+
+
