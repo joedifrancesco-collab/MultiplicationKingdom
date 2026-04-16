@@ -1,0 +1,114 @@
+.breadcrumb-nav {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--bg-light, #fafbfc);
+  border-bottom: 1px solid var(--border-light, #e5e7eb);
+  font-size: 14px;
+}
+
+.breadcrumb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.breadcrumb-separator {
+  color: var(--text-muted, #999);
+  margin: 0 2px;
+  opacity: 0.7;
+}
+
+.breadcrumb-link {
+  background: none;
+  border: none;
+  color: var(--primary, #6c63ff);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 200ms ease;
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+  background-color: rgba(108, 99, 255, 0.1);
+  color: var(--primary-dark, #5549cc);
+  text-decoration: underline;
+}
+
+.breadcrumb-link:focus-visible {
+  outline: 2px solid var(--primary, #6c63ff);
+  outline-offset: 2px;
+}
+
+.breadcrumb-link:active {
+  transform: scale(0.98);
+}
+
+.breadcrumb-text {
+  color: var(--text-primary, #333);
+  padding: 4px 8px;
+  display: inline-block;
+}
+
+.breadcrumb-current {
+  font-weight: 500;
+  color: var(--text-dark, #1a1a1a);
+}
+
+/* Mobile: abbreviated breadcrumbs */
+@media (max-width: 768px) {
+  .breadcrumb-nav {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .breadcrumb-list {
+    gap: 2px;
+  }
+
+  .breadcrumb-item {
+    gap: 2px;
+  }
+
+  .breadcrumb-link,
+  .breadcrumb-text {
+    padding: 2px 4px;
+  }
+
+  /* Hide middle breadcrumbs on very small screens, show first and last only */
+  @media (max-width: 480px) {
+    .breadcrumb-item:not(:first-child):not(:last-child) {
+      display: none;
+    }
+
+    .breadcrumb-separator:nth-of-type(2) {
+      display: none;
+    }
+  }
+}
+
+/* Keyboard focus styles for accessibility */
+.breadcrumb-link:focus {
+  outline: 2px solid var(--primary, #6c63ff);
+  outline-offset: 2px;
+}
+
+/* Hover state on touch devices */
+@media (hover: none) {
+  .breadcrumb-link:active {
+    background-color: rgba(108, 99, 255, 0.15);
+    color: var(--primary-dark, #5549cc);
+  }
+}

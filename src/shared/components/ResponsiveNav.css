@@ -1,0 +1,228 @@
+.responsive-nav-wrapper {
+  width: 100%;
+}
+
+/* Desktop Navbar */
+.responsive-nav {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 56px;
+  background-color: white;
+  border-bottom: 1px solid var(--border-light, #e5e7eb);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 0 16px;
+  gap: 16px;
+}
+
+@media (min-width: 769px) {
+  .responsive-nav.desktop-nav {
+    display: flex;
+  }
+}
+
+/* Left Section - Logo */
+.nav-left {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 200ms ease;
+  font-family: inherit;
+  color: var(--text-dark, #1a1a1a);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.nav-logo:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary, #6c63ff);
+}
+
+.nav-logo:focus-visible {
+  outline: 2px solid var(--primary, #6c63ff);
+  outline-offset: 2px;
+}
+
+.logo-icon {
+  font-size: 24px;
+  display: inline-block;
+}
+
+.logo-text {
+  display: inline;
+}
+
+@media (max-width: 1024px) {
+  .logo-text {
+    display: none;
+  }
+}
+
+/* Center Section - Subject Dropdowns */
+.nav-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Right Section - Quick Links */
+.nav-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-quick-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary, #333);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 200ms ease;
+  border-radius: 6px;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.nav-quick-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary, #6c63ff);
+}
+
+.nav-quick-link:focus-visible {
+  outline: 2px solid var(--primary, #6c63ff);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1024px) {
+  .nav-quick-link {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .nav-quick-link:has(+ :not(.nav-quick-link)) {
+    display: none;
+  }
+}
+
+/* Mobile Navbar */
+.mobile-nav-top {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 56px;
+  background-color: white;
+  border-bottom: 1px solid var(--border-light, #e5e7eb);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 0 12px;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav-top {
+    display: flex;
+  }
+}
+
+.hamburger-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary, #333);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 200ms ease;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.hamburger-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.hamburger-button:focus-visible {
+  outline: 2px solid var(--primary, #6c63ff);
+  outline-offset: 2px;
+}
+
+.hamburger-icon {
+  font-size: 24px;
+  display: inline-block;
+}
+
+.nav-title-mobile {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-button-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 50%;
+  transition: all 200ms ease;
+}
+
+.profile-button-mobile:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.profile-button-mobile:focus-visible {
+  outline: 2px solid var(--primary, #6c63ff);
+  outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .responsive-nav {
+    padding: 0 12px;
+  }
+
+  .nav-center {
+    gap: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-nav.desktop-nav {
+    display: none;
+  }
+
+  .mobile-nav-top {
+    display: flex;
+  }
+}

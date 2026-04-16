@@ -1,0 +1,234 @@
+.subject-home {
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  background: linear-gradient(135deg, var(--bg, #f0f4ff) 0%, rgba(255, 255, 255, 0.8) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Header / Hero */
+.subject-header {
+  padding: 36px 20px;
+  background: linear-gradient(135deg, var(--primary, #6c63ff) 0%, var(--success, #6bcb77) 100%);
+  color: white;
+  text-align: center;
+}
+
+.subject-hero {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.subject-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.subject-description {
+  margin: 8px 0 0 0;
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.95;
+}
+
+/* Content */
+.subject-content {
+  flex: 1;
+  padding: 36px 20px;
+}
+
+/* Kingdoms Section */
+.kingdoms-section {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.kingdoms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* Unlock Guide */
+.unlock-guide {
+  max-width: 1100px;
+  margin: 40px auto 0;
+}
+
+.guide-card {
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--border-light, #e5e7eb);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.guide-title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark, #1a1a1a);
+}
+
+.guide-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.guide-list li {
+  margin: 10px 0;
+  font-size: 14px;
+  color: var(--text-primary, #333);
+  line-height: 1.5;
+  position: relative;
+  padding-left: 8px;
+}
+
+.guide-list li::before {
+  content: '→';
+  position: absolute;
+  left: -16px;
+  color: var(--primary, #6c63ff);
+  font-weight: bold;
+}
+
+.guide-list strong {
+  font-weight: 600;
+  color: var(--text-dark, #1a1a1a);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .subject-home {
+    min-height: calc(100vh - 110px);
+  }
+
+  .subject-header {
+    padding: 28px 16px;
+  }
+
+  .subject-title {
+    font-size: 28px;
+  }
+
+  .subject-description {
+    font-size: 14px;
+  }
+
+  .subject-content {
+    padding: 28px 16px;
+  }
+
+  .kingdoms-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .unlock-guide {
+    margin-top: 32px;
+  }
+
+  .guide-card {
+    padding: 16px;
+  }
+
+  .guide-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .guide-list li {
+    font-size: 13px;
+    margin: 8px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .subject-home {
+    min-height: calc(100vh - 116px);
+  }
+
+  .subject-header {
+    padding: 20px 12px;
+  }
+
+  .subject-title {
+    font-size: 24px;
+  }
+
+  .subject-description {
+    font-size: 13px;
+  }
+
+  .subject-content {
+    padding: 20px 12px;
+  }
+
+  .kingdoms-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+
+  .unlock-guide {
+    margin-top: 24px;
+  }
+
+  .guide-card {
+    padding: 14px;
+  }
+
+  .guide-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .guide-list li {
+    font-size: 12px;
+    margin: 6px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .subject-header {
+    padding: 16px 12px;
+  }
+
+  .subject-title {
+    font-size: 20px;
+  }
+
+  .subject-description {
+    font-size: 12px;
+  }
+
+  .subject-content {
+    padding: 16px 12px;
+  }
+
+  .kingdoms-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .unlock-guide {
+    margin-top: 20px;
+  }
+
+  .guide-card {
+    padding: 12px;
+  }
+
+  .guide-title {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .guide-list li {
+    font-size: 11px;
+    margin: 5px 0;
+  }
+}

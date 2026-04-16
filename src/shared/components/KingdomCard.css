@@ -1,0 +1,236 @@
+.kingdom-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background-color: white;
+  border: 2px solid var(--border-light, #e5e7eb);
+  border-radius: 10px;
+  transition: all 200ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.kingdom-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary, #6c63ff), var(--success, #6bcb77));
+  transition: all 200ms ease;
+}
+
+.kingdom-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary, #6c63ff);
+  transform: translateY(-2px);
+}
+
+.kingdom-card.disabled {
+  opacity: 0.65;
+  background-color: var(--bg-light, #f9f9f9);
+}
+
+.kingdom-card.disabled:hover {
+  box-shadow: none;
+  transform: none;
+  border-color: var(--border-light, #e5e7eb);
+}
+
+.kingdom-card.coming-soon {
+  opacity: 0.55;
+}
+
+/* Icon */
+.kingdom-card-icon {
+  font-size: 32px;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Content */
+.kingdom-card-content {
+  flex: 1;
+}
+
+.kingdom-card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark, #1a1a1a);
+  transition: color 200ms ease;
+}
+
+.kingdom-card:hover .kingdom-card-title {
+  color: var(--primary, #6c63ff);
+}
+
+.kingdom-card.disabled .kingdom-card-title {
+  color: var(--text-muted, #999);
+}
+
+.kingdom-card-description {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: var(--text-muted, #999);
+  line-height: 1.3;
+}
+
+/* Progress / Stars */
+.kingdom-card-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+.star-display {
+  font-size: 14px;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+
+.progress-text {
+  font-size: 11px;
+  color: var(--success, #6bcb77);
+  font-weight: 600;
+}
+
+/* Status Badge */
+.kingdom-card-status {
+  display: flex;
+  gap: 8px;
+}
+
+.status-badge {
+  font-size: 11px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status-badge.enabled {
+  background-color: var(--success-light, #e8f5e9);
+  color: var(--success, #6bcb77);
+}
+
+.status-badge.disabled {
+  background-color: var(--danger-light, #fdedec);
+  color: var(--danger, #d32f2f);
+}
+
+/* Badge */
+.kingdom-card-badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 4px;
+  background-color: var(--accent-light, #fff4e6);
+  color: var(--accent, #ffd93d);
+  border-radius: 2px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+/* Unlock Message */
+.unlock-message {
+  margin: 6px 0 0 0;
+  font-size: 11px;
+  color: var(--text-muted, #999);
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* Action Button */
+.kingdom-card-action {
+  padding: 8px 12px;
+  background-color: var(--primary, #6c63ff);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: inherit;
+  transition: all 200ms ease;
+  align-self: flex-start;
+}
+
+.kingdom-card-action:hover:not(.disabled) {
+  background-color: var(--primary-dark, #5549cc);
+  transform: translateX(2px);
+  box-shadow: 0 3px 8px rgba(108, 99, 255, 0.3);
+}
+
+.kingdom-card-action:active:not(.disabled) {
+  transform: scale(0.96);
+}
+
+.kingdom-card-action:focus-visible {
+  outline: 2px solid var(--primary, #6c63ff);
+  outline-offset: 1px;
+}
+
+.kingdom-card-action.disabled {
+  background-color: var(--border-light, #e5e7eb);
+  color: var(--text-muted, #999);
+  cursor: not-allowed;
+}
+
+.kingdom-card-action.disabled:hover {
+  background-color: var(--border-light, #e5e7eb);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .kingdom-card {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .kingdom-card-icon {
+    font-size: 28px;
+  }
+
+  .kingdom-card-title {
+    font-size: 14px;
+  }
+
+  .kingdom-card-description {
+    font-size: 11px;
+  }
+
+  .kingdom-card-action {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kingdom-card {
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .kingdom-card-icon {
+    font-size: 24px;
+  }
+
+  .kingdom-card-title {
+    font-size: 13px;
+  }
+
+  .kingdom-card-description {
+    font-size: 10px;
+  }
+
+  .kingdom-card-action {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+}

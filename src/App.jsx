@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { subscribeToAuthChanges, isGuestMode, hasGuestScores } from './store/progress';
 import ErrorBoundary from './shared/components/ErrorBoundary';
-import NavBar from './shared/components/NavBar';
+import ResponsiveNav from './shared/components/ResponsiveNav';
 import AuthScreen from './shared/components/AuthScreen';
+import Home from './pages/Home';
+import SubjectHome from './pages/SubjectHome';
 import HomeScreen from './shared/components/HomeScreen';
 import SaveScoresModal from './shared/components/SaveScoresModal';
 import KingdomMap from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMap';
@@ -106,13 +108,14 @@ export default function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <NavBar />
+        <ResponsiveNav />
         <Routes>
           {/* Authentication */}
           <Route path="/auth" element={<AuthScreen />} />
 
-          {/* Protected Routes - require authentication or guest mode */}
-          <Route path="/" element={<ProtectedRoute element={<HomeScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          {/* New Navigation Structure - Home & Subject Homes */}
+          <Route path="/" element={<ProtectedRoute element={<Home />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/:subject" element={<ProtectedRoute element={<SubjectHome />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
           {/* MATH KINGDOM - Multiplication Kingdom */}
