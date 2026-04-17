@@ -137,7 +137,6 @@ export default function FlashcardGame() {
 
     return (
       <div className="fcg-done">
-        <button className="back-btn" onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/flashcards')}>‹</button>
         <div className="done-emoji">{emoji}</div>
         <h2>{heading}</h2>
         <div className="fcg-results">

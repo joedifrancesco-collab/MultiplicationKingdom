@@ -71,13 +71,14 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
   const subjectsMatch = pathname.match(/\/subjects\/([\w-]+)/);
   if (subjectsMatch) {
     let subject = subjectsMatch[1];
-    // Map kingdom-based paths to subject paths
+    // Map kingdom-based paths to subject paths (only for subject landing page)
     const subjectMap = {
       'math-kingdom': 'math',
       'language-arts-kingdom': 'spelling',
     };
     const mappedSubject = subjectMap[subject] || subject;
     const subjectLabel = formatSubjectLabel(mappedSubject);
+    // Subject breadcrumb uses mapped subject for landing page
     breadcrumbs.push({ label: subjectLabel, path: `/subjects/${mappedSubject}` });
 
     // Match /subjects/[subject]/[kingdom]
@@ -85,18 +86,20 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
     if (kingdomMatch) {
       const kingdom = kingdomMatch[1];
       const kingdomLabel = formatKingdomLabel(kingdom);
+      // Kingdom breadcrumb uses ORIGINAL subject (not mapped) to keep full path
       breadcrumbs.push({
         label: kingdomLabel,
-        path: `/subjects/${mappedSubject}/${kingdom}`,
+        path: `/subjects/${subject}/${kingdom}`,
       });
 
       // Match times table number (for individual table screens)
       const tableMatch = pathname.match(/\/subjects\/[\w-]+\/[\w-]+\/(\d+)/);
       if (tableMatch) {
         const times = tableMatch[1];
+        // Times table uses ORIGINAL subject
         breadcrumbs.push({
           label: `${times}× Times Table`,
-          path: `/subjects/${mappedSubject}/${kingdom}/${times}`,
+          path: `/subjects/${subject}/${kingdom}/${times}`,
         });
 
         // Match game types after table number
@@ -111,11 +114,12 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
         const gameMatch = pathname.match(/\/(flashcards|siege|maps|grid)($|\/)/);
         if (gameMatch) {
           const gamePath = gameMatch[1];
+          // Game paths use ORIGINAL subject to keep full path
           const gameMap = {
-            flashcards: { label: 'Flashcard Challenge', path: `/subjects/${mappedSubject}/${kingdom}/flashcards` },
-            siege: { label: 'Kingdom Siege', path: `/subjects/${mappedSubject}/${kingdom}/siege` },
-            maps: { label: 'Kingdom Maps', path: `/subjects/${mappedSubject}/${kingdom}/maps` },
-            grid: { label: 'Times Table Grid', path: `/subjects/${mappedSubject}/${kingdom}/grid` },
+            flashcards: { label: 'Flashcard Challenge', path: `/subjects/${subject}/${kingdom}/flashcards` },
+            siege: { label: 'Kingdom Siege', path: `/subjects/${subject}/${kingdom}/siege` },
+            maps: { label: 'Kingdom Maps', path: `/subjects/${subject}/${kingdom}/maps` },
+            grid: { label: 'Times Table Grid', path: `/subjects/${subject}/${kingdom}/grid` },
           };
           if (gameMap[gamePath]) {
             const gameItem = gameMap[gamePath];
