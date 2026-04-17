@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { subscribeToAuthChanges, isGuestMode, hasGuestScores } from './store/progress';
 import { validateSettings } from './config/appSettings';
+import { OverlayProvider } from './context/OverlayContext.jsx';
 import ErrorBoundary from './shared/components/ErrorBoundary';
+import OverlayWrapper from './shared/components/OverlayWrapper';
 import ResponsiveNav from './shared/components/ResponsiveNav';
 import AuthScreen from './shared/components/AuthScreen';
+import Profile from './components/Profile';
 import Home from './pages/Home';
 import SubjectHome from './pages/SubjectHome';
 import SaveScoresModal from './shared/components/SaveScoresModal';
@@ -118,15 +121,18 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        <ResponsiveNav />
-        <Routes>
+      <OverlayProvider>
+        <BrowserRouter>
+          <ResponsiveNav />
+          <OverlayWrapper />
+          <Routes>
           {/* Authentication */}
           <Route path="/auth" element={<AuthScreen />} />
 
           {/* New Navigation Structure - Home & Subject Homes */}
           <Route path="/" element={<ProtectedRoute element={<Home />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/:subject" element={<ProtectedRoute element={<SubjectHome />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/profile" element={<ProtectedRoute element={<Profile />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
           {/* MATH KINGDOM - Multiplication Kingdom */}
@@ -209,6 +215,7 @@ export default function App() {
           onSignUp={handleSignUpFromModal}
         />
       </BrowserRouter>
+      </OverlayProvider>
     </ErrorBoundary>
   );
 }

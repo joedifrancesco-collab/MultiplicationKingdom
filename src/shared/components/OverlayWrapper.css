@@ -1,0 +1,98 @@
+/* Overlay Wrapper */
+.overlay-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Blurred backdrop */
+.overlay-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+/* Overlay container */
+.overlay-container {
+  position: relative;
+  z-index: 2001;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Close button */
+.overlay-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  color: #333;
+  z-index: 10;
+  font-weight: 300;
+}
+
+.overlay-close-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+.overlay-close-btn:active {
+  transform: scale(0.95);
+}
+
+/* Overlay content */
+.overlay-content {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .overlay-container {
+    max-width: 95vw;
+    max-height: 90vh;
+    border-radius: 8px;
+  }
+
+  .overlay-close-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    top: 8px;
+    right: 8px;
+  }
+
+  .overlay-content {
+    padding: 12px;
+  }
+}

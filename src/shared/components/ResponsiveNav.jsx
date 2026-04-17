@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getCurrentAuthUser, isGuestMode, signOutUser, clearGuestMode, subscribeToAuthChanges } from '../../store/progress';
+import { OverlayContext } from '../../context/OverlayContext.jsx';
 import NavDropdown from './NavDropdown';
 import HamburgerMenu from './HamburgerMenu';
 import Breadcrumb from './Breadcrumb';
@@ -20,6 +21,7 @@ export default function ResponsiveNav() {
   const navigate = useNavigate();
   const location = useLocation();
   const profileDropdownRef = useRef(null);
+  const { openOverlay } = useContext(OverlayContext);
 
   // Subscribe to auth state changes
   useEffect(() => {
@@ -225,7 +227,7 @@ export default function ResponsiveNav() {
             {isOnMathPages && (
               <button
                 className="nav-times-table-link"
-                onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/training/table')}
+                onClick={() => openOverlay('times-table')}
                 title="Times Table"
                 aria-label="Times Table"
               >
@@ -245,14 +247,7 @@ export default function ResponsiveNav() {
             ))}
           </div>
 
-          {/* Quick Links */}
-          <button
-            className="nav-quick-link"
-            onClick={() => navigate('/unified-leaderboard')}
-            title="View Leaderboard"
-          >
-            ⭐ Achievements
-          </button>
+          {/* Quick Links removed - Achievements now in profile menu */}
 
           {/* Profile Button with Dropdown */}
           <div className="profile-dropdown-wrapper" ref={profileDropdownRef}>
@@ -281,6 +276,15 @@ export default function ResponsiveNav() {
                   }}
                 >
                   👤 Profile
+                </button>
+                <button
+                  className="profile-dropdown-item"
+                  onClick={() => {
+                    navigate('/unified-leaderboard');
+                    setIsProfileDropdownOpen(false);
+                  }}
+                >
+                  ⭐ Achievements
                 </button>
                 <button
                   className="profile-dropdown-item"

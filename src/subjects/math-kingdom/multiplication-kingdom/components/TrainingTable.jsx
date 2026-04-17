@@ -2,15 +2,23 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import MultiplicationTable from './MultiplicationTable';
 import './TrainingTable.css';
 
-export default function TrainingTable() {
+export default function TrainingTable({ isOverlay = false, onClose = null }) {
   const navigate = useNavigate();
   const location = useLocation();
   
   // Get origin from state, fallback to /training
   const origin = location.state?.origin || '/training';
 
+  const handleClose = () => {
+    if (isOverlay && onClose) {
+      onClose();
+    } else {
+      navigate(origin);
+    }
+  };
+
   return (
-    <div className="training-table">
+    <div className={`training-table ${isOverlay ? 'training-table-overlay' : ''}`}>
       <header className="tt-header">
         <h1 className="tt-title">Multiplication Table</h1>
       </header>

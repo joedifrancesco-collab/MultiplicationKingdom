@@ -38,3 +38,23 @@
   gap: 20px;
   flex: 1;
 }
+
+/* Overlay Mode Styles */
+.training-table-overlay {
+  min-height: auto;
+  padding: 0;
+  max-width: 100%;
+  gap: 16px;
+  background: transparent;
+}
+
+.training-table-overlay .tt-header {
+  padding: 0 0 12px 0;
+  background: transparent;
+  position: static;
+  top: auto;
+}
+
+.training-table-overlay .tt-title {
+  font-size: 1.3rem;
+}
