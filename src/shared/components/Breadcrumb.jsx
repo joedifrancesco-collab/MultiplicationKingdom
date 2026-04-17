@@ -125,13 +125,26 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
             const gameItem = gameMap[gamePath];
             breadcrumbs.push(gameItem);
             
-            // Add game mode/variant breadcrumb if state contains mode info
+            // Add game mode/variant breadcrumb
+            // For flashcards/siege: mode is in state
             if ((gamePath === 'flashcards' || gamePath === 'siege') && state?.mode) {
               const modeLabel = formatGameModeLabel(state.mode, state.duration);
               breadcrumbs.push({ 
                 label: modeLabel, 
                 path: pathname 
               });
+            }
+            // For maps/grid: mode is in URL path (e.g., /maps/freePlay or /maps/conquest)
+            else if ((gamePath === 'maps' || gamePath === 'grid') && pathname.includes(`/${gamePath}/`)) {
+              const modeMatch = pathname.match(new RegExp(`/${gamePath}/([\\w-]+)`));
+              if (modeMatch) {
+                const mode = modeMatch[1];
+                const modeLabel = formatGameModeLabel(mode);
+                breadcrumbs.push({
+                  label: modeLabel,
+                  path: pathname,
+                });
+              }
             }
           }
         }
@@ -200,5 +213,12 @@ function formatGameModeLabel(mode, duration) {
   if (mode === 'countdown') {
     return 'Sprint';
   }
-  return mode.charAt(0).toUpperCase() + mode.slice(1);
+  // Convert camelCase to Title Case: "freePlay" → "Free Play"
+  const camelCaseRegex = /([a-z])([A-Z])/g;
+  const titleCase = mode
+    .replace(camelCaseRegex, '$1 $2')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  return titleCase;
 }
