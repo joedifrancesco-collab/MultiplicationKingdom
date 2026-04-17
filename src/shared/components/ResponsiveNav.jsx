@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getCurrentAuthUser, isGuestMode, signOutUser, clearGuestMode } from '../../store/progress';
+import { getCurrentAuthUser, isGuestMode, signOutUser, clearGuestMode, subscribeToAuthChanges } from '../../store/progress';
 import NavDropdown from './NavDropdown';
 import HamburgerMenu from './HamburgerMenu';
 import Breadcrumb from './Breadcrumb';
@@ -15,11 +15,28 @@ export default function ResponsiveNav() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [user, setUser] = useState(() => getCurrentAuthUser());
+  const [guest, setGuest] = useState(isGuestMode());
   const navigate = useNavigate();
   const location = useLocation();
-  const user = getCurrentAuthUser();
-  const guest = isGuestMode();
   const profileDropdownRef = useRef(null);
+
+  // Subscribe to auth state changes
+  useEffect(() => {
+    const unsubscribe = subscribeToAuthChanges((authUser) => {
+      setUser(authUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Subscribe to guest mode changes
+  useEffect(() => {
+    const handleGuestModeChange = () => {
+      setGuest(isGuestMode());
+    };
+    window.addEventListener('guestModeChanged', handleGuestModeChange);
+    return () => window.removeEventListener('guestModeChanged', handleGuestModeChange);
+  }, []);
 
   // Times Table only shows on Math pages
   const isOnMathPages = location.pathname.startsWith('/subjects/math');
