@@ -139,7 +139,18 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
               const modeMatch = pathname.match(new RegExp(`/${gamePath}/([\\w-]+)`));
               if (modeMatch) {
                 const mode = modeMatch[1];
-                const modeLabel = formatGameModeLabel(mode);
+                // For URL-based modes, don't pass duration parameter
+                let modeLabel;
+                if (mode === 'timed') {
+                  modeLabel = 'Timed';
+                } else if (mode === 'practice') {
+                  modeLabel = 'Practice';
+                } else if (mode === 'countdown') {
+                  modeLabel = 'Sprint';
+                } else {
+                  // Generic camelCase to Title Case conversion
+                  modeLabel = formatGameModeLabel(mode);
+                }
                 breadcrumbs.push({
                   label: modeLabel,
                   path: pathname,
@@ -204,7 +215,7 @@ function formatGameModeLabel(mode, duration) {
   if (mode === 'practice') {
     return 'Practice';
   }
-  if (mode === 'timed') {
+  if (mode === 'timed' && duration !== undefined) {
     if (duration === 60) return '1 Minute';
     if (duration === 180) return '3 Minutes';
     if (duration === 300) return '5 Minutes';
