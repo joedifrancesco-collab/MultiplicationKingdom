@@ -312,7 +312,7 @@ const firebaseConfig = {
 };
 ```
 
-4. Deploy Firestore rules (see [DEPLOY_FIRESTORE_RULES.md](./DEPLOY_FIRESTORE_RULES.md))
+4. Deploy Firestore rules (see [DEPLOY_FIRESTORE_RULES.md](./docs/guides/DEPLOY_FIRESTORE_RULES.md))
 
 ### Environment Variables (Optional)
 
@@ -610,7 +610,7 @@ npm run lint
 - **Fallback**: If Firebase is unavailable, local leaderboard still works
 - **Public Leaderboards**: Game data is world-viewable; spelling data is private per user
 
-**See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) and [FIRESTORE_RULES_UPDATE.md](./FIRESTORE_RULES_UPDATE.md) for detailed instructions.**
+**See [FIREBASE_SETUP.md](./docs/guides/FIREBASE_SETUP.md) and [FIRESTORE_RULES_UPDATE.md](./docs/guides/FIRESTORE_RULES_UPDATE.md) for detailed instructions.**
 
 ## 🌐 Web Deployment
 
