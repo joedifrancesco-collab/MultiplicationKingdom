@@ -152,7 +152,8 @@ export default function ResponsiveNav() {
   };
 
   const subjects = [mathSubject, spellingSubject];
-  const sideBarSubjects = [labSubject];
+  // Only show Lab on homepage
+  const sideBarSubjects = location.pathname === '/' ? [labSubject] : [];
 
   // Map for hamburger menu
   const hamburgerSubjects = subjects.concat(sideBarSubjects).map((subject) => ({
