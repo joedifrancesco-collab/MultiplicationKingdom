@@ -4,15 +4,18 @@ import './Breadcrumb.css';
 
 /**
  * Breadcrumb Component
- * Displays navigation path (Home > Math > Multiplication Kingdom)
+ * Displays navigation path (Home > Math > Multiplication Kingdom > Game Mode)
  * Each item is clickable to navigate back to that level
+ * 
+ * @param {Array} breadcrumbs - List of breadcrumb items
+ * @param {Boolean} ownLine - If true, displays breadcrumb on its own line with margin
  */
-export default function Breadcrumb({ breadcrumbs = [] }) {
+export default function Breadcrumb({ breadcrumbs = [], ownLine = false }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   // If no breadcrumbs provided, generate from location params
-  const displayBreadcrumbs = breadcrumbs.length > 0 ? breadcrumbs : getDefaultBreadcrumbs(location.pathname);
+  const displayBreadcrumbs = breadcrumbs.length > 0 ? breadcrumbs : getDefaultBreadcrumbs(location.pathname, location.state);
 
   const handleBreadcrumbClick = (path) => {
     navigate(path);
@@ -21,7 +24,7 @@ export default function Breadcrumb({ breadcrumbs = [] }) {
   if (displayBreadcrumbs.length === 0) return null;
 
   return (
-    <nav className="breadcrumb-nav" aria-label="Breadcrumb">
+    <nav className={`breadcrumb-nav ${ownLine ? 'own-line' : ''}`} aria-label="Breadcrumb">
       <ol className="breadcrumb-list">
         {displayBreadcrumbs.map((item, index) => (
           <li key={`${item.label}-${index}`} className="breadcrumb-item">
@@ -52,58 +55,97 @@ export default function Breadcrumb({ breadcrumbs = [] }) {
 /**
  * Parse route pathname to generate breadcrumbs
  * Routes follow pattern: /subjects/[subject]/[kingdom]/[game]
+ * Homepage (/) returns empty breadcrumbs
+ * @param {String} pathname - Current URL path
+ * @param {Object} state - React Router location state (contains mode, duration for games)
  */
-function getDefaultBreadcrumbs(pathname) {
-  const breadcrumbs = [{ label: '🏠 Home', path: '/' }];
+function getDefaultBreadcrumbs(pathname, state = {}) {
+  // Hide breadcrumbs on homepage
+  if (pathname === '/') {
+    return [];
+  }
+
+  const breadcrumbs = [{ label: 'Home', path: '/' }];
 
   // Match /subjects/[subject]/...
-  const subjectsMatch = pathname.match(/\/subjects\/(\w+)/);
+  const subjectsMatch = pathname.match(/\/subjects\/([\w-]+)/);
   if (subjectsMatch) {
-    const subject = subjectsMatch[1];
-    const subjectLabel = formatSubjectLabel(subject);
-    breadcrumbs.push({ label: subjectLabel, path: `/subjects/${subject}` });
+    let subject = subjectsMatch[1];
+    // Map kingdom-based paths to subject paths
+    const subjectMap = {
+      'math-kingdom': 'math',
+      'language-arts-kingdom': 'spelling',
+    };
+    const mappedSubject = subjectMap[subject] || subject;
+    const subjectLabel = formatSubjectLabel(mappedSubject);
+    breadcrumbs.push({ label: subjectLabel, path: `/subjects/${mappedSubject}` });
 
     // Match /subjects/[subject]/[kingdom]
-    const kingdomMatch = pathname.match(/\/subjects\/[\w]+\/([\w-]+)/);
+    const kingdomMatch = pathname.match(/\/subjects\/[\w-]+\/([\w-]+)/);
     if (kingdomMatch) {
       const kingdom = kingdomMatch[1];
       const kingdomLabel = formatKingdomLabel(kingdom);
       breadcrumbs.push({
         label: kingdomLabel,
-        path: `/subjects/${subject}/${kingdom}`,
+        path: `/subjects/${mappedSubject}/${kingdom}`,
       });
 
-      // Match times table number or sub-section
-      const tableMatch = pathname.match(/\/subjects\/[\w]+\/[\w-]+\/(\d+)/);
+      // Match times table number (for individual table screens)
+      const tableMatch = pathname.match(/\/subjects\/[\w-]+\/[\w-]+\/(\d+)/);
       if (tableMatch) {
         const times = tableMatch[1];
         breadcrumbs.push({
           label: `${times}× Times Table`,
-          path: `/subjects/${subject}/${kingdom}/${times}`,
+          path: `/subjects/${mappedSubject}/${kingdom}/${times}`,
         });
-      }
 
-      // Match game types
-      const gameMatch = pathname.match(/\/(flashcard|speed|match|siege)$/);
-      if (gameMatch) {
-        const gameType = gameMatch[1];
-        const gameLabel = formatGameLabel(gameType);
-        breadcrumbs.push({ label: gameLabel, path: pathname });
+        // Match game types after table number
+        const gameMatch = pathname.match(/\/(flashcard|speed|match|siege)$/);
+        if (gameMatch) {
+          const gameType = gameMatch[1];
+          const gameLabel = formatGameLabel(gameType);
+          breadcrumbs.push({ label: gameLabel, path: pathname });
+        }
+      } else {
+        // Match game types in root kingdom path (e.g., /subjects/.../flashcards or /subjects/.../maps/mode)
+        const gameMatch = pathname.match(/\/(flashcards|siege|maps|grid)($|\/)/);
+        if (gameMatch) {
+          const gamePath = gameMatch[1];
+          const gameMap = {
+            flashcards: { label: 'Flashcard Challenge', path: `/subjects/${mappedSubject}/${kingdom}/flashcards` },
+            siege: { label: 'Kingdom Siege', path: `/subjects/${mappedSubject}/${kingdom}/siege` },
+            maps: { label: 'Kingdom Maps', path: `/subjects/${mappedSubject}/${kingdom}/maps` },
+            grid: { label: 'Times Table Grid', path: `/subjects/${mappedSubject}/${kingdom}/grid` },
+          };
+          if (gameMap[gamePath]) {
+            const gameItem = gameMap[gamePath];
+            breadcrumbs.push(gameItem);
+            
+            // Add game mode/variant breadcrumb if state contains mode info
+            if ((gamePath === 'flashcards' || gamePath === 'siege') && state?.mode) {
+              const modeLabel = formatGameModeLabel(state.mode, state.duration);
+              breadcrumbs.push({ 
+                label: modeLabel, 
+                path: pathname 
+              });
+            }
+          }
+        }
       }
     }
   }
 
   // Handle other routes
   if (pathname === '/achievements' || pathname === '/unified-leaderboard') {
-    return [{ label: '🏠 Home', path: '/' }, { label: '🏆 Achievements', path: pathname }];
+    return [{ label: 'Home', path: '/' }, { label: 'Achievements', path: pathname }];
   }
 
   if (pathname === '/settings') {
-    return [{ label: '🏠 Home', path: '/' }, { label: '⚙️ Settings', path: pathname }];
+    return [{ label: 'Home', path: '/' }, { label: 'Settings', path: pathname }];
   }
 
   if (pathname === '/profile') {
-    return [{ label: '🏠 Home', path: '/' }, { label: '👤 Profile', path: pathname }];
+    return [{ label: 'Home', path: '/' }, { label: 'Profile', path: pathname }];
   }
 
   return breadcrumbs;
@@ -111,32 +153,48 @@ function getDefaultBreadcrumbs(pathname) {
 
 function formatSubjectLabel(subject) {
   const labels = {
-    math: '🔢 Math',
-    spelling: '📖 Spelling',
-    lab: '🧪 Lab',
-    'number-cruncher': '🧪 Lab',
-    science: '🎓 Science',
+    math: 'Math',
+    spelling: 'Spelling',
+    lab: 'Lab',
+    'number-cruncher': 'Lab',
+    science: 'Science',
   };
   return labels[subject] || subject.charAt(0).toUpperCase() + subject.slice(1);
 }
 
 function formatKingdomLabel(kingdom) {
   const labels = {
-    'multiplication-kingdom': '✖️ Multiplication Kingdom',
-    'addition-kingdom': '➕ Addition Kingdom',
-    'subtraction-kingdom': '➖ Subtraction Kingdom',
-    'division-kingdom': '÷ Division Kingdom',
-    'number-cruncher': '🎮 Number Cruncher',
+    'multiplication-kingdom': 'Multiplication Kingdom',
+    'addition-kingdom': 'Addition Kingdom',
+    'subtraction-kingdom': 'Subtraction Kingdom',
+    'division-kingdom': 'Division Kingdom',
+    'number-cruncher': 'Number Cruncher',
   };
   return labels[kingdom] || kingdom.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function formatGameLabel(gameType) {
   const labels = {
-    flashcard: '🃏 Flashcard',
-    speed: '⚡ Speed Challenge',
-    match: '🎮 Match Game',
-    siege: '⚔️ Kingdom Siege',
+    flashcard: 'Flashcard',
+    speed: 'Speed Challenge',
+    match: 'Match Game',
+    siege: 'Kingdom Siege',
   };
   return labels[gameType] || gameType.charAt(0).toUpperCase() + gameType.slice(1);
+}
+
+function formatGameModeLabel(mode, duration) {
+  if (mode === 'practice') {
+    return 'Practice';
+  }
+  if (mode === 'timed') {
+    if (duration === 60) return '1 Minute';
+    if (duration === 180) return '3 Minutes';
+    if (duration === 300) return '5 Minutes';
+    return `${Math.round(duration / 60)} Minutes`;
+  }
+  if (mode === 'countdown') {
+    return 'Sprint';
+  }
+  return mode.charAt(0).toUpperCase() + mode.slice(1);
 }

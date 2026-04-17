@@ -280,7 +280,7 @@ export default function KingdomSiege() {
           <button className="back-btn" onClick={() => navigate(origin)}>‹</button>
           <button 
             className="siege-mult-table-btn-intro" 
-            onClick={() => navigate('/training/table', { state: { origin: '/siege' } })}
+            onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/training/table', { state: { origin: '/siege' } })}
             title="Interactive Multiplication Table"
           >
             📊
@@ -344,7 +344,7 @@ export default function KingdomSiege() {
         <div className="siege-phase-badge">Phase {getPhase(score) + 1}</div>
         <button 
           className="siege-mult-table-btn" 
-          onClick={() => navigate('/training/table', { state: { origin: '/siege' } })}
+          onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/training/table', { state: { origin: '/siege' } })}
           title="Interactive Multiplication Table"
         >
           📊

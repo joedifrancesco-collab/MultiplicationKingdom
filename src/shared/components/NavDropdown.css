@@ -31,7 +31,12 @@
 
 .nav-dropdown-button.active {
   color: var(--primary, #6c63ff);
-  background-color: rgba(108, 99, 255, 0.1);
+}
+
+/* Override active color for specific subjects */
+.nav-subject-math .nav-dropdown-button.active,
+.nav-subject-lab .nav-dropdown-button.active {
+  color: var(--text-primary, #333);
 }
 
 .nav-dropdown-icon {
@@ -50,9 +55,9 @@
 
 /* Dropdown Menu */
 .nav-dropdown-menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
+  position: fixed;
+  top: auto;
+  left: auto;
   background-color: white;
   border: 1px solid var(--border-light, #e5e7eb);
   border-radius: 8px;
@@ -62,7 +67,7 @@
   z-index: 1000;
   animation: slideDown 150ms ease-out;
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 60vh;
 }
 
 @keyframes slideDown {
@@ -146,9 +151,9 @@
 
 /* Submenu */
 .nav-sub-menu {
-  position: absolute;
-  top: 0;
-  left: 100%;
+  position: fixed;
+  top: auto;
+  left: auto;
   background-color: white;
   border: 1px solid var(--border-light, #e5e7eb);
   border-radius: 8px;
@@ -156,9 +161,8 @@
   min-width: 200px;
   z-index: 1001;
   animation: slideRight 150ms ease-out;
-  max-height: 400px;
+  max-height: 60vh;
   overflow-y: auto;
-  margin-left: 8px;
 }
 
 @keyframes slideRight {

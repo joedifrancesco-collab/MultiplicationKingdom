@@ -15,7 +15,7 @@ export default function KingdomMapsMode() {
       <div className="kmm-modes">
         <button
           className="kmm-mode-card free-play-card"
-          onClick={() => navigate('/kingdom-maps/freePlay')}
+          onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/maps/freePlay')}
         >
           <div className="kmm-mode-icon">🌳</div>
           <div className="kmm-mode-body">
@@ -27,7 +27,7 @@ export default function KingdomMapsMode() {
 
         <button
           className="kmm-mode-card timed-card"
-          onClick={() => navigate('/kingdom-maps/timed')}
+          onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/maps/timed')}
         >
           <div className="kmm-mode-icon">⏱️</div>
           <div className="kmm-mode-body">
@@ -39,7 +39,7 @@ export default function KingdomMapsMode() {
 
         <button
           className="kmm-mode-card row-column-card"
-          onClick={() => navigate('/kingdom-maps/rowColumn')}
+          onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/maps/rowColumn')}
         >
           <div className="kmm-mode-icon">📊</div>
           <div className="kmm-mode-body">

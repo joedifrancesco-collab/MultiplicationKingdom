@@ -122,6 +122,11 @@
   color: var(--danger, #d32f2f);
 }
 
+.status-badge.coming-soon {
+  background-color: var(--info-light, #e3f2fd);
+  color: var(--info, #1976d2);
+}
+
 /* Badge */
 .kingdom-card-badge {
   display: inline-block;

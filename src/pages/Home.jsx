@@ -16,8 +16,6 @@ export default function Home() {
       description: 'Master multiplication, addition, and more!',
       path: '/subjects/math',
       enabled: true,
-      enabledCount: 1,
-      totalCount: 4,
       badge: null,
     },
     {
@@ -27,31 +25,7 @@ export default function Home() {
       description: 'Improve spelling, vocabulary, and grammar.',
       path: '/subjects/spelling',
       enabled: true,
-      enabledCount: 1,
-      totalCount: 3,
       badge: null,
-    },
-    {
-      id: 'lab',
-      icon: '🧪',
-      label: 'Lab',
-      description: 'Explore number theory and experiments.',
-      path: '/subjects/lab',
-      enabled: true,
-      enabledCount: 1,
-      totalCount: 1,
-      badge: 'NEW',
-    },
-    {
-      id: 'science',
-      icon: '🎓',
-      label: 'Science',
-      description: 'Coming soon with science topics!',
-      path: '/subjects/science',
-      enabled: false,
-      enabledCount: 0,
-      totalCount: 0,
-      comingSoon: true,
     },
   ];
 
@@ -77,43 +51,9 @@ export default function Home() {
                 description={subject.description}
                 path={subject.path}
                 enabled={subject.enabled}
-                enabledCount={subject.enabledCount}
-                totalCount={subject.totalCount}
                 badge={subject.badge}
-                comingSoon={subject.comingSoon}
               />
             ))}
-          </div>
-        </section>
-
-        {/* Optional Info Section */}
-        <section className="home-info">
-          <div className="info-card">
-            <h2 className="info-title">💡 Tips</h2>
-            <ul className="info-list">
-              <li>Start with <strong>Math</strong> to master multiplication!</li>
-              <li>Unlock new kingdoms by earning stars.</li>
-              <li>Track your progress on the leaderboard.</li>
-              <li>Challenge yourself with different game modes.</li>
-            </ul>
-          </div>
-
-          <div className="info-card">
-            <h2 className="info-title">🎮 Game Modes</h2>
-            <ul className="info-list">
-              <li>
-                <strong>Flashcard:</strong> Learn with flashcards
-              </li>
-              <li>
-                <strong>Speed Challenge:</strong> Beat the clock
-              </li>
-              <li>
-                <strong>Match Game:</strong> Pair correct answers
-              </li>
-              <li>
-                <strong>Kingdom Siege:</strong> Complete challenges to win
-              </li>
-            </ul>
           </div>
         </section>
       </main>

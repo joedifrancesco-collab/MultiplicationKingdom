@@ -7,7 +7,7 @@ export default function FlashcardMenu() {
   const [timePicker, setTimePicker] = useState(false);
 
   function start(mode, duration) {
-    navigate('/flashcards/play', { state: { mode, duration } });
+    navigate('/subjects/math-kingdom/multiplication-kingdom/flashcards/play', { state: { mode, duration } });
   }
 
   return (

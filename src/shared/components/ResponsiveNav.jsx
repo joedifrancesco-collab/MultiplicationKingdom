@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getCurrentAuthUser, isGuestMode, signOutUser, clearGuestMode } from '../../store/progress';
 import NavDropdown from './NavDropdown';
 import HamburgerMenu from './HamburgerMenu';
 import Breadcrumb from './Breadcrumb';
@@ -12,7 +13,63 @@ import './ResponsiveNav.css';
  */
 export default function ResponsiveNav() {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const user = getCurrentAuthUser();
+  const guest = isGuestMode();
+  const profileDropdownRef = useRef(null);
+
+  // Times Table only shows on Math pages
+  const isOnMathPages = location.pathname.startsWith('/subjects/math');
+
+  // Reset signingOut state when user or guest status changes
+  useEffect(() => {
+    setSigningOut(false);
+  }, [user, guest]);
+
+  // Handle sign out
+  async function handleSignOut() {
+    setSigningOut(true);
+    if (guest) {
+      clearGuestMode();
+      navigate('/auth', { replace: true });
+    } else {
+      await signOutUser();
+      navigate('/auth', { replace: true });
+    }
+  }
+
+  const getProfileDisplay = () => {
+    if (guest) {
+      return '👤'; // Guest silhouette
+    }
+    if (user?.displayName) {
+      // Get initials from display name
+      const initials = user.displayName
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase();
+      return initials || '👤';
+    }
+    return '👤';
+  };
+
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+        setIsProfileDropdownOpen(false);
+      }
+    }
+
+    if (isProfileDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isProfileDropdownOpen]);
 
   // Subject dropdown data
   const mathSubject = {
@@ -24,38 +81,30 @@ export default function ResponsiveNav() {
       {
         icon: '✖️',
         label: 'Multiplication Kingdom',
-        path: '/subjects/math/multiplication-kingdom',
+        path: '/subjects/math-kingdom/multiplication-kingdom',
         items: [
-          { label: '1× Times Table', path: '/subjects/math/multiplication-kingdom/1' },
-          { label: '2× Times Table', path: '/subjects/math/multiplication-kingdom/2' },
-          { label: '3× Times Table', path: '/subjects/math/multiplication-kingdom/3' },
-          { label: '4× Times Table', path: '/subjects/math/multiplication-kingdom/4' },
-          { label: '5× Times Table', path: '/subjects/math/multiplication-kingdom/5' },
-          { label: '6× Times Table', path: '/subjects/math/multiplication-kingdom/6' },
-          { label: '7× Times Table', path: '/subjects/math/multiplication-kingdom/7' },
-          { label: '8× Times Table', path: '/subjects/math/multiplication-kingdom/8' },
-          { label: '9× Times Table', path: '/subjects/math/multiplication-kingdom/9' },
-          { label: '10× Times Table', path: '/subjects/math/multiplication-kingdom/10' },
-          { label: '11× Times Table', path: '/subjects/math/multiplication-kingdom/11' },
-          { label: '12× Times Table', path: '/subjects/math/multiplication-kingdom/12' },
+          { label: '🏰 Conquest', path: '/subjects/math-kingdom/multiplication-kingdom/grid' },
+          { label: '🃏 Flashcard Challenge', path: '/subjects/math-kingdom/multiplication-kingdom/flashcards' },
+          { label: '🗺️ Kingdom Maps', path: '/subjects/math-kingdom/multiplication-kingdom/maps' },
+          { label: '⚔️ Kingdom Siege', path: '/subjects/math-kingdom/multiplication-kingdom/siege' },
         ],
       },
       {
         icon: '➕',
         label: 'Addition Kingdom',
-        path: '/subjects/math/addition-kingdom',
+        path: '/subjects/math-kingdom/addition-kingdom',
         disabled: true,
       },
       {
         icon: '➖',
         label: 'Subtraction Kingdom',
-        path: '/subjects/math/subtraction-kingdom',
+        path: '/subjects/math-kingdom/subtraction-kingdom',
         disabled: true,
       },
       {
         icon: '÷',
         label: 'Division Kingdom',
-        path: '/subjects/math/division-kingdom',
+        path: '/subjects/math-kingdom/division-kingdom',
         disabled: true,
       },
     ],
@@ -70,24 +119,19 @@ export default function ResponsiveNav() {
       {
         icon: '✍️',
         label: 'Spelling',
-        path: '/subjects/spelling',
-        items: [
-          { label: 'Vowels & Consonants', path: '/subjects/spelling/vowels' },
-          { label: 'Common Words', path: '/subjects/spelling/common-words' },
-          { label: 'Sight Words', path: '/subjects/spelling/sight-words' },
-          { label: 'Advanced Words', path: '/subjects/spelling/advanced-words' },
-        ],
+        path: '/subjects/language-arts-kingdom/spelling',
+        items: [],
       },
       {
         icon: '📚',
         label: 'Vocabulary',
-        path: '/subjects/spelling/vocabulary',
+        path: '/subjects/language-arts-kingdom/vocabulary',
         disabled: true,
       },
       {
         icon: '🔤',
         label: 'Grammar',
-        path: '/subjects/spelling/grammar',
+        path: '/subjects/language-arts-kingdom/grammar',
         disabled: true,
       },
     ],
@@ -102,15 +146,16 @@ export default function ResponsiveNav() {
       {
         icon: '🎮',
         label: 'Number Cruncher',
-        path: '/subjects/lab/number-cruncher',
+        path: '/number-cruncher',
       },
     ],
   };
 
-  const subjects = [mathSubject, spellingSubject, labSubject];
+  const subjects = [mathSubject, spellingSubject];
+  const sideBarSubjects = [labSubject];
 
   // Map for hamburger menu
-  const hamburgerSubjects = subjects.map((subject) => ({
+  const hamburgerSubjects = subjects.concat(sideBarSubjects).map((subject) => ({
     key: subject.key,
     icon: subject.icon,
     label: subject.label,
@@ -127,19 +172,16 @@ export default function ResponsiveNav() {
     <div className="responsive-nav-wrapper">
       {/* Desktop Navbar */}
       <nav className="responsive-nav desktop-nav" role="navigation" aria-label="Main navigation">
-        {/* Left: Logo + Breadcrumb */}
+        {/* Left: Home Icon Only */}
         <div className="nav-left">
           <button
             className="nav-logo"
             onClick={() => navigate('/')}
             aria-label="Learning Kingdom Home"
+            title="Home"
           >
-            <span className="logo-icon">🧬</span>
-            <span className="logo-text">Learning Kingdom</span>
+            <span className="logo-icon">⌂</span>
           </button>
-          <div className="nav-breadcrumb-inline">
-            <Breadcrumb />
-          </div>
         </div>
 
         {/* Center: Subject Dropdowns */}
@@ -151,12 +193,41 @@ export default function ResponsiveNav() {
               label={subject.label}
               items={subject.items}
               activeSubject={subject.key}
+              hideIcon={true}
+              className={`nav-subject-${subject.key}`}
             />
           ))}
         </div>
 
-        {/* Right: Quick Links */}
+        {/* Right: Lab (side) + Quick Links */}
         <div className="nav-right">
+          {/* Lab dropdown (right-aligned) */}
+          <div className="nav-lab-section">
+            {/* Times Table Link (right-aligned) - only show on Math pages */}
+            {isOnMathPages && (
+              <button
+                className="nav-times-table-link"
+                onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/training/table')}
+                title="Times Table"
+                aria-label="Times Table"
+              >
+                📖 Times Table
+              </button>
+            )}
+
+          {sideBarSubjects.map((subject) => (
+              <NavDropdown
+                key={subject.key}
+                icon={subject.icon}
+                label={subject.label}
+                items={subject.items}
+                activeSubject={subject.key}
+                className={`nav-subject-${subject.key}`}
+              />
+            ))}
+          </div>
+
+          {/* Quick Links */}
           <button
             className="nav-quick-link"
             onClick={() => navigate('/unified-leaderboard')}
@@ -165,21 +236,47 @@ export default function ResponsiveNav() {
             ⭐ Achievements
           </button>
 
-          <button
-            className="nav-quick-link"
-            onClick={() => navigate('/settings')}
-            title="Settings"
-          >
-            ⚙️
-          </button>
+          {/* Profile Button with Dropdown */}
+          <div className="profile-dropdown-wrapper" ref={profileDropdownRef}>
+            <button
+              className="nav-quick-link profile-button"
+              onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+              title="Profile menu"
+              aria-expanded={isProfileDropdownOpen}
+            >
+              {getProfileDisplay()}
+            </button>
 
-          <button
-            className="nav-quick-link"
-            onClick={() => navigate('/profile')}
-            title="Profile"
-          >
-            👤
-          </button>
+            {/* Profile Dropdown Menu */}
+            {isProfileDropdownOpen && (
+              <div className="profile-dropdown-menu">
+                {!guest && user?.displayName && (
+                  <div className="profile-dropdown-user-name">
+                    {user.displayName}
+                  </div>
+                )}
+                <button
+                  className="profile-dropdown-item"
+                  onClick={() => {
+                    navigate('/profile');
+                    setIsProfileDropdownOpen(false);
+                  }}
+                >
+                  👤 Profile
+                </button>
+                <button
+                  className="profile-dropdown-item"
+                  onClick={() => {
+                    handleSignOut();
+                    setIsProfileDropdownOpen(false);
+                  }}
+                  disabled={signingOut}
+                >
+                  {signingOut ? '⏳ Exiting...' : guest ? '🔓 Log In' : '🔒 Log Out'}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 
@@ -210,6 +307,11 @@ export default function ResponsiveNav() {
         onClose={() => setIsHamburgerOpen(false)}
         subjects={hamburgerSubjects}
       />
+
+      {/* Desktop Breadcrumb Trail (displays below nav when not on home) */}
+      <div className="breadcrumb-desktop">
+        <Breadcrumb />
+      </div>
 
       {/* Mobile Breadcrumb */}
       <div className="breadcrumb-mobile">

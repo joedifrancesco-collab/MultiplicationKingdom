@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { KINGDOMS } from '../data/questions';
 import { getProgress } from '../../../../store/progress';
@@ -14,14 +15,15 @@ export default function KingdomScreen() {
   const progress = getProgress();
   const kp = progress.kingdoms.find(k => k.id === kingdomId);
 
-  if (!kingdom || !kp?.unlocked) {
-    navigate('/kingdom');
-    return null;
-  }
+  useEffect(() => {
+    if (!kingdom || !kp?.unlocked) {
+      navigate('/subjects/math-kingdom/multiplication-kingdom');
+    }
+  }, [kingdom, kp, navigate]);
 
   return (
     <div className="kingdom-screen" style={{ '--kingdom-color': kingdom.color }}>
-      <button className="back-btn" onClick={() => navigate('/kingdom')}>‹</button>
+      <button className="back-btn" onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom')}>‹</button>
       <h1 className="kingdom-title">{kingdom.name}</h1>
       <p className="kingdom-desc">Conquer the {kingdomId}× land!</p>
 
@@ -37,7 +39,7 @@ export default function KingdomScreen() {
           icon="⚡"
           title="Speed Challenge"
           description="Beat the clock!"
-          onClick={() => navigate(`/kingdom/${id}/speed`)}
+          onClick={() => navigate(`/subjects/math-kingdom/multiplication-kingdom/${id}/speed`)}
           platforms="both"
           deviceType={deviceType}
         />
@@ -46,7 +48,7 @@ export default function KingdomScreen() {
           icon="🔀"
           title="Match Game"
           description="Find the matching pairs"
-          onClick={() => navigate(`/kingdom/${id}/match`)}
+          onClick={() => navigate(`/subjects/math-kingdom/multiplication-kingdom/${id}/match`)}
           platforms="both"
           deviceType={deviceType}
         />
@@ -55,7 +57,7 @@ export default function KingdomScreen() {
           icon="⚔️"
           title="Kingdom Siege"
           description="Defend the kingdom!"
-          onClick={() => navigate(`/kingdom/${id}/siege`)}
+          onClick={() => navigate(`/subjects/math-kingdom/multiplication-kingdom/${id}/siege`)}
           platforms="both"
           deviceType={deviceType}
         />

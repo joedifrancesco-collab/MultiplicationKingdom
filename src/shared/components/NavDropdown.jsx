@@ -7,17 +7,64 @@ import './NavDropdown.css';
  * Reusable dropdown menu for navbar
  * Used for Math ▼, Language Arts ▼, Lab ▼
  */
-export default function NavDropdown({ label, icon, items = [], activeSubject = null }) {
+export default function NavDropdown({ label, icon, items = [], activeSubject = null, hideIcon = false, className = '' }) {
   const [isOpen, setIsOpen] = useState(false);
   const [openSubject, setOpenSubject] = useState(null);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [submenuPosition, setSubmenuPosition] = useState({ top: 0, left: 0 });
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
+  const menuRef = useRef(null);
+  const submenuCloseTimerRef = useRef(null);
   const navigate = useNavigate();
+
+  // Calculate menu position based on button location
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      setMenuPosition({
+        top: buttonRect.bottom + 4,
+        left: buttonRect.left,
+      });
+    }
+  }, [isOpen]);
+
+  // Calculate submenu position
+  useEffect(() => {
+    if (openSubject && menuRef.current) {
+      const menuRect = menuRef.current.getBoundingClientRect();
+      const viewport = window.innerWidth;
+      
+      // Position to the right, but check if it fits
+      let left = menuRect.right + 8;
+      if (left + 200 > viewport) {
+        // Not enough space, position to the left instead
+        left = menuRect.left - 200 - 8;
+      }
+      
+      setSubmenuPosition({
+        top: Math.max(menuRect.top, 56), // Don't go above navbar
+        left: left,
+      });
+    }
+  }, [openSubject]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
+        // Also check if we're not clicking on any submenus
+        const submenus = document.querySelectorAll('.nav-sub-menu');
+        let clickedSubmenu = false;
+        submenus.forEach(submenu => {
+          if (submenu.contains(event.target)) {
+            clickedSubmenu = true;
+          }
+        });
+        if (!clickedSubmenu) {
+          setIsOpen(false);
+          setOpenSubject(null);
+        }
       }
     }
 
@@ -41,6 +88,15 @@ export default function NavDropdown({ label, icon, items = [], activeSubject = n
     }
   }, [isOpen]);
 
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (submenuCloseTimerRef.current) {
+        clearTimeout(submenuCloseTimerRef.current);
+      }
+    };
+  }, []);
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -54,24 +110,47 @@ export default function NavDropdown({ label, icon, items = [], activeSubject = n
   };
 
   const handleSubjectHover = (itemLabel) => {
-    setOpenSubject(itemLabel);
+    // Cancel any pending close when hovering
+    if (submenuCloseTimerRef.current) {
+      clearTimeout(submenuCloseTimerRef.current);
+      submenuCloseTimerRef.current = null;
+    }
+    
+    if (itemLabel) {
+      setOpenSubject(itemLabel);
+    } else {
+      // Only delay closing if we're moving away from an item with subitems
+      submenuCloseTimerRef.current = setTimeout(() => {
+        setOpenSubject(null);
+        submenuCloseTimerRef.current = null;
+      }, 200); // Increased delay to 200ms for better UX
+    }
   };
 
   return (
-    <div className="nav-dropdown" ref={dropdownRef}>
+    <div className={`nav-dropdown ${className}`} ref={dropdownRef}>
       <button
+        ref={buttonRef}
         className={`nav-dropdown-button ${activeSubject === label.toLowerCase() ? 'active' : ''}`}
         onClick={handleToggle}
         aria-haspopup="menu"
         aria-expanded={isOpen}
       >
-        {icon && <span className="nav-dropdown-icon">{icon}</span>}
+        {!hideIcon && icon && <span className="nav-dropdown-icon">{icon}</span>}
         <span>{label}</span>
         <span className={`nav-dropdown-arrow ${isOpen ? 'open' : ''}`}>▼</span>
       </button>
 
       {isOpen && (
-        <div className="nav-dropdown-menu" role="menu">
+        <div 
+          ref={menuRef}
+          className="nav-dropdown-menu" 
+          role="menu"
+          style={{
+            top: `${menuPosition.top}px`,
+            left: `${menuPosition.left}px`,
+          }}
+        >
           {items.map((item, index) => {
             const isDisabled = item.disabled;
             const hasSubitems = item.items && item.items.length > 0;
@@ -100,7 +179,20 @@ export default function NavDropdown({ label, icon, items = [], activeSubject = n
 
                 {/* Submenu (nested kingdoms) */}
                 {hasSubitems && isOpen && openSubject === item.label && (
-                  <div className="nav-sub-menu">
+                  <div 
+                    className="nav-sub-menu"
+                    style={{
+                      top: `${submenuPosition.top}px`,
+                      left: `${submenuPosition.left}px`,
+                    }}
+                    onMouseEnter={() => {
+                      if (submenuCloseTimerRef.current) {
+                        clearTimeout(submenuCloseTimerRef.current);
+                        submenuCloseTimerRef.current = null;
+                      }
+                    }}
+                    onMouseLeave={() => handleSubjectHover(null)}
+                  >
                     {item.items.map((subitem, subindex) => (
                       <button
                         key={`${subitem.label}-${subindex}`}

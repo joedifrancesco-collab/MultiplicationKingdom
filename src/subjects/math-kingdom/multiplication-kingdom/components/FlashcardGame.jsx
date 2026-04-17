@@ -137,7 +137,7 @@ export default function FlashcardGame() {
 
     return (
       <div className="fcg-done">
-        <button className="back-btn" onClick={() => navigate('/flashcards')}>‹</button>
+        <button className="back-btn" onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/flashcards')}>‹</button>
         <div className="done-emoji">{emoji}</div>
         <h2>{heading}</h2>
         <div className="fcg-results">
@@ -147,7 +147,7 @@ export default function FlashcardGame() {
           {total > 0 && <div className="res-pct">{pct}% accuracy</div>}
         </div>
         <div className="done-buttons">
-          <button onClick={() => navigate('/flashcards')}>Play Again</button>
+          <button onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/flashcards')}>Play Again</button>
         </div>
       </div>
     );

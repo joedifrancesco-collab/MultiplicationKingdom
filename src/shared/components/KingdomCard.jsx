@@ -51,7 +51,9 @@ export default function KingdomCard({
 
         {/* Status */}
         <div className="kingdom-card-status">
-          {enabled && !comingSoon ? (
+          {comingSoon ? (
+            <span className="status-badge coming-soon">🎯 Coming Soon</span>
+          ) : enabled && !disabled ? (
             <span className="status-badge enabled">✅ Ready</span>
           ) : (
             <span className="status-badge disabled">❌ Locked</span>

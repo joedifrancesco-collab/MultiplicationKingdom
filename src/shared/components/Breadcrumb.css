@@ -6,6 +6,11 @@
   font-size: 14px;
 }
 
+/* Own line: margin above breadcrumb */
+.breadcrumb-nav.own-line {
+  margin: 16px 0 12px 0;
+}
+
 /* Inline breadcrumb (inside navbar) - override full-width styling */
 .nav-breadcrumb-inline .breadcrumb-nav {
   width: auto;

@@ -132,36 +132,111 @@ export function getGamePlatforms(gameKey) {
 /**
  * Validate settings on startup
  * Logs warnings if critical settings are missing
- * @returns {boolean} true if validation passed
+ * Checks required schema fields and game configuration
+ * @returns {object} { valid: boolean, errors: string[], warnings: string[] }
  */
 export function validateSettings() {
   const errors = [];
   const warnings = [];
   
-  // Check required app-level settings
-  if (!activeSettings.app?.name) warnings.push('Missing app.name');
-  if (!activeSettings.theme?.primary) warnings.push('Missing theme.primary');
+  // Check required top-level sections
+  const requiredSections = ['app', 'theme', 'difficulty', 'games', 'audio', 'ui', 'leaderboard', 'auth', 'logging'];
+  for (const section of requiredSections) {
+    if (!activeSettings[section]) {
+      errors.push(`Missing required section: ${section}`);
+    }
+  }
+  
+  // Validate app section
+  if (activeSettings.app) {
+    if (!activeSettings.app.name) errors.push('Missing app.name');
+    if (!activeSettings.app.version) errors.push('Missing app.version');
+    if (!activeSettings.app.environment) errors.push('Missing app.environment');
+  }
+  
+  // Validate theme
+  if (activeSettings.theme) {
+    const requiredColors = ['primary', 'secondary', 'success', 'accent', 'background'];
+    for (const color of requiredColors) {
+      if (!activeSettings.theme[color]) {
+        errors.push(`Missing theme.${color}`);
+      }
+    }
+    if (!activeSettings.theme.borderRadius) {
+      errors.push('Missing theme.borderRadius');
+    }
+  }
+  
+  // Validate difficulty
+  if (activeSettings.difficulty) {
+    if (!activeSettings.difficulty.levels?.easy || !activeSettings.difficulty.levels?.medium || !activeSettings.difficulty.levels?.hard) {
+      errors.push('Missing difficulty levels (easy, medium, hard)');
+    }
+    if (!activeSettings.difficulty.default) {
+      errors.push('Missing difficulty.default');
+    }
+  }
   
   // Check that at least one game is enabled
   const enabledGames = Object.entries(activeSettings.games || {})
-    .filter(([, config]) => config.enabled)
+    .filter(([, config]) => config.enabled === true)
     .map(([name]) => name);
   
   if (enabledGames.length === 0) {
     warnings.push('No games are enabled in settings');
+  } else {
+    // Validate each enabled game has required fields
+    for (const [gameName, gameConfig] of Object.entries(activeSettings.games || {})) {
+      if (gameConfig.enabled) {
+        if (!gameConfig.platforms) errors.push(`Game "${gameName}": missing platforms`);
+        if (!gameConfig.defaultDifficulty) errors.push(`Game "${gameName}": missing defaultDifficulty`);
+      }
+    }
+  }
+  
+  // Validate audio section
+  if (activeSettings.audio) {
+    if (activeSettings.audio.enabled === undefined) errors.push('Missing audio.enabled');
+    if (activeSettings.audio.defaultVolume === undefined) errors.push('Missing audio.defaultVolume');
+  }
+  
+  // Validate UI section
+  if (activeSettings.ui) {
+    if (activeSettings.ui.animationsEnabled === undefined) errors.push('Missing ui.animationsEnabled');
+    if (activeSettings.ui.feedbackDuration === undefined) errors.push('Missing ui.feedbackDuration');
+  }
+  
+  // Validate leaderboard section
+  if (activeSettings.leaderboard) {
+    if (activeSettings.leaderboard.enabled === undefined) errors.push('Missing leaderboard.enabled');
+    if (activeSettings.leaderboard.maxEntries === undefined) errors.push('Missing leaderboard.maxEntries');
   }
   
   // Log results
-  if (warnings.length > 0) {
-    console.warn('⚠️  Settings validation warnings:', warnings);
-  }
+  const result = {
+    valid: errors.length === 0,
+    errors,
+    warnings,
+    enabledGamesCount: enabledGames.length
+  };
+  
   if (errors.length > 0) {
-    console.error('❌ Settings validation errors:', errors);
-    return false;
+    console.error(`❌ Settings validation FAILED (${errors.length} error${errors.length !== 1 ? 's' : ''}):`);
+    errors.forEach(err => console.error(`   • ${err}`));
   }
   
-  console.log(`✅ Settings loaded (${enabledGames.length} games enabled)`);
-  return true;
+  if (warnings.length > 0) {
+    console.warn(`⚠️  Settings validation warnings (${warnings.length}):`);
+    warnings.forEach(warn => console.warn(`   • ${warn}`));
+  }
+  
+  if (result.valid) {
+    console.log(`✅ Settings loaded successfully (${enabledGames.length} game${enabledGames.length !== 1 ? 's' : ''} enabled)`);
+    console.log(`   Version: ${activeSettings.app?.version || 'unknown'}`);
+    console.log(`   Environment: ${activeSettings.app?.environment || 'unknown'}`);
+  }
+  
+  return result;
 }
 
 /**

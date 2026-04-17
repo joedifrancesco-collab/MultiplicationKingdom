@@ -13,8 +13,6 @@ export default function SubjectCard({
   description,
   path,
   enabled = true,
-  enabledCount = 0,
-  totalCount = 1,
   badge = null,
   comingSoon = false,
 }) {
@@ -25,12 +23,6 @@ export default function SubjectCard({
       navigate(path);
     }
   };
-
-  const statusText = comingSoon
-    ? 'Coming Soon'
-    : enabled
-      ? `${enabledCount}/${totalCount} Enabled`
-      : 'Coming Soon';
 
   return (
     <div
@@ -45,16 +37,6 @@ export default function SubjectCard({
       <div className="subject-card-content">
         <h3 className="subject-card-title">{label}</h3>
         {description && <p className="subject-card-description">{description}</p>}
-
-        {/* Status */}
-        <div className="subject-card-status">
-          {enabled && !comingSoon && (
-            <span className="status-badge enabled">✅ {statusText}</span>
-          )}
-          {(!enabled || comingSoon) && (
-            <span className="status-badge disabled">⏳ {statusText}</span>
-          )}
-        </div>
 
         {/* Badge */}
         {badge && <span className="subject-card-badge">{badge}</span>}

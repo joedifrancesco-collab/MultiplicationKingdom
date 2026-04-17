@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { subscribeToAuthChanges, isGuestMode, hasGuestScores } from './store/progress';
+import { validateSettings } from './config/appSettings';
 import ErrorBoundary from './shared/components/ErrorBoundary';
 import ResponsiveNav from './shared/components/ResponsiveNav';
 import AuthScreen from './shared/components/AuthScreen';
 import Home from './pages/Home';
 import SubjectHome from './pages/SubjectHome';
-import HomeScreen from './shared/components/HomeScreen';
 import SaveScoresModal from './shared/components/SaveScoresModal';
+import LegacyRedirect from './shared/components/LegacyRedirect';
+import MultiplicationKingdomHome from './subjects/math-kingdom/multiplication-kingdom/components/MultiplicationKingdomHome';
 import KingdomMap from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMap';
 import KingdomScreen from './subjects/math-kingdom/multiplication-kingdom/components/KingdomScreen';
 import Flashcard from './subjects/math-kingdom/multiplication-kingdom/components/Flashcard';
@@ -20,6 +22,7 @@ import TrainingMenu from './subjects/math-kingdom/multiplication-kingdom/compone
 import TrainingTable from './subjects/math-kingdom/multiplication-kingdom/components/TrainingTable';
 import UnifiedLeaderboard from './shared/components/UnifiedLeaderboard';
 import TestDeviceViewport from './shared/components/TestDeviceViewport';
+import SettingsTest from './shared/components/SettingsTest';
 import KingdomMapsMode from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMapsMode';
 import KingdomMaps from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMaps';
 import SpellingScreen from './subjects/language-arts-kingdom/spelling/components/SpellingScreen';
@@ -43,6 +46,14 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [showSaveScoresModal, setShowSaveScoresModal] = useState(false);
   const [pendingNavigation, setPendingNavigation] = useState(null);
+
+  // Validate settings on app boot
+  useEffect(() => {
+    const validation = validateSettings();
+    if (!validation.valid) {
+      console.error('⚠️  App may not function correctly due to settings validation errors');
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = subscribeToAuthChanges((authUser) => {
@@ -121,8 +132,13 @@ export default function App() {
           {/* MATH KINGDOM - Multiplication Kingdom */}
           {/* ═════════════════════════════════════════════════════════════ */}
           
-          {/* New structured routes aligned with folder organization */}
-          <Route path="/subjects/math-kingdom/multiplication-kingdom" element={<ProtectedRoute element={<KingdomMap />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          {/* Game mode selection home page */}
+          <Route path="/subjects/math-kingdom/multiplication-kingdom" element={<ProtectedRoute element={<MultiplicationKingdomHome />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          
+          {/* Times tables grid (accessed from Conquest mode) */}
+          <Route path="/subjects/math-kingdom/multiplication-kingdom/grid" element={<ProtectedRoute element={<KingdomMap />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          
+          {/* Individual kingdom/times table screens */}
           <Route path="/subjects/math-kingdom/multiplication-kingdom/:id" element={<ProtectedRoute element={<KingdomScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/math-kingdom/multiplication-kingdom/:id/flashcard" element={<ProtectedRoute element={<Flashcard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/math-kingdom/multiplication-kingdom/:id/speed" element={<ProtectedRoute element={<SpeedChallenge />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
@@ -137,17 +153,17 @@ export default function App() {
           
           {/* Legacy routes for backward compatibility - redirect to new routes */}
           <Route path="/kingdom" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom" replace />} />
-          <Route path="/kingdom/:id" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/:id" replace />} />
-          <Route path="/kingdom/:id/flashcard" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/:id/flashcard" replace />} />
-          <Route path="/kingdom/:id/speed" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/:id/speed" replace />} />
-          <Route path="/kingdom/:id/match" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/:id/match" replace />} />
+          <Route path="/kingdom/:id" element={<LegacyRedirect template="/subjects/math-kingdom/multiplication-kingdom/:id" />} />
+          <Route path="/kingdom/:id/flashcard" element={<LegacyRedirect template="/subjects/math-kingdom/multiplication-kingdom/:id/flashcard" />} />
+          <Route path="/kingdom/:id/speed" element={<LegacyRedirect template="/subjects/math-kingdom/multiplication-kingdom/:id/speed" />} />
+          <Route path="/kingdom/:id/match" element={<LegacyRedirect template="/subjects/math-kingdom/multiplication-kingdom/:id/match" />} />
           <Route path="/flashcards" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/flashcards" replace />} />
           <Route path="/flashcards/play" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/flashcards/play" replace />} />
           <Route path="/siege" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/siege" replace />} />
           <Route path="/training" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/training" replace />} />
           <Route path="/training/table" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/training/table" replace />} />
           <Route path="/kingdom-maps" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/maps" replace />} />
-          <Route path="/kingdom-maps/:mode" element={<Navigate to="/subjects/math-kingdom/multiplication-kingdom/maps/:mode" replace />} />
+          <Route path="/kingdom-maps/:mode" element={<LegacyRedirect template="/subjects/math-kingdom/multiplication-kingdom/maps/:mode" />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
           {/* LANGUAGE ARTS KINGDOM - Spelling */}
@@ -160,7 +176,7 @@ export default function App() {
           
           {/* Legacy routes for backward compatibility - redirect to new routes */}
           <Route path="/spelling" element={<Navigate to="/subjects/language-arts-kingdom/spelling" replace />} />
-          <Route path="/spelling/practice/:groupId" element={<Navigate to="/subjects/language-arts-kingdom/spelling/practice/:groupId" replace />} />
+          <Route path="/spelling/practice/:groupId" element={<LegacyRedirect template="/subjects/language-arts-kingdom/spelling/practice/:groupId" />} />
           <Route path="/subjects/language-arts-kingdom/spelling/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
           <Route path="/spelling/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
           <Route path="/spelling-admin" element={<Navigate to="/subjects/language-arts-kingdom/spelling/admin" replace />} />
@@ -180,6 +196,7 @@ export default function App() {
 
           {/* Testing Routes (for development) */}
           <Route path="/test-device-viewport" element={<TestDeviceViewport />} />
+          <Route path="/test-settings" element={<SettingsTest />} />
 
           {/* Catch-all - redirect to auth or home depending on auth state or guest mode */}
           <Route path="*" element={user || isGuest ? <Navigate to="/" replace /> : <Navigate to="/auth" replace />} />

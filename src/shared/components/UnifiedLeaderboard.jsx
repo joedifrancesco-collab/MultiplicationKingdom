@@ -158,21 +158,10 @@ export default function UnifiedLeaderboard() {
   return (
     <div className="ub-container">
       <div className="ub-header">
-        <h2 className="ub-title">📊 Your Game Scores</h2>
-        
-        {/* Global Stats Toggle - Disabled for MVP */}
-        <div className="ub-controls">
-          <button
-            className="ub-toggle-btn ub-toggle-disabled"
-            disabled
-            title="Coming soon: Compare with other players"
-          >
-            🌎 View Global Stats (Coming Soon)
-          </button>
-          {isGuest && (
-            <span className="ub-guest-badge">👤 Session Scores</span>
-          )}
-        </div>
+        <h2 className="ub-title">🏆 Achievements</h2>
+        {isGuest && (
+          <span className="ub-guest-badge">👤 Session Scores</span>
+        )}
       </div>
 
       {scores.length === 0 ? (
@@ -196,15 +185,7 @@ export default function UnifiedLeaderboard() {
         </div>
       )}
 
-      {/* Info box for MVP */}
-      <div className="ub-info-box">
-        <p className="ub-info-title">💡 Unified Leaderboard</p>
-        <p className="ub-info-text">
-          {isGuest
-            ? '👤 Your session scores are shown here. Sign in to save them permanently.'
-            : '✅ Your best scores across all games appear here automatically.'}
-        </p>
-      </div>
+
     </div>
   );
 }

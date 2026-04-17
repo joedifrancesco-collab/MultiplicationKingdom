@@ -351,7 +351,7 @@ export default function KingdomMaps() {
       accuracy,
     });
 
-    navigate('/kingdom-maps');
+    navigate('/subjects/math-kingdom/multiplication-kingdom/maps');
   }
 
   // Celebration screen with multiplication table view
@@ -423,7 +423,7 @@ export default function KingdomMaps() {
         <h1 className="km-game-title">🗺️ Kingdom Maps</h1>
       </div>
       <div className="km-topbar">
-        <button className="km-quit-btn" onClick={() => navigate('/kingdom-maps')}>
+        <button className="km-quit-btn" onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/maps')}>
           {mode === modes.FREE_PLAY ? '⏹ Quit' : '✕ Quit'}
         </button>
         

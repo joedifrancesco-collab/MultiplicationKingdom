@@ -22,7 +22,7 @@ export default function KingdomMap() {
               key={kp.id}
               className={`kingdom-tile ${kp.unlocked ? 'unlocked' : 'locked'}`}
               style={{ '--kingdom-color': kingdom.color }}
-              onClick={() => kp.unlocked && navigate(`/kingdom/${kp.id}/speed`)}
+              onClick={() => kp.unlocked && navigate(`/subjects/math-kingdom/multiplication-kingdom/${kp.id}/speed`)}
               aria-label={`Kingdom ${kp.id}: ${kingdom.name}. ${kp.unlocked ? `${kp.stars} stars earned` : 'Locked'}`}
             >
               <div className="kingdom-number">{kp.id}×</div>

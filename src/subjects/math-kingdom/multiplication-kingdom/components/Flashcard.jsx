@@ -55,7 +55,7 @@ export default function Flashcard() {
           You got <strong>{correct}</strong> out of <strong>{questions.length}</strong>!
         </p>
         <div className="done-buttons">
-          <button onClick={() => navigate(`/kingdom/${id}`)}>Back to Kingdom</button>
+          <button onClick={() => navigate(`/subjects/math-kingdom/multiplication-kingdom/${id}`)}>Back to Kingdom</button>
           <button className="btn-secondary" onClick={() => navigate('/')}>World Map</button>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function Flashcard() {
   return (
     <div className="flashcard-container">
       <div className="flashcard-header">
-        <button className="back-btn" onClick={() => navigate(`/kingdom/${id}`)}>‹</button>
+        <button className="back-btn" onClick={() => navigate(`/subjects/math-kingdom/multiplication-kingdom/${id}`)}>‹</button>
         <button className="fcg-mute-btn" onClick={handleMuteToggle} title={soundMuted ? 'Unmute' : 'Mute'}>
           {soundMuted ? '🔇' : '🔊'}
         </button>

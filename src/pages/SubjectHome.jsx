@@ -25,7 +25,7 @@ export default function SubjectHome() {
           icon: '✖️',
           label: 'Multiplication Kingdom',
           description: '12 times tables with engaging games',
-          path: '/subjects/math/multiplication-kingdom',
+          path: '/subjects/math-kingdom/multiplication-kingdom',
           unlockIndex: 0, // First one is always unlocked
         },
         {
@@ -33,24 +33,27 @@ export default function SubjectHome() {
           icon: '➕',
           label: 'Addition Kingdom',
           description: 'Master addition and number combinations',
-          path: '/subjects/math/addition-kingdom',
+          path: '/subjects/math-kingdom/addition-kingdom',
           unlockIndex: 1,
+          comingSoon: true,
         },
         {
           id: 'subtraction-kingdom',
           icon: '➖',
           label: 'Subtraction Kingdom',
           description: 'Learn subtraction and differences',
-          path: '/subjects/math/subtraction-kingdom',
+          path: '/subjects/math-kingdom/subtraction-kingdom',
           unlockIndex: 2,
+          comingSoon: true,
         },
         {
           id: 'division-kingdom',
           icon: '÷',
           label: 'Division Kingdom',
           description: 'Understand division and fractions',
-          path: '/subjects/math/division-kingdom',
+          path: '/subjects/math-kingdom/division-kingdom',
           unlockIndex: 3,
+          comingSoon: true,
         },
       ],
     },
@@ -64,7 +67,7 @@ export default function SubjectHome() {
           icon: '✍️',
           label: 'Spelling',
           description: 'Vowels, consonants, and word patterns',
-          path: '/subjects/spelling',
+          path: '/subjects/language-arts-kingdom/spelling',
           unlockIndex: 0,
         },
         {
@@ -72,16 +75,18 @@ export default function SubjectHome() {
           icon: '📚',
           label: 'Vocabulary',
           description: 'Learn new words and meanings',
-          path: '/subjects/spelling/vocabulary',
+          path: '/subjects/language-arts-kingdom/vocabulary',
           unlockIndex: 1,
+          comingSoon: true,
         },
         {
           id: 'grammar',
           icon: '🔤',
           label: 'Grammar',
           description: 'Master grammar rules and punctuation',
-          path: '/subjects/spelling/grammar',
+          path: '/subjects/language-arts-kingdom/grammar',
           unlockIndex: 2,
+          comingSoon: true,
         },
       ],
     },
@@ -95,7 +100,7 @@ export default function SubjectHome() {
           icon: '🎮',
           label: 'Number Cruncher',
           description: 'Advanced math challenges and puzzles',
-          path: '/subjects/lab/number-cruncher',
+          path: '/number-cruncher',
           unlockIndex: 0,
         },
       ],
@@ -148,35 +153,18 @@ export default function SubjectHome() {
                   label={kingdom.label}
                   description={kingdom.description}
                   path={kingdom.path}
-                  enabled={isUnlocked}
+                  enabled={isUnlocked && !kingdom.comingSoon}
                   disabled={!isUnlocked}
                   stars={kingdomProgress.stars}
                   progress={kingdomProgress.progress || 0}
+                  comingSoon={kingdom.comingSoon}
                 />
               );
             })}
           </div>
         </section>
 
-        {/* Optional: Show unlock requirements */}
-        {data.kingdoms.length > 0 && (
-          <section className="unlock-guide">
-            <div className="guide-card">
-              <h2 className="guide-title">🔓 Unlock Requirements</h2>
-              <ul className="guide-list">
-                <li>
-                  <strong>{data.kingdoms[0].label}</strong> - Available now!
-                </li>
-                {data.kingdoms.slice(1).map((kingdom, index) => (
-                  <li key={kingdom.id}>
-                    <strong>{kingdom.label}</strong> - Get 1 star in{' '}
-                    {data.kingdoms[index].label}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        )}
+
       </main>
     </div>
   );

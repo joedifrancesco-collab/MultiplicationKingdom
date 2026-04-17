@@ -15,7 +15,7 @@ export default function TrainingMenu() {
 
         <button
           className="tm-option-card"
-          onClick={() => navigate('/training/table', { state: { origin: '/training' } })}
+          onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/training/table', { state: { origin: '/training' } })}
         >
           <div className="tm-option-icon">📊</div>
           <div className="tm-option-info">
