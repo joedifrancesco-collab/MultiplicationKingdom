@@ -31,12 +31,14 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-  max-width: 90vw;
-  max-height: 85vh;
-  width: 100%;
+  max-width: 80vw;
+  max-height: 80vh;
+  width: calc(100% - 48px);
+  padding: 24px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Close button */
@@ -56,7 +58,7 @@
   cursor: pointer;
   transition: all 200ms ease;
   color: #333;
-  z-index: 10;
+  z-index: 2002;
   font-weight: 300;
 }
 
@@ -73,7 +75,7 @@
 .overlay-content {
   flex: 1;
   overflow: auto;
-  padding: 20px;
+  padding: 0;
 }
 
 /* Responsive adjustments */
@@ -93,6 +95,13 @@
   }
 
   .overlay-content {
-    padding: 12px;
+    padding: 0;
+  }
+
+  .overlay-container {
+    max-width: 90vw;
+    max-height: 85vh;
+    width: calc(100% - 32px);
+    padding: 16px;
   }
 }

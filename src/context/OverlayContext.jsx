@@ -1,9 +1,9 @@
-import React, { createContext, useState, useCallback } from 'react';
+import { createContext, useState, useCallback, useContext } from 'react';
 
 export const OverlayContext = createContext();
 
 export function useOverlay() {
-  const context = React.useContext(OverlayContext);
+  const context = useContext(OverlayContext);
   if (!context) {
     throw new Error('useOverlay must be used within OverlayProvider');
   }

@@ -97,16 +97,8 @@ export default function Profile() {
         <div className="profile-info">
           <h2 className="profile-section-title">Account Information</h2>
           <div className="info-item">
-            <span className="info-label">User ID:</span>
-            <span className="info-value">{user?.uid || 'N/A'}</span>
-          </div>
-          <div className="info-item">
             <span className="info-label">Email:</span>
             <span className="info-value">{user?.email || 'N/A'}</span>
-          </div>
-          <div className="info-item">
-            <span className="info-label">Email Verified:</span>
-            <span className="info-value">{user?.emailVerified ? '✅ Yes' : '❌ No'}</span>
           </div>
           {user?.metadata?.creationTime && (
             <div className="info-item">
