@@ -74,7 +74,7 @@
 /* Overlay content */
 .overlay-content {
   flex: 1;
-  overflow: auto;
+  overflow: hidden;
   padding: 0;
 }
 
