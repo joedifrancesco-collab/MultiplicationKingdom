@@ -34,6 +34,59 @@
   opacity: 0.95;
 }
 
+/* Responsive title scaling for tablets */
+@media (max-width: 768px) {
+  .subject-title {
+    font-size: 28px;
+  }
+
+  .subject-description {
+    font-size: 14px;
+  }
+}
+
+/* Mobile (480px+) */
+@media (max-width: 480px) {
+  .subject-title {
+    font-size: 24px;
+  }
+
+  .subject-description {
+    font-size: 13px;
+  }
+}
+
+/* Small phones (360px - 479px) */
+@media (max-width: 360px) {
+  .subject-header {
+    padding: 24px 16px;
+  }
+
+  .subject-title {
+    font-size: 22px;
+  }
+
+  .subject-description {
+    font-size: 12px;
+    margin-top: 6px;
+  }
+}
+
+/* Very small phones (< 320px) */
+@media (max-width: 320px) {
+  .subject-header {
+    padding: 20px 12px;
+  }
+
+  .subject-title {
+    font-size: 20px;
+  }
+
+  .subject-description {
+    font-size: 11px;
+  }
+}
+
 /* Content */
 .subject-content {
   flex: 1;

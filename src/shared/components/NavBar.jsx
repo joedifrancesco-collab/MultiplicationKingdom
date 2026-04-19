@@ -9,6 +9,8 @@ export default function NavBar() {
   const [signingOut, setSigningOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const hamburgerRef = useState(null)[1]; // Store ref for focus restoration
+  const menuRef = useState(null)[1]; // Store menu ref for focus trap
   const user = getCurrentAuthUser();
   const guest = isGuestMode();
 
@@ -26,6 +28,20 @@ export default function NavBar() {
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
+
+  // Focus management for mobile menu accessibility
+  useEffect(() => {
+    if (menuOpen) {
+      // Trap focus inside menu - find first focusable element
+      const menu = document.querySelector('.mobile-menu');
+      if (menu) {
+        const focusableElements = menu.querySelectorAll('button, [href], [tabindex="0"]');
+        if (focusableElements.length > 0) {
+          focusableElements[0].focus();
+        }
+      }
+    }
+  }, [menuOpen]);
 
   // Reset signingOut state when user or guest status changes
   // This intentional state reset is appropriate as a side effect of auth state changes

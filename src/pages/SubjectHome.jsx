@@ -115,11 +115,17 @@ export default function SubjectHome() {
   };
 
   // Check if kingdom is unlocked based on progress
-  const isKingdomUnlocked = (unlockIndex) => {
-    if (unlockIndex === 0) return true;
+  const isKingdomUnlocked = (index) => {
+    const kingdom = data.kingdoms[index];
+    
+    // If alwaysUnlocked flag is set, always return true
+    if (kingdom?.alwaysUnlocked) return true;
+
+    // First kingdom is always unlocked
+    if (index === 0) return true;
 
     // Get the kingdom from the previous level
-    const prevKingdom = data.kingdoms[unlockIndex - 1];
+    const prevKingdom = data.kingdoms[index - 1];
     if (!prevKingdom) return false;
 
     // Check if previous kingdom has at least 1 star

@@ -1,0 +1,263 @@
+.vocabulary-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(32px, env(safe-area-inset-top)) 20px max(40px, env(safe-area-inset-bottom));
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--bg);
+  gap: 24px;
+}
+
+.vocabulary-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.vocabulary-crown {
+  font-size: 4rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+.vocabulary-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #5B4BA5;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.vocabulary-subtitle {
+  color: var(--text-light);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.vocabulary-games {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Section Styles */
+.vs-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vs-section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--secondary-light);
+}
+
+.vs-loading,
+.vs-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-light);
+  background: var(--card-bg);
+  border-radius: 12px;
+  font-size: 0.95rem;
+}
+
+/* Grade Select Wrapper */
+.vs-select-wrapper {
+  width: 100%;
+}
+
+.vs-grade-select {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  background: white;
+  color: var(--text);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236C63FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+.vs-grade-select:hover {
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.15);
+}
+
+.vs-grade-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+}
+
+.vs-grade-select option {
+  padding: 12px 16px;
+  font-size: 1rem;
+  color: var(--text);
+  background: white;
+}
+
+.vs-grade-select option:checked {
+  background: linear-gradient(135deg, var(--primary), #5B4BA5);
+  color: white;
+}
+
+/* Games Container */
+.vs-games-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vocabulary-game-card {
+  width: 100%;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  position: relative;
+}
+
+.vocabulary-game-card:not(:disabled):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(108, 99, 255, 0.15);
+  border-color: var(--primary);
+}
+
+.vocabulary-game-card:not(:disabled):active {
+  transform: translateY(-2px);
+}
+
+.vocabulary-game-card:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.05), rgba(255, 107, 107, 0.05));
+}
+
+.game-card-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.game-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.game-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.game-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.4;
+}
+
+.game-card-arrow {
+  font-size: 1.5rem;
+  color: var(--primary);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.game-card-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #333;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .vocabulary-screen {
+    padding: 24px 16px 32px;
+    gap: 20px;
+  }
+
+  .vocabulary-title {
+    font-size: 2rem;
+  }
+
+  .vs-section-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .vocabulary-screen {
+    padding: 20px 12px 28px;
+    gap: 16px;
+  }
+
+  .vocabulary-crown {
+    font-size: 3rem;
+  }
+
+  .vocabulary-title {
+    font-size: 1.7rem;
+  }
+
+  .vocabulary-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .vs-category-card {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .vs-category-icon {
+    font-size: 2rem;
+  }
+
+  .vs-category-title {
+    font-size: 0.95rem;
+  }
+
+  .vocabulary-game-card {
+    padding: 16px;
+  }
+
+  .game-card-icon {
+    font-size: 2.5rem;
+  }
+}

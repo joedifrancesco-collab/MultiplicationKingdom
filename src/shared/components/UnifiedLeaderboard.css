@@ -56,6 +56,49 @@
   color: #999;
 }
 
+/* Ultra-small screens optimization */
+@media (max-width: 320px) {
+  .ub-container {
+    padding: 12px 8px;
+  }
+
+  .ub-header {
+    margin-bottom: 20px;
+  }
+
+  .ub-title {
+    font-size: 24px;
+    margin: 0 0 10px 0;
+  }
+
+  .ub-controls {
+    gap: 8px;
+  }
+
+  .ub-toggle-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .ub-scorecard {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .ub-subject-header,
+  .ub-subsubject-header,
+  .ub-game-header {
+    padding: 8px 12px;
+    margin-bottom: 8px;
+  }
+
+  .ub-subject,
+  .ub-subsubject-section,
+  .ub-game-section {
+    margin-bottom: 8px;
+  }
+}
+
 .ub-guest-badge {
   display: inline-block;
   padding: 8px 12px;
@@ -345,5 +388,175 @@
 
   .ub-guest-badge {
     text-align: center;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════ */
+/* HIERARCHICAL STRUCTURE (NEW) */
+/* ═══════════════════════════════════════════════════════════════════════════════ */
+
+.ub-hierarchy {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* Subject Level (Math, Language, Lab) */
+.ub-subject {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ub-subject-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.ub-subject-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.ub-subject-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--text, #333);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+/* Sub-Subject Level (Multiplication, Spelling, Number Cruncher) */
+.ub-subsubject-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-left: 16px;
+  border-left: 3px solid rgba(108, 99, 255, 0.3);
+}
+
+.ub-subsubject-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ub-subsubject-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.ub-subsubject-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text, #333);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.ub-subject-games {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 8px;
+}
+
+/* Game Section */
+.ub-game-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(108, 99, 255, 0.04);
+  padding: 14px 16px;
+  border-radius: 10px;
+  border-left: 3px solid var(--primary, #6C63FF);
+}
+
+.ub-game-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ub-game-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.ub-game-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text, #333);
+}
+
+.ub-game-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Score Cards in hierarchical view */
+.ub-game-scores .ub-scorecard {
+  margin: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.ub-game-scores .ub-scorecard:hover {
+  box-shadow: 0 3px 8px rgba(108, 99, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ub-hierarchy {
+    gap: 24px;
+  }
+
+  .ub-subject-header {
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .ub-subject-icon {
+    font-size: 24px;
+  }
+
+  .ub-subject-title {
+    font-size: 20px;
+  }
+
+  .ub-subsubject-section {
+    padding-left: 12px;
+    gap: 10px;
+  }
+
+  .ub-subsubject-header {
+    gap: 8px;
+  }
+
+  .ub-subsubject-icon {
+    font-size: 18px;
+  }
+
+  .ub-subsubject-title {
+    font-size: 16px;
+  }
+
+  .ub-game-section {
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  .ub-game-header {
+    gap: 8px;
+  }
+
+  .ub-game-icon {
+    font-size: 16px;
+  }
+
+  .ub-game-label {
+    font-size: 13px;
   }
 }

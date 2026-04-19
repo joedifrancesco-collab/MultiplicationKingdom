@@ -343,39 +343,125 @@ export function getGameBests(username) {
 
 /**
  * Get all game scores for a user (unified across all games)
+ * Fetches from leaderboard, number_cruncher_attempts, and spelling_attempts collections
+ * Searches by uid (new data) and email (old data) for backwards compatibility
  * Returns array of {gameType, score, timestamp}
- * @param {string} userIdentifier - Firebase UID or username
+ * @param {string} userIdentifier - Firebase UID or email
  * @returns {Promise<Array>} Array of game scores
  */
 export async function getAllGameScores(userIdentifier) {
   try {
-    // Query by uid (Firebase user ID)
-    const q = query(
-      collection(db, 'leaderboard'),
-      where('uid', '==', userIdentifier)
-    );
-    const snapshot = await getDocs(q);
-    
-    const scores = snapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        gameType: data.gameType,
-        score: {
-          correct: data.correct,
-          total: data.total,
-          pct: data.pct,
-          seconds: data.seconds,
-          stars: data.stars,
-          moves: data.moves,
-          kingdomId: data.kingdomId,
-          percentage: data.percentage,
-          score: data.score,
-        },
-        timestamp: data.timestamp ? new Date(data.timestamp).toISOString() : null,
-      };
-    });
+    const allScores = [];
+    const authUser = getCurrentAuthUser();
+    const userEmail = authUser?.email;
 
-    return scores;
+    // Helper to safely convert Firestore timestamp to ISO string
+    const toISOString = (timestamp) => {
+      if (!timestamp) return null;
+      try {
+        // Handle Firestore Timestamp objects (have toDate method)
+        if (timestamp.toDate && typeof timestamp.toDate === 'function') {
+          return timestamp.toDate().toISOString();
+        }
+        // Handle regular Date objects
+        if (timestamp instanceof Date) {
+          return timestamp.toISOString();
+        }
+        // Handle millisecond timestamps (numbers)
+        if (typeof timestamp === 'number') {
+          return new Date(timestamp).toISOString();
+        }
+        // Handle ISO strings
+        if (typeof timestamp === 'string') {
+          return new Date(timestamp).toISOString();
+        }
+        return null;
+      } catch (err) {
+        console.warn('Failed to convert timestamp:', timestamp, err);
+        return null;
+      }
+    };
+
+    // Helper function to fetch from a collection by uid or email
+    const fetchScoresFromCollection = async (collectionName, mapDocToScore) => {
+      try {
+        const uidQuery = query(
+          collection(db, collectionName),
+          where('uid', '==', userIdentifier)
+        );
+        const uidSnapshot = await getDocs(uidQuery);
+        uidSnapshot.docs.forEach(doc => {
+          allScores.push(mapDocToScore(doc.data()));
+        });
+      } catch (uidErr) {
+        console.error(`Failed to fetch by uid from ${collectionName}:`, uidErr);
+      }
+
+      // Also try email for backwards compatibility with old records
+      if (userEmail && userEmail !== userIdentifier) {
+        try {
+          const emailQuery = query(
+            collection(db, collectionName),
+            where('email', '==', userEmail)
+          );
+          const emailSnapshot = await getDocs(emailQuery);
+          emailSnapshot.docs.forEach(doc => {
+            allScores.push(mapDocToScore(doc.data()));
+          });
+        } catch (emailErr) {
+          console.error(`Failed to fetch by email from ${collectionName}:`, emailErr);
+        }
+      }
+    };
+
+    // 1. Fetch Math Kingdom game scores from 'leaderboard'
+    await fetchScoresFromCollection('leaderboard', (data) => ({
+      gameType: data.gameType,
+      score: {
+        correct: data.correct,
+        total: data.total,
+        pct: data.pct,
+        seconds: data.seconds,
+        stars: data.stars,
+        moves: data.moves,
+        kingdomId: data.kingdomId,
+        percentage: data.percentage,
+        score: data.score,
+      },
+      timestamp: toISOString(data.timestamp),
+    }));
+
+    // 2. Fetch Number Cruncher attempts from 'number_cruncher_attempts'
+    await fetchScoresFromCollection('number_cruncher_attempts', (data) => ({
+      gameType: 'numberCruncher',
+      score: {
+        score: data.score,
+        correctCount: data.correctCount,
+        maxLevel: data.maxLevel,
+        timeElapsed: data.timeElapsed,
+      },
+      timestamp: toISOString(data.timestamp),
+    }));
+
+    // 3. Fetch Spelling attempts from 'spelling_attempts'
+    await fetchScoresFromCollection('spelling_attempts', (data) => ({
+      gameType: 'spelling',
+      score: {
+        firstAttemptCorrectCount: data.firstAttemptCorrectCount,
+        totalAttemptsToComplete: data.totalAttemptsToComplete,
+        groupTitle: data.groupTitle,
+      },
+      timestamp: toISOString(data.timestamp),
+    }));
+
+    // Remove duplicates (in case same doc was fetched by both uid and email)
+    const seen = new Set();
+    return allScores.filter(score => {
+      const key = `${score.gameType}-${score.timestamp}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   } catch (error) {
     console.error('Failed to get all game scores:', error);
     return [];

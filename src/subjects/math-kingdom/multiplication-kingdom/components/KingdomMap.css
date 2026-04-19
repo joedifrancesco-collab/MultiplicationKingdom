@@ -38,6 +38,60 @@
   .kingdoms-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
+/* Optimize grid for very small screens */
+@media (max-width: 360px) {
+  .kingdom-map {
+    padding: max(16px, env(safe-area-inset-top)) 12px max(24px, env(safe-area-inset-bottom));
+  }
+
+  .kingdoms-grid {
+    gap: 10px;
+  }
+
+  .kingdom-tile {
+    padding: 12px 6px;
+    min-height: 100px;
+    gap: 4px;
+  }
+
+  .map-title {
+    font-size: 1.5rem;
+  }
+
+  .map-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .kingdom-map {
+    padding: max(12px, env(safe-area-inset-top)) 8px max(20px, env(safe-area-inset-bottom));
+  }
+
+  .kingdoms-grid {
+    gap: 8px;
+  }
+
+  .kingdom-tile {
+    padding: 10px 4px;
+    min-height: 90px;
+    border-width: 2px;
+  }
+
+  .kingdom-number {
+    font-size: 1.5rem;
+  }
+
+  .map-title {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+  }
+
+  .map-subtitle {
+    font-size: 0.8rem;
+  }
+}
+
 .kingdom-tile {
   position: relative;
   background: var(--card-bg);

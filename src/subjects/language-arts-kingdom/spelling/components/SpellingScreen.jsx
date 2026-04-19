@@ -71,20 +71,6 @@ export default function SpellingScreen() {
           )}
         </div>
 
-        {/* Leaderboard Card */}
-        <div className="ss-section">
-          <button className="spelling-game-card" onClick={() => navigate('/unified-leaderboard')}>
-            <div className="game-card-icon">🏆</div>
-            <div className="game-card-body">
-              <div className="game-card-title">Leaderboard</div>
-              <div className="game-card-desc">
-                See how you compare with other students. Track progress and celebrate achievements!
-              </div>
-            </div>
-            <div className="game-card-arrow">›</div>
-          </button>
-        </div>
-
         {/* Admin Panel Link */}
         <div className="ss-section">
           <button className="spelling-game-card ss-admin-link" onClick={() => navigate('/spelling-admin')}>

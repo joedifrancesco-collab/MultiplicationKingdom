@@ -31,6 +31,8 @@ import KingdomMaps from './subjects/math-kingdom/multiplication-kingdom/componen
 import SpellingScreen from './subjects/language-arts-kingdom/spelling/components/SpellingScreen';
 import SpellingPractice from './subjects/language-arts-kingdom/spelling/components/SpellingPractice';
 import SpellingAdmin from './subjects/language-arts-kingdom/spelling/components/SpellingAdmin';
+import VocabularyScreen from './subjects/language-arts-kingdom/vocabulary/components/VocabularyScreen';
+import WordMatchLanding from './subjects/language-arts-kingdom/vocabulary/components/WordMatchLanding';
 import NumberCruncherScreen from './components/number-cruncher/NumberCruncherScreen';
 import NumberCruncherGame from './components/number-cruncher/NumberCruncherGame';
 
@@ -179,6 +181,11 @@ export default function App() {
           <Route path="/subjects/language-arts-kingdom/spelling" element={<ProtectedRoute element={<SpellingScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/language-arts-kingdom/spelling/practice/:groupId" element={<ProtectedRoute element={<SpellingPractice />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/language-arts-kingdom/spelling/admin" element={<SpellingAdmin />} />
+
+          {/* LANGUAGE ARTS KINGDOM - Vocabulary */}
+          <Route path="/subjects/language-arts-kingdom/vocabulary" element={<ProtectedRoute element={<VocabularyScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/language-arts-kingdom/vocabulary/word-match" element={<ProtectedRoute element={<WordMatchLanding />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/language-arts-kingdom/vocabulary/word-match/:grade" element={<ProtectedRoute element={<WordMatchLanding />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           
           {/* Legacy routes for backward compatibility - redirect to new routes */}
           <Route path="/spelling" element={<Navigate to="/subjects/language-arts-kingdom/spelling" replace />} />

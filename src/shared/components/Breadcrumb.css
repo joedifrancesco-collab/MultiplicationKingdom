@@ -101,14 +101,32 @@
     padding: 2px 4px;
   }
 
-  /* Hide middle breadcrumbs on very small screens, show first and last only */
+  /* On very small screens, truncate breadcrumb text and reduce spacing */
   @media (max-width: 480px) {
-    .breadcrumb-item:not(:first-child):not(:last-child) {
-      display: none;
+    .breadcrumb-nav {
+      padding: 8px;
+      font-size: 11px;
     }
 
-    .breadcrumb-separator:nth-of-type(2) {
-      display: none;
+    .breadcrumb-list {
+      gap: 1px;
+    }
+
+    .breadcrumb-item {
+      gap: 1px;
+    }
+
+    .breadcrumb-link,
+    .breadcrumb-text {
+      padding: 2px 3px;
+      white-space: nowrap;
+      max-width: 80px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .breadcrumb-separator {
+      margin: 0 1px;
     }
   }
 }

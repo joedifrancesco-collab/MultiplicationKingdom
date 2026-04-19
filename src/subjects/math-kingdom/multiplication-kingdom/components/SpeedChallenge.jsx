@@ -126,6 +126,7 @@ export default function SpeedChallenge() {
           onChange={e => setInput(e.target.value)}
           placeholder="?"
           className="speed-input"
+          aria-label="Enter your answer"
           autoComplete="off"
         />
         <button type="submit" className="speed-submit">Go!</button>

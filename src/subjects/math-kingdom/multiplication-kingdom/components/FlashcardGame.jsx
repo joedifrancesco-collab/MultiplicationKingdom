@@ -210,6 +210,7 @@ export default function FlashcardGame() {
           onChange={e => setInput(e.target.value)}
           className="fcg-input"
           placeholder="?"
+          aria-label="Enter your answer"
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"

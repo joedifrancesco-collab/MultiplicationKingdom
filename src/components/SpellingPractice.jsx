@@ -122,6 +122,7 @@ export default function SpellingPractice() {
                   className="sp-speaker-btn"
                   onClick={() => speakWord(word, index)}
                   title="Click to hear the word"
+                  aria-label={`Hear pronunciation of word ${index + 1}`}
                 >
                   🔊
                 </button>
@@ -129,6 +130,7 @@ export default function SpellingPractice() {
                   className="sp-sentence-btn"
                   onClick={() => speakSentence(sentence)}
                   title="Click to hear the word used in a sentence"
+                  aria-label="Hear word used in a sentence"
                 >
                   💬
                 </button>
@@ -146,6 +148,8 @@ export default function SpellingPractice() {
                   value={inputs[index]}
                   onChange={(e) => handleInputChange(index, e.target.value)}
                   placeholder="Type the word..."
+                  aria-label={`Spelling word ${index + 1}`}
+                  autoComplete="off"
                 />
               )}
               {graded && currentResult && (

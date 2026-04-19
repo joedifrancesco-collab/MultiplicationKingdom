@@ -34,16 +34,25 @@ export default function NavDropdown({ label, icon, items = [], activeSubject = n
     if (openSubject && menuRef.current) {
       const menuRect = menuRef.current.getBoundingClientRect();
       const viewport = window.innerWidth;
+      const viewportHeight = window.innerHeight;
       
       // Position to the right, but check if it fits
       let left = menuRect.right + 8;
       if (left + 200 > viewport) {
         // Not enough space, position to the left instead
-        left = menuRect.left - 200 - 8;
+        left = Math.max(8, menuRect.left - 200 - 8);
+      }
+      
+      // Ensure top position respects safe areas
+      let top = Math.max(menuRect.top, 56);
+      
+      // Check if menu would exceed viewport height
+      if (top + 300 > viewportHeight) {
+        top = Math.max(56, viewportHeight - 300 - 8);
       }
       
       setSubmenuPosition({
-        top: Math.max(menuRect.top, 56), // Don't go above navbar
+        top: top,
         left: left,
       });
     }
@@ -173,7 +182,6 @@ export default function NavDropdown({ label, icon, items = [], activeSubject = n
                     <span>{item.label}</span>
                   </span>
 
-                  {isDisabled && <span className="disabled-badge">🔒</span>}
                   {hasSubitems && <span className="arrow-right">→</span>}
                 </button>
 
@@ -205,7 +213,6 @@ export default function NavDropdown({ label, icon, items = [], activeSubject = n
                           {subitem.icon && <span className="item-icon">{subitem.icon}</span>}
                           {subitem.label}
                         </span>
-                        {subitem.disabled && <span className="disabled-badge">🔒</span>}
                       </button>
                     ))}
                   </div>

@@ -72,6 +72,8 @@ export default function NumberCruncherScreen() {
                 value={guestName}
                 onChange={(e) => setGuestName(e.target.value)}
                 placeholder="ABC"
+                aria-label="Enter your name (up to 3 characters)"
+                autoComplete="off"
                 autoFocus
               />
               <div style={{ display: 'flex', gap: '10px' }}>

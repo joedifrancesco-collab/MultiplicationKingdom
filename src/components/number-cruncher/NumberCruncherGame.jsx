@@ -331,6 +331,7 @@ export default function NumberCruncherGame() {
         type="text"
         className="nc-input-field"
         inputMode="numeric"
+        aria-label="Number answer input"
         onKeyDown={handleKeyDown}
         value={userInput}
         readOnly
