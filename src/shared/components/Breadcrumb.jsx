@@ -183,8 +183,8 @@ function formatSubjectLabel(subject) {
   const labels = {
     math: 'Math',
     spelling: 'Spelling',
-    lab: 'Lab',
-    'number-cruncher': 'Lab',
+    lab: 'Extra Credit',
+    'number-cruncher': 'Extra Credit',
     science: 'Science',
   };
   return labels[subject] || subject.charAt(0).toUpperCase() + subject.slice(1);
@@ -197,6 +197,7 @@ function formatKingdomLabel(kingdom) {
     'subtraction-kingdom': 'Subtraction Kingdom',
     'division-kingdom': 'Division Kingdom',
     'number-cruncher': 'Number Cruncher',
+    'flashcard-builder': 'Flashcard Builder',
   };
   return labels[kingdom] || kingdom.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }

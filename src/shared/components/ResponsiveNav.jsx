@@ -163,8 +163,8 @@ export default function ResponsiveNav() {
 
   const labSubject = {
     key: 'lab',
-    icon: '🧪',
-    label: 'Lab',
+    icon: '',
+    label: 'Extra Credit',
     path: '/subjects/lab',
     items: [
       {
@@ -172,11 +172,17 @@ export default function ResponsiveNav() {
         label: 'Number Cruncher',
         path: '/number-cruncher',
       },
+      {
+        icon: '🃏',
+        label: 'Flashcard Builder',
+        path: '/flashcard-builder',
+        disabled: true,
+      },
     ],
   };
 
   const subjects = [mathSubject, spellingSubject];
-  // Only show Lab on homepage
+  // Only show Extra Credit on homepage
   const sideBarSubjects = location.pathname === '/' ? [labSubject] : [];
 
   // Map for hamburger menu

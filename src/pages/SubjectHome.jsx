@@ -6,7 +6,7 @@ import './SubjectHome.css';
 
 /**
  * SubjectHome Page Component
- * Displays kingdoms for a specific subject (Math, Spelling, Lab, etc.)
+ * Displays kingdoms for a specific subject (Math, Spelling, Extra Credit, etc.)
  * Shows enabled/disabled status based on star progress
  */
 export default function SubjectHome() {
@@ -91,8 +91,8 @@ export default function SubjectHome() {
       ],
     },
     lab: {
-      icon: '🧪',
-      label: '🧪 Lab Kingdom',
+      icon: '',
+      label: 'Extra Credit',
       description: 'Explore experiments and challenges!',
       kingdoms: [
         {
@@ -102,6 +102,15 @@ export default function SubjectHome() {
           description: 'Advanced math challenges and puzzles',
           path: '/number-cruncher',
           unlockIndex: 0,
+        },
+        {
+          id: 'flashcard-builder',
+          icon: '🃏',
+          label: 'Flashcard Builder',
+          description: 'Build and study custom flashcard decks',
+          path: '/flashcard-builder',
+          unlockIndex: 1,
+          disabled: true,
         },
       ],
     },
