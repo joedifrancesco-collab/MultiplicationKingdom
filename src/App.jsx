@@ -38,6 +38,7 @@ import NumberCruncherGame from './components/number-cruncher/NumberCruncherGame'
 import FlashcardBuilder from './components/flashcard-builder/FlashcardBuilder';
 import FlashcardDeckSelector from './components/flashcard-builder/FlashcardDeckSelector';
 import FlashcardGamePlay from './components/flashcard-builder/FlashcardGamePlay';
+import TouchTypingSiege from './components/touch-typing/TouchTypingSiege';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
@@ -210,6 +211,11 @@ export default function App() {
           <Route path="/flashcard-builder" element={<ProtectedRoute element={<FlashcardDeckSelector />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/flashcard-builder/create" element={<ProtectedRoute element={<FlashcardBuilder />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/flashcard-builder/play/:deckId" element={<ProtectedRoute element={<FlashcardGamePlay />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+
+          {/* ═════════════════════════════════════════════════════════════ */}
+          {/* TOUCH TYPING */}
+          {/* ═════════════════════════════════════════════════════════════ */}
+          <Route path="/touch-typing" element={<ProtectedRoute element={<TouchTypingSiege />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
           {/* SHARED */}

@@ -111,6 +111,14 @@ export default function SubjectHome() {
           path: '/flashcard-builder',
           unlockIndex: 1,
         },
+        {
+          id: 'touch-typing',
+          icon: '⌨️',
+          label: 'Touch Typing',
+          description: 'Defend castles with fast, accurate keyboard typing',
+          path: '/touch-typing',
+          unlockIndex: 2,
+        },
       ],
     },
   };

@@ -164,6 +164,14 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
   }
 
   // Handle other routes
+  if (pathname === '/touch-typing') {
+    return [
+      { label: 'Home', path: '/' },
+      { label: 'Extra Credit', path: '/subjects/lab' },
+      { label: 'Touch Typing', path: pathname },
+    ];
+  }
+
   if (pathname === '/achievements' || pathname === '/unified-leaderboard') {
     return [{ label: 'Home', path: '/' }, { label: 'Achievements', path: pathname }];
   }
@@ -185,6 +193,7 @@ function formatSubjectLabel(subject) {
     spelling: 'Spelling',
     lab: 'Extra Credit',
     'number-cruncher': 'Extra Credit',
+    'touch-typing': 'Extra Credit',
     science: 'Science',
   };
   return labels[subject] || subject.charAt(0).toUpperCase() + subject.slice(1);
@@ -198,6 +207,7 @@ function formatKingdomLabel(kingdom) {
     'division-kingdom': 'Division Kingdom',
     'number-cruncher': 'Number Cruncher',
     'flashcard-builder': 'Flashcard Builder',
+    'touch-typing': 'Touch Typing',
   };
   return labels[kingdom] || kingdom.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }

@@ -177,6 +177,11 @@ export default function ResponsiveNav() {
         label: 'Flashcard Builder',
         path: '/flashcard-builder',
       },
+      {
+        icon: '⌨️',
+        label: 'Touch Typing',
+        path: '/touch-typing',
+      },
     ],
   };
 
