@@ -300,6 +300,16 @@ export default function FlashcardGamePlay() {
         </button>
       </div>
 
+      {/* Quit Button */}
+      <div className="fgp-quit-controls">
+        <button
+          className="fgp-quit-game-btn"
+          onClick={handleQuit}
+        >
+          📤 Quit Game
+        </button>
+      </div>
+
       {/* Settings */}
       <div className="fgp-settings">
         <label className="fgp-toggle">
