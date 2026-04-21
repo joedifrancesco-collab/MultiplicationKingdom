@@ -32,6 +32,7 @@ export default function FlashcardGamePlay() {
     incorrect: 0,
   });
   const [showSummary, setShowSummary] = useState(false);
+  const [isQuit, setIsQuit] = useState(false);
   const [answered, setAnswered] = useState({});
 
   useEffect(() => {
@@ -118,8 +119,9 @@ export default function FlashcardGamePlay() {
   };
 
   const handleQuit = () => {
-    if (window.confirm('Are you sure? Your progress will not be saved.')) {
-      navigate('/flashcard-builder');
+    if (window.confirm('Are you sure you want to quit? You\'ll see your current score.')) {
+      setShowSummary(true);
+      setIsQuit(true);
     }
   };
 
@@ -129,6 +131,7 @@ export default function FlashcardGamePlay() {
     setStats({ correct: 0, incorrect: 0 });
     setAnswered({});
     setShowSummary(false);
+    setIsQuit(false);
 
     if (isRandomOrder) {
       const shuffled = [...deck.cards].sort(() => Math.random() - 0.5);
@@ -178,7 +181,12 @@ export default function FlashcardGamePlay() {
     return (
       <div className="fgp-summary">
         <div className="fgp-summary-card">
-          <h1>{grade} Quiz Complete!</h1>
+          <h1>{grade} {isQuit ? 'Quiz Stopped' : 'Quiz Complete'}!</h1>
+          {isQuit && (
+            <p className="fgp-summary-subtitle">
+              You answered {stats.correct + stats.incorrect} of {cards.length} cards
+            </p>
+          )}
 
           <div className="fgp-score-display">
             <div className="fgp-score-item">

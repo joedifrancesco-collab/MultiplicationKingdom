@@ -433,6 +433,13 @@
   font-weight: 700;
 }
 
+.fgp-summary-subtitle {
+  font-size: 14px;
+  color: #999;
+  margin: -20px 0 30px 0;
+  font-style: italic;
+}
+
 .fgp-score-display {
   display: flex;
   align-items: center;
