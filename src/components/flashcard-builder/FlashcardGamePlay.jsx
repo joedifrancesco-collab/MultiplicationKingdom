@@ -26,6 +26,7 @@ export default function FlashcardGamePlay() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isRandomOrder, setIsRandomOrder] = useState(false);
   const [cards, setCards] = useState([]);
+  const [isCardEntering, setIsCardEntering] = useState(false);
   const [stats, setStats] = useState({
     correct: 0,
     incorrect: 0,
@@ -36,6 +37,16 @@ export default function FlashcardGamePlay() {
   useEffect(() => {
     loadDeck();
   }, [deckId]);
+
+  // Reset card entrance animation after it completes
+  useEffect(() => {
+    if (isCardEntering) {
+      const timer = setTimeout(() => {
+        setIsCardEntering(false);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [isCardEntering]);
 
   const loadDeck = async () => {
     try {
@@ -100,6 +111,7 @@ export default function FlashcardGamePlay() {
     if (currentIndex < cards.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setIsFlipped(false);
+      setIsCardEntering(true);
     } else {
       setShowSummary(true);
     }
@@ -264,7 +276,7 @@ export default function FlashcardGamePlay() {
       {/* Flashcard */}
       <div className="fgp-card-container">
         <div
-          className={`fgp-card ${isFlipped ? 'flipped' : ''}`}
+          className={`fgp-card ${isFlipped ? 'flipped' : ''} ${isCardEntering ? 'entering' : ''}`}
           onClick={handleFlip}
         >
           <div className="fgp-card-inner">
