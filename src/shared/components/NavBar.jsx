@@ -172,6 +172,31 @@ export default function NavBar() {
                     👤 Playing as Guest
                   </div>
                 )}
+
+                {/* Profile Section - Only for authenticated users */}
+                {!guest && user && (
+                  <>
+                    <div className="mobile-nav-separator"></div>
+                    <button 
+                      className="mobile-nav-btn mobile-profile-btn" 
+                      onClick={() => navigate('/profile')}
+                    >
+                      <div className="mobile-profile-content">
+                        <div className="mobile-profile-avatar">
+                          {user?.displayName
+                            ?.split(' ')
+                            .map((n) => n[0])
+                            .join('')
+                            .toUpperCase() || '👤'}
+                        </div>
+                        <div className="mobile-profile-info">
+                          <div className="mobile-profile-name">{user?.displayName || 'User'}</div>
+                          <div className="mobile-profile-email">{user?.email || 'No email'}</div>
+                        </div>
+                      </div>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

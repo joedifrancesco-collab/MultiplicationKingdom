@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getCurrentAuthUser, isGuestMode, signOutUser, clearGuestMode, subscribeToAuthChanges } from '../../store/progress';
 import { OverlayContext } from '../../context/OverlayContext.jsx';
@@ -38,6 +38,11 @@ export default function ResponsiveNav() {
     };
     window.addEventListener('guestModeChanged', handleGuestModeChange);
     return () => window.removeEventListener('guestModeChanged', handleGuestModeChange);
+  }, []);
+
+  // Memoize onClose to prevent infinite dependency issues
+  const handleHamburgerClose = useCallback(() => {
+    setIsHamburgerOpen(false);
   }, []);
 
   // Times Table only shows on Math pages
@@ -313,21 +318,17 @@ export default function ResponsiveNav() {
           <span className="hamburger-icon">☰</span>
           <span className="nav-title-mobile">Learning Kingdom</span>
         </button>
-
-        <button
-          className="profile-button-mobile"
-          onClick={() => navigate('/profile')}
-          title="Profile"
-        >
-          👤
-        </button>
       </div>
 
       {/* Hamburger Menu */}
       <HamburgerMenu
         isOpen={isHamburgerOpen}
-        onClose={() => setIsHamburgerOpen(false)}
+        onClose={handleHamburgerClose}
         subjects={hamburgerSubjects}
+        user={user}
+        guest={guest}
+        onSignOut={handleSignOut}
+        signingOut={signingOut}
       />
 
       {/* Desktop Breadcrumb Trail (displays below nav when not on home) */}

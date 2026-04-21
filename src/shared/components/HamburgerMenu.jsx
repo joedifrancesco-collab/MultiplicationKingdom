@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './HamburgerMenu.css';
 
@@ -7,15 +7,21 @@ import './HamburgerMenu.css';
  * Full-screen mobile navigation menu
  * Slides from left, includes expandable subject lists
  */
-export default function HamburgerMenu({ isOpen, onClose, subjects = [] }) {
+export default function HamburgerMenu({ isOpen, onClose, subjects = [], user = null, guest = false, onSignOut = null, signingOut = false }) {
   const [expandedSubjects, setExpandedSubjects] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
+  const prevPathnameRef = useRef(location.pathname);
 
-  // Close menu when location changes
+
+
+  // Close menu only when pathname actually changes (not on every render)
   useEffect(() => {
-    onClose();
-  }, [location, onClose]);
+    if (location.pathname !== prevPathnameRef.current) {
+      prevPathnameRef.current = location.pathname;
+      onClose();
+    }
+  }, [location.pathname, onClose]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -58,10 +64,35 @@ export default function HamburgerMenu({ isOpen, onClose, subjects = [] }) {
   return (
     <>
       {/* Backdrop */}
-      {isOpen && <div className="hamburger-backdrop" onClick={onClose} />}
+      {isOpen && (
+        <div
+          className="hamburger-backdrop"
+          onClick={onClose}
+          style={{ display: 'block', position: 'fixed', inset: 0, zIndex: 998 }}
+        />
+      )}
 
-      {/* Menu */}
-      <div className={`hamburger-menu ${isOpen ? 'open' : ''}`}>
+      {/* Menu - Using inline style for position to ensure it works */}
+      <div
+        className="hamburger-menu"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '80%',
+          maxWidth: '320px',
+          height: '100vh',
+          backgroundColor: 'white',
+          zIndex: 999,
+          display: 'flex',
+          flexDirection: 'column',
+          boxShadow: '2px 0 8px rgba(0, 0, 0, 0.15)',
+          overflow: 'hidden',
+          transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
+          transition: 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+          visibility: isOpen ? 'visible' : 'hidden',
+        }}
+      >
         {/* Header */}
         <div className="hamburger-header">
           <div className="hamburger-title">🧬 Learning Kingdom</div>
@@ -151,20 +182,42 @@ export default function HamburgerMenu({ isOpen, onClose, subjects = [] }) {
           </div>
         </nav>
 
-        {/* Footer */}
+        {/* Separator */}
+        <div className="hamburger-divider"></div>
+
+        {/* Footer - Profile Section */}
         <div className="hamburger-footer">
-          <div className="user-info">
-            <span className="user-icon">👤</span>
-            <span className="user-label" id="user-name">Guest</span>
-          </div>
+          {/* Profile Info (only for authenticated users) */}
+          {!guest && user && (
+            <button
+              className="hamburger-profile-section"
+              onClick={() => {
+                handleNavigate('/profile');
+              }}
+            >
+              <div className="hamburger-profile-avatar">
+                {user?.displayName
+                  ?.split(' ')
+                  .map((n) => n[0])
+                  .join('')
+                  .toUpperCase() || '👤'}
+              </div>
+              <div className="hamburger-profile-info">
+                <div className="hamburger-profile-name">{user?.displayName || 'User'}</div>
+                <div className="hamburger-profile-email">{user?.email || 'No email'}</div>
+              </div>
+            </button>
+          )}
+
+          {/* Sign Out Button */}
           <button
             className="hamburger-nav-item logout-button"
             onClick={() => {
-              handleNavigate('/');
-              // TODO: Implement sign-out logic
+              if (onSignOut) onSignOut();
             }}
+            disabled={signingOut}
           >
-            🔓 Sign Out
+            {signingOut ? '⏳ Exiting...' : guest ? '👤 Enter Guest' : '🚪 Sign Out'}
           </button>
         </div>
       </div>
