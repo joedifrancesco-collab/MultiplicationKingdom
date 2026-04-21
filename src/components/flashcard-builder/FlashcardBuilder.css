@@ -1,0 +1,370 @@
+.fb-builder {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4ff 0%, #fff5f0 100%);
+  padding: 20px;
+  padding-top: 80px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.fb-header {
+  text-align: center;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fb-header h1 {
+  font-size: 32px;
+  color: var(--primary);
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.fb-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.fb-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: var(--radius);
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(108, 99, 255, 0.1);
+}
+
+/* Deck Info Section */
+.fb-deck-info {
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.fb-field-group {
+  margin-bottom: 24px;
+}
+
+.fb-field-group label {
+  display: block;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 8px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fb-field-group input[type="text"],
+.fb-field-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.fb-field-group input[type="text"]:focus,
+.fb-field-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: #f9f8ff;
+}
+
+.fb-field-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.fb-char-count {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.fb-error {
+  border-color: #ff6b6b !important;
+  background-color: #fff5f5 !important;
+}
+
+/* Cards Section */
+.fb-cards-section {
+  margin-bottom: 30px;
+}
+
+.fb-cards-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.fb-cards-header h2 {
+  font-size: 20px;
+  color: var(--primary);
+  margin: 0;
+  font-weight: 700;
+}
+
+.fb-max-indicator {
+  font-size: 14px;
+  color: #999;
+  background-color: #f5f5f5;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.fb-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Custom scrollbar for cards list */
+.fb-cards-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.fb-cards-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.fb-cards-list::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 10px;
+}
+
+.fb-cards-list::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+.fb-card-input-group {
+  display: grid;
+  grid-template-columns: 40px 1fr 32px;
+  gap: 12px;
+  align-items: start;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.fb-card-input-group:hover {
+  background-color: #f5f5f5;
+  border-color: #d0d0d0;
+}
+
+.fb-card-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.fb-card-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.fb-card-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.fb-card-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.fb-card-field input {
+  padding: 10px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.fb-card-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: #f9f8ff;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+}
+
+.fb-card-field input.fb-error {
+  border-color: #ff6b6b;
+  background-color: #fff5f5;
+}
+
+.fb-remove-card-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background-color: #ffebee;
+  color: #c62828;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fb-remove-card-btn:hover:not(:disabled) {
+  background-color: #ef5350;
+  color: white;
+}
+
+.fb-remove-card-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fb-add-card-btn {
+  margin-top: 16px;
+  padding: 12px 20px;
+  border: 2px dashed var(--primary);
+  background-color: transparent;
+  color: var(--primary);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.fb-add-card-btn:hover:not(:disabled) {
+  background-color: #f9f8ff;
+  border-color: #4c3cc4;
+}
+
+.fb-add-card-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Error Message */
+.fb-error-message {
+  padding: 12px 16px;
+  background-color: #ffebee;
+  border-left: 4px solid #c62828;
+  border-radius: 4px;
+  color: #c62828;
+  font-size: 14px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.fb-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.fb-cancel-btn,
+.fb-save-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fb-cancel-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.fb-cancel-btn:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.fb-save-btn {
+  background-color: var(--success);
+  color: white;
+}
+
+.fb-save-btn:hover:not(:disabled) {
+  background-color: #5ab363;
+  box-shadow: 0 4px 12px rgba(107, 203, 119, 0.3);
+}
+
+.fb-cancel-btn:disabled,
+.fb-save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .fb-builder {
+    padding: 12px;
+    padding-top: 80px;
+  }
+
+  .fb-container {
+    padding: 20px;
+  }
+
+  .fb-header h1 {
+    font-size: 24px;
+  }
+
+  .fb-card-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .fb-card-input-group {
+    grid-template-columns: 36px 1fr 28px;
+    gap: 10px;
+  }
+
+  .fb-card-number {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .fb-actions {
+    flex-direction: column-reverse;
+  }
+
+  .fb-cancel-btn,
+  .fb-save-btn {
+    width: 100%;
+  }
+}

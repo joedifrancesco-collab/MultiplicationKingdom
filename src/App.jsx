@@ -35,6 +35,9 @@ import VocabularyScreen from './subjects/language-arts-kingdom/vocabulary/compon
 import WordMatchLanding from './subjects/language-arts-kingdom/vocabulary/components/WordMatchLanding';
 import NumberCruncherScreen from './components/number-cruncher/NumberCruncherScreen';
 import NumberCruncherGame from './components/number-cruncher/NumberCruncherGame';
+import FlashcardBuilder from './components/flashcard-builder/FlashcardBuilder';
+import FlashcardDeckSelector from './components/flashcard-builder/FlashcardDeckSelector';
+import FlashcardGamePlay from './components/flashcard-builder/FlashcardGamePlay';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
@@ -200,6 +203,13 @@ export default function App() {
           <Route path="/number-cruncher" element={<ProtectedRoute element={<NumberCruncherScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/number-cruncher/play" element={<ProtectedRoute element={<NumberCruncherGame />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/number-cruncher/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
+          
+          {/* ═════════════════════════════════════════════════════════════ */}
+          {/* FLASHCARD BUILDER */}
+          {/* ═════════════════════════════════════════════════════════════ */}
+          <Route path="/flashcard-builder" element={<ProtectedRoute element={<FlashcardDeckSelector />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/flashcard-builder/create" element={<ProtectedRoute element={<FlashcardBuilder />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/flashcard-builder/play/:deckId" element={<ProtectedRoute element={<FlashcardGamePlay />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
           {/* SHARED */}
