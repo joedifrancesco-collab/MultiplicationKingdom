@@ -176,7 +176,6 @@ export default function ResponsiveNav() {
         icon: '🃏',
         label: 'Flashcard Builder',
         path: '/flashcard-builder',
-        disabled: true,
       },
     ],
   };

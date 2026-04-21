@@ -110,7 +110,6 @@ export default function SubjectHome() {
           description: 'Build and study custom flashcard decks',
           path: '/flashcard-builder',
           unlockIndex: 1,
-          disabled: true,
         },
       ],
     },
