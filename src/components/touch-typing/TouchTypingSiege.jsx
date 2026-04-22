@@ -7,51 +7,50 @@ const LANE_X = [8, 18, 28, 38, 62, 72, 82, 92];
 const CASTLE_HEALTH_START = 3;
 const TICK_MS = 30;
 const FIELD_HEIGHT = 520;
+const HITS_PER_LEVEL = 10;
+const CASTLE_EMOJI = '🏰';
+const EXPLOSION_EMOJI = '💥';
 
-// Left-hand tiers (lanes 0–3), Right-hand tiers (lanes 4–7)
-// Progression: home row → top row → bottom row → numbers → special chars → uppercase
-const LEFT_TIERS = [
-  ['a', 's', 'd', 'f'],   // 1: home row left
-  ['q', 'w', 'e', 'r'],   // 2: top row left
-  ['z', 'x', 'c', 'v'],   // 3: bottom row left
-  ['1', '2', '3', '4'],   // 4: numbers left
-  ['!', '@', '#', '$'],   // 5: symbols left
-  ['A', 'S', 'D', 'F'],   // 6: uppercase left
+// Cumulative tiers — keys added to left/right pool at each minLevel
+const TIERS = [
+  { minLevel: 1,  left: ['a','s','d','f'],          right: ['j','k','l',';'],        label: 'Home Row — asdf / jkl;' },
+  { minLevel: 3,  left: ['g'],                       right: ['h'],                    label: '+ g and h (full home row)' },
+  { minLevel: 5,  left: ['q','w','e','r','t'],       right: ['y','u','i','o','p'],    label: '+ Top Row' },
+  { minLevel: 8,  left: ['z','x','c','v','b'],       right: ['n','m',',','.'],        label: '+ Bottom Row' },
+  { minLevel: 11, left: ['1','2','3','4','5'],       right: ['6','7','8','9','0'],    label: '+ Numbers' },
+  { minLevel: 14, left: ['!','@','#','$'],           right: ['&','*','(',')'],        label: '+ Symbols' },
+  { minLevel: 17, left: ['A','S','D','F','G'],       right: ['H','J','K','L'],        label: '+ Capitals' },
 ];
 
-const RIGHT_TIERS = [
-  ['j', 'k', 'l', ';'],   // 1: home row right
-  ['u', 'i', 'o', 'p'],   // 2: top row right
-  ['m', ',', '.', '/'],   // 3: bottom row right
-  ['7', '8', '9', '0'],   // 4: numbers right
-  ['&', '*', '(', ')'],   // 5: symbols right
-  ['J', 'K', 'L', ':'],   // 6: uppercase right
-];
+// Projectile emoji escalates with level (index = level-1, capped)
+const PROJECTILE_EMOJIS = ['💣','💣','☄️','☄️','🔥','🔥','⚡','⚡','🗡️','🗡️','🐉','🐉'];
 
-const TIER_COUNT = LEFT_TIERS.length;
-
-function pickRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+function getProjectileEmoji(level) {
+  return PROJECTILE_EMOJIS[Math.min(level - 1, PROJECTILE_EMOJIS.length - 1)];
 }
 
-function clampLevel(level) {
-  return Math.max(1, Math.min(level, TIER_COUNT));
-}
-
-function getSidePool(tiers, level) {
-  const cap = clampLevel(level);
-  const pool = [];
-  for (let i = 0; i < cap; i += 1) {
-    pool.push(...tiers[i]);
+function getCurrentTier(level) {
+  let current = TIERS[0];
+  for (const tier of TIERS) {
+    if (level >= tier.minLevel) current = tier;
   }
-  return pool;
+  return current;
+}
+
+function getPoolForLevel(level) {
+  const leftPool = [];
+  const rightPool = [];
+  for (const tier of TIERS) {
+    if (level >= tier.minLevel) {
+      leftPool.push(...tier.left);
+      rightPool.push(...tier.right);
+    }
+  }
+  return { leftPool, rightPool };
 }
 
 function buildCastleTriggers(level) {
-  const leftPool = getSidePool(LEFT_TIERS, level);
-  const rightPool = getSidePool(RIGHT_TIERS, level);
-
-  // Shuffle a copy and pick 4 unique keys per side
+  const { leftPool, rightPool } = getPoolForLevel(level);
   function pick4(pool) {
     const unique = [...new Set(pool)];
     const shuffled = unique.sort(() => Math.random() - 0.5);
@@ -61,7 +60,6 @@ function buildCastleTriggers(level) {
     }
     return result;
   }
-
   return [...pick4(leftPool), ...pick4(rightPool)];
 }
 
@@ -81,7 +79,12 @@ export default function TouchTypingSiege() {
   const [currentStreak, setCurrentStreak] = useState(0);
   const [startedAt, setStartedAt] = useState(null);
 
+  const [explosion, setExplosion] = useState(null);
+  const [missedLane, setMissedLane] = useState(null);
+
   const spawnTimerRef = useRef(null);
+  const explosionTimerRef = useRef(null);
+  const missedTimerRef = useRef(null);
 
   const totalAttempts = hits + mistakes;
   const accuracy = totalAttempts > 0 ? Math.round((hits / totalAttempts) * 100) : 100;
@@ -104,8 +107,10 @@ export default function TouchTypingSiege() {
     setStartedAt(null);
   };
 
-  const spawnDelayMs = Math.max(350, 1250 - (level - 1) * 110);
-  const fallSpeedPxPerTick = Math.min(12, 2.4 + (level - 1) * 0.9);
+  // Starts slow (1500ms, 1.5px/tick) so beginners can learn home row comfortably.
+  // Ramps up significantly each level — by level 17+ it's fast and uses all keys.
+  const spawnDelayMs = Math.max(300, 1500 - (level - 1) * 80);
+  const fallSpeedPxPerTick = Math.min(16, 1.5 + (level - 1) * 0.7);
 
   const spawnTarget = () => {
     const lane = Math.floor(Math.random() * 8);
@@ -147,6 +152,10 @@ export default function TouchTypingSiege() {
         if (nextY >= FIELD_HEIGHT - 40) {
           setMissedTargets((v) => v + 1);
           setCurrentStreak(0);
+          // Flash the hit castle
+          setMissedLane(prev.lane);
+          clearTimeout(missedTimerRef.current);
+          missedTimerRef.current = setTimeout(() => setMissedLane(null), 500);
           setCastleHealth((existing) => {
             const updated = [...existing];
             updated[prev.lane] = Math.max(0, updated[prev.lane] - 1);
@@ -171,8 +180,7 @@ export default function TouchTypingSiege() {
 
   useEffect(() => {
     if (mode !== 'running') return;
-
-    const nextLevel = clampLevel(1 + Math.floor(hits / 12));
+    const nextLevel = 1 + Math.floor(hits / HITS_PER_LEVEL);
     if (nextLevel !== level) {
       setLevel(nextLevel);
     }
@@ -195,6 +203,10 @@ export default function TouchTypingSiege() {
 
       const expected = castleTriggers[activeTarget.lane];
       if (input === expected) {
+        // Spawn explosion at the target's current position
+        setExplosion({ lane: activeTarget.lane, y: activeTarget.y, id: Date.now() });
+        clearTimeout(explosionTimerRef.current);
+        explosionTimerRef.current = setTimeout(() => setExplosion(null), 700);
         setHits((v) => v + 1);
         setCurrentStreak((streak) => {
           const updated = streak + 1;
@@ -217,9 +229,11 @@ export default function TouchTypingSiege() {
     return (
       <div className="tts-wrap tts-mobile-block">
         <div className="tts-panel">
-          <h1>⌨️ Touch Typing</h1>
-          <p>This game is desktop-web only for proper touch-typing posture.</p>
-          <button className="tts-btn" onClick={() => navigate('/subjects/lab')}>Back to Extra Credit</button>
+          <h1>⌨️ Touch Typing Siege</h1>
+          <p>This game requires a physical keyboard — please open it on a desktop or laptop.</p>
+          <div className="tts-panel-buttons">
+            <button className="tts-btn tts-secondary" onClick={() => navigate('/subjects/lab')}>Back to Extra Credit</button>
+          </div>
         </div>
       </div>
     );
@@ -230,7 +244,7 @@ export default function TouchTypingSiege() {
       <header className="tts-topbar">
         <div>
           <h1>⌨️ Touch Typing Siege</h1>
-          <p>Type the threatened castle's trigger key to fire and destroy incoming objects.</p>
+          <p>Type the key on the threatened castle to fire its cannon and destroy the incoming enemy.</p>
         </div>
         <div className="tts-actions">
           <button className="tts-btn tts-secondary" onClick={() => navigate('/subjects/lab')}>Back</button>
@@ -245,29 +259,38 @@ export default function TouchTypingSiege() {
                 setMode('running');
               }}
             >
-              {mode === 'ready' ? 'Start' : 'Play Again'}
+              {mode === 'ready' ? '⚔️ Start' : '⚔️ Play Again'}
             </button>
           )}
         </div>
       </header>
 
       <section className="tts-hud">
-        <div className="tts-stat">Score: <strong>{score}</strong></div>
-        <div className="tts-stat">Level: <strong>{level}</strong></div>
-        <div className="tts-stat">Accuracy: <strong>{accuracy}%</strong></div>
-        <div className="tts-stat">CPM: <strong>{cpm}</strong></div>
-        <div className="tts-stat">Best Streak: <strong>{bestStreak}</strong></div>
+        <div className="tts-stat"><span>Score</span><strong>{score}</strong></div>
+        <div className="tts-stat"><span>Level</span><strong>{level}</strong></div>
+        <div className="tts-stat"><span>Accuracy</span><strong>{accuracy}%</strong></div>
+        <div className="tts-stat"><span>CPM</span><strong>{cpm}</strong></div>
+        <div className="tts-stat"><span>Streak</span><strong>{currentStreak}</strong></div>
+        <div className="tts-tier-badge">🎯 {getCurrentTier(level).label}</div>
       </section>
 
       <main className="tts-field" role="application" aria-label="Touch typing game field">
-        <div className="tts-skyline" />
+        <div className="tts-ground" />
 
         {LANE_X.map((x, index) => (
           <div key={`lane-${index}`} className="tts-lane" style={{ left: `${x}%` }}>
             <div className="tts-lane-line" />
-            <div className="tts-castle" data-damaged={castleHealth[index] < CASTLE_HEALTH_START}>
-              <span className="tts-key">{castleTriggers[index]}</span>
-              <span className="tts-health">{castleHealth[index]}/{CASTLE_HEALTH_START}</span>
+            <div
+              className={`tts-castle${missedLane === index ? ' missed' : ''}`}
+              data-damaged={castleHealth[index] < CASTLE_HEALTH_START}
+            >
+              <span className="tts-castle-emoji">{CASTLE_EMOJI}</span>
+              <kbd className="tts-key">{castleTriggers[index]}</kbd>
+              <div className="tts-health-pips">
+                {Array.from({ length: CASTLE_HEALTH_START }, (_, i) => (
+                  <span key={i} className={`tts-hp ${i < castleHealth[index] ? 'filled' : 'empty'}`} />
+                ))}
+              </div>
             </div>
           </div>
         ))}
@@ -277,8 +300,20 @@ export default function TouchTypingSiege() {
             key={activeTarget.id}
             className="tts-target"
             style={{ left: `${LANE_X[activeTarget.lane]}%`, top: `${activeTarget.y}px` }}
-            aria-label="Incoming projectile"
-          />
+            aria-label="Incoming enemy"
+          >
+            {getProjectileEmoji(level)}
+          </div>
+        )}
+
+        {explosion && (
+          <div
+            key={explosion.id}
+            className="tts-explosion"
+            style={{ left: `${LANE_X[explosion.lane]}%`, top: `${explosion.y}px` }}
+          >
+            {EXPLOSION_EMOJI}
+          </div>
         )}
 
         {mode !== 'running' && (
@@ -286,25 +321,71 @@ export default function TouchTypingSiege() {
             <div className="tts-panel">
               {mode === 'ready' ? (
                 <>
-                  <h2>Castle Defense Typing</h2>
-                  <p>Left castles use left-hand keys. Right castles use right-hand keys. The difficulty grows as you score hits.</p>
-                  <ul>
-                    <li><strong>Lv 1:</strong> Home row — <kbd>asdf</kbd> / <kbd>jkl;</kbd></li>
-                    <li><strong>Lv 2:</strong> + Top row — <kbd>qwer</kbd> / <kbd>uiop</kbd></li>
-                    <li><strong>Lv 3:</strong> + Bottom row — <kbd>zxcv</kbd> / <kbd>m,./</kbd></li>
-                    <li><strong>Lv 4:</strong> + Numbers — <kbd>1234</kbd> / <kbd>7890</kbd></li>
-                    <li><strong>Lv 5:</strong> + Symbols — <kbd>!@#$</kbd> / <kbd>&amp;*()</kbd></li>
-                    <li><strong>Lv 6:</strong> + Uppercase — <kbd>ASDF</kbd> / <kbd>JKL:</kbd></li>
+                  <h2>⚔️ Castle Defense Typing</h2>
+                  <p>Defend your 8 castles from waves of enemies. Left 4 castles = left-hand keys. Right 4 castles = right-hand keys. Difficulty grows as you level up.</p>
+                  <ul className="tts-tier-list">
+                    {TIERS.map((tier) => (
+                      <li key={tier.minLevel}>
+                        <strong>Lv {tier.minLevel}+</strong> {tier.label}
+                      </li>
+                    ))}
                   </ul>
-                  <p>Type the key shown on a castle to fire it when a projectile falls in its lane.</p>
+                  <div className="tts-panel-buttons">
+                    <button
+                      className="tts-btn"
+                      onClick={() => {
+                        resetGame();
+                        setStartedAt(Date.now());
+                        setMode('running');
+                      }}
+                    >
+                      ⚔️ Start Game
+                    </button>
+                  </div>
                 </>
               ) : (
                 <>
-                  <h2>Round Complete</h2>
-                  <p>You defended for {elapsedSeconds}s with {hits} hits and {missedTargets} misses.</p>
-                  <p>
-                    Final: <strong>{hits}</strong> right out of <strong>{hits + mistakes}</strong> typed attempts.
-                  </p>
+                  <h2>⚔️ Siege Over!</h2>
+                  <div className="tts-gameover-stats">
+                    <div>
+                      <span className="tts-gameover-stat-val">{score}</span>
+                      <span className="tts-gameover-stat-lbl">Score</span>
+                    </div>
+                    <div>
+                      <span className="tts-gameover-stat-val">Lv {level}</span>
+                      <span className="tts-gameover-stat-lbl">Level Reached</span>
+                    </div>
+                    <div>
+                      <span className="tts-gameover-stat-val">{accuracy}%</span>
+                      <span className="tts-gameover-stat-lbl">Accuracy</span>
+                    </div>
+                    <div>
+                      <span className="tts-gameover-stat-val">{cpm}</span>
+                      <span className="tts-gameover-stat-lbl">Keys / Min</span>
+                    </div>
+                    <div>
+                      <span className="tts-gameover-stat-val">{bestStreak}</span>
+                      <span className="tts-gameover-stat-lbl">Best Streak</span>
+                    </div>
+                    <div>
+                      <span className="tts-gameover-stat-val">{hits}</span>
+                      <span className="tts-gameover-stat-lbl">Enemies Slain</span>
+                    </div>
+                  </div>
+                  <p>Tier reached: <strong>{getCurrentTier(level).label}</strong></p>
+                  <div className="tts-panel-buttons">
+                    <button
+                      className="tts-btn"
+                      onClick={() => {
+                        resetGame();
+                        setStartedAt(Date.now());
+                        setMode('running');
+                      }}
+                    >
+                      ⚔️ Play Again
+                    </button>
+                    <button className="tts-btn tts-secondary" onClick={() => navigate('/subjects/lab')}>Back</button>
+                  </div>
                 </>
               )}
             </div>
