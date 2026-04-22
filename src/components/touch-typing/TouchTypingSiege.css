@@ -119,6 +119,18 @@
   gap: 6px;
 }
 
+.tts-tier-badge.boss {
+  background: rgba(255, 80, 40, 0.2);
+  border-color: rgba(255, 80, 40, 0.55);
+  color: #ffb09a;
+  animation: boss-pulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes boss-pulse {
+  from { box-shadow: 0 0 6px rgba(255, 80, 40, 0.3); }
+  to   { box-shadow: 0 0 18px rgba(255, 80, 40, 0.7); }
+}
+
 /* ── Battle Field ───────────────────────────────────────────────────────── */
 .tts-field {
   position: relative;

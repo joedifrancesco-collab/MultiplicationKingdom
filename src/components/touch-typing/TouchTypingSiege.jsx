@@ -8,30 +8,52 @@ const CASTLE_HEALTH_START = 3;
 const TICK_MS = 30;
 const FIELD_HEIGHT = 520;
 const HITS_PER_LEVEL = 10;
+const BOSS_LEVEL = 20;
 const CASTLE_EMOJI = '🏰';
 const EXPLOSION_EMOJI = '💥';
 
-// Cumulative tiers — keys added to left/right pool at each minLevel
-const TIERS = [
-  { minLevel: 1,  left: ['a','s','d','f'],          right: ['j','k','l',';'],        label: 'Home Row — asdf / jkl;' },
-  { minLevel: 3,  left: ['g'],                       right: ['h'],                    label: '+ g and h (full home row)' },
-  { minLevel: 5,  left: ['q','w','e','r','t'],       right: ['y','u','i','o','p'],    label: '+ Top Row' },
-  { minLevel: 8,  left: ['z','x','c','v','b'],       right: ['n','m',',','.'],        label: '+ Bottom Row' },
-  { minLevel: 11, left: ['1','2','3','4','5'],       right: ['6','7','8','9','0'],    label: '+ Numbers' },
-  { minLevel: 14, left: ['!','@','#','$'],           right: ['&','*','(',')'],        label: '+ Symbols' },
-  { minLevel: 17, left: ['A','S','D','F','G'],       right: ['H','J','K','L'],        label: '+ Capitals' },
+// Physical QWERTY left-to-right position for each key.
+// Formula: column_index * 100 + row_offset
+//   numbers row  offset   0  (cols 0–9 → 0,100,200…)
+//   top row      offset  50  (cols 0–9 → 50,150,250…)
+//   home row     offset  75  (cols 0–9 → 75,175,275…)
+//   bottom row   offset 125  (cols 0–9 → 125,225,325…)
+const KEY_POSITION = {
+  '1':0,   '2':100, '3':200, '4':300, '5':400, '6':500, '7':600, '8':700, '9':800, '0':900,
+  '!':0,   '@':100, '#':200, '$':300, '%':400, '^':500, '&':600, '*':700, '(':800, ')':900,
+  'q':50,  'w':150, 'e':250, 'r':350, 't':450, 'y':550, 'u':650, 'i':750, 'o':850, 'p':950,
+  'Q':50,  'W':150, 'E':250, 'R':350, 'T':450, 'Y':550, 'U':650, 'I':750, 'O':850, 'P':950,
+  'a':75,  's':175, 'd':275, 'f':375, 'g':475, 'h':575, 'j':675, 'k':775, 'l':875, ';':975,
+  'A':75,  'S':175, 'D':275, 'F':375, 'G':475, 'H':575, 'J':675, 'K':775, 'L':875,
+  'z':125, 'x':225, 'c':325, 'v':425, 'b':525, 'n':625, 'm':725, ',':825, '.':925, '/':1025,
+  'Z':125, 'X':225, 'C':325, 'V':425, 'B':525, 'N':625, 'M':725,
+};
+
+function sortByKeyPos(keys) {
+  return [...keys].sort((a, b) => (KEY_POSITION[a] ?? 500) - (KEY_POSITION[b] ?? 500));
+}
+
+// Additive tiers — each entry adds new keys to the cumulative pool
+const TIER_ADDITIONS = [
+  { minLevel: 1,          left: ['a','s','d','f'],                                     right: ['j','k','l',';'],                              label: 'Home Row — a s d f / j k l ;' },
+  { minLevel: 3,          left: ['g'],                                                  right: ['h'],                                          label: '+ g and h (full home row)' },
+  { minLevel: 5,          left: ['q','w','e','r','t'],                                  right: ['y','u','i','o','p'],                          label: '+ Top Row letters' },
+  { minLevel: 8,          left: ['z','x','c','v','b'],                                  right: ['n','m',',','.'],                              label: '+ Bottom Row letters' },
+  { minLevel: 11,         left: ['1','2','3','4','5'],                                  right: ['6','7','8','9','0'],                          label: '+ Numbers' },
+  { minLevel: 14,         left: ['!','@','#','$','%'],                                  right: ['^','&','*','(',')'],                          label: '+ Symbols' },
+  { minLevel: 17,         left: ['Q','W','E','R','T','A','S','D','F','G','Z','X','C','V','B'], right: ['Y','U','I','O','P','H','J','K','L','N','M'], label: '+ Capitals' },
+  { minLevel: BOSS_LEVEL, isBoss: true, left: [], right: [],                                                                                    label: '💀 BOSS — Any Key, Any Castle' },
 ];
 
-// Projectile emoji escalates with level (index = level-1, capped)
+// Projectile emoji escalates with level
 const PROJECTILE_EMOJIS = ['💣','💣','☄️','☄️','🔥','🔥','⚡','⚡','🗡️','🗡️','🐉','🐉'];
-
 function getProjectileEmoji(level) {
   return PROJECTILE_EMOJIS[Math.min(level - 1, PROJECTILE_EMOJIS.length - 1)];
 }
 
 function getCurrentTier(level) {
-  let current = TIERS[0];
-  for (const tier of TIERS) {
+  let current = TIER_ADDITIONS[0];
+  for (const tier of TIER_ADDITIONS) {
     if (level >= tier.minLevel) current = tier;
   }
   return current;
@@ -40,8 +62,8 @@ function getCurrentTier(level) {
 function getPoolForLevel(level) {
   const leftPool = [];
   const rightPool = [];
-  for (const tier of TIERS) {
-    if (level >= tier.minLevel) {
+  for (const tier of TIER_ADDITIONS) {
+    if (!tier.isBoss && level >= tier.minLevel) {
       leftPool.push(...tier.left);
       rightPool.push(...tier.right);
     }
@@ -50,17 +72,26 @@ function getPoolForLevel(level) {
 }
 
 function buildCastleTriggers(level) {
+  if (level >= BOSS_LEVEL) {
+    // Boss: pick any 8 keys from full keyboard, sorted left-to-right across all castles
+    const { leftPool, rightPool } = getPoolForLevel(BOSS_LEVEL - 1);
+    const allKeys = [...new Set([...leftPool, ...rightPool])];
+    const picked = allKeys.sort(() => Math.random() - 0.5).slice(0, 8);
+    return sortByKeyPos(picked);
+  }
+
   const { leftPool, rightPool } = getPoolForLevel(level);
-  function pick4(pool) {
+
+  // Pick 4 random unique keys from pool, then sort by physical keyboard position (left→right)
+  function pick4sorted(pool) {
     const unique = [...new Set(pool)];
     const shuffled = unique.sort(() => Math.random() - 0.5);
-    const result = [];
-    for (let i = 0; i < 4; i += 1) {
-      result.push(shuffled[i % shuffled.length]);
-    }
-    return result;
+    const chosen = shuffled.slice(0, Math.min(4, shuffled.length));
+    while (chosen.length < 4) chosen.push(chosen[chosen.length - 1]);
+    return sortByKeyPos(chosen);
   }
-  return [...pick4(leftPool), ...pick4(rightPool)];
+
+  return [...pick4sorted(leftPool), ...pick4sorted(rightPool)];
 }
 
 export default function TouchTypingSiege() {
@@ -271,7 +302,9 @@ export default function TouchTypingSiege() {
         <div className="tts-stat"><span>Accuracy</span><strong>{accuracy}%</strong></div>
         <div className="tts-stat"><span>CPM</span><strong>{cpm}</strong></div>
         <div className="tts-stat"><span>Streak</span><strong>{currentStreak}</strong></div>
-        <div className="tts-tier-badge">🎯 {getCurrentTier(level).label}</div>
+        <div className={`tts-tier-badge${level >= BOSS_LEVEL ? ' boss' : ''}`}>
+          {level >= BOSS_LEVEL ? '💀' : '🎯'} {getCurrentTier(level).label}
+        </div>
       </section>
 
       <main className="tts-field" role="application" aria-label="Touch typing game field">
@@ -324,7 +357,7 @@ export default function TouchTypingSiege() {
                   <h2>⚔️ Castle Defense Typing</h2>
                   <p>Defend your 8 castles from waves of enemies. Left 4 castles = left-hand keys. Right 4 castles = right-hand keys. Difficulty grows as you level up.</p>
                   <ul className="tts-tier-list">
-                    {TIERS.map((tier) => (
+                    {TIER_ADDITIONS.map((tier) => (
                       <li key={tier.minLevel}>
                         <strong>Lv {tier.minLevel}+</strong> {tier.label}
                       </li>
