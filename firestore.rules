@@ -12,6 +12,13 @@ service cloud.firestore {
       allow update, delete: if request.auth.uid == resource.data.uid;
     }
 
+    // ── Flashcard Decks Subcollection ─────────────────────────────────────
+    // Stored under users/{uid}/flashcard_decks/{deckId}
+    // Only the owning authenticated user can read/write their own decks
+    match /users/{uid}/flashcard_decks/{deckId} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
     // ── Leaderboard Collection ────────────────────────────────────────────
     // Allow authenticated users to write scores
     // Allow anyone to read (public leaderboard)
