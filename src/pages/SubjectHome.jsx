@@ -102,6 +102,7 @@ export default function SubjectHome() {
           description: 'Advanced math challenges and puzzles',
           path: '/number-cruncher',
           unlockIndex: 0,
+          alwaysUnlocked: true,
         },
         {
           id: 'flashcard-builder',
@@ -110,6 +111,7 @@ export default function SubjectHome() {
           description: 'Build and study custom flashcard decks',
           path: '/flashcard-builder',
           unlockIndex: 1,
+          alwaysUnlocked: true,
         },
         {
           id: 'touch-typing',
@@ -118,6 +120,7 @@ export default function SubjectHome() {
           description: 'Defend castles with fast, accurate keyboard typing',
           path: '/touch-typing',
           unlockIndex: 2,
+          alwaysUnlocked: true,
         },
       ],
     },

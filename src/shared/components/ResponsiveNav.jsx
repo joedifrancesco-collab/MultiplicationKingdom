@@ -186,8 +186,13 @@ export default function ResponsiveNav() {
   };
 
   const subjects = [mathSubject, spellingSubject];
-  // Only show Extra Credit on homepage
-  const sideBarSubjects = location.pathname === '/' ? [labSubject] : [];
+  // Show Extra Credit on homepage and on Extra Credit pages
+  const isOnExtraCreditPages =
+    location.pathname.startsWith('/subjects/lab') ||
+    ['/touch-typing', '/flashcard-builder', '/number-cruncher'].some((p) =>
+      location.pathname.startsWith(p)
+    );
+  const sideBarSubjects = location.pathname === '/' || isOnExtraCreditPages ? [labSubject] : [];
 
   // Map for hamburger menu
   const hamburgerSubjects = subjects.concat(sideBarSubjects).map((subject) => ({

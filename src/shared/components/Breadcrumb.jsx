@@ -163,13 +163,35 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
     }
   }
 
-  // Handle other routes
+  // Handle Extra Credit standalone routes
   if (pathname === '/touch-typing') {
     return [
       { label: 'Home', path: '/' },
       { label: 'Extra Credit', path: '/subjects/lab' },
       { label: 'Touch Typing', path: pathname },
     ];
+  }
+
+  if (pathname === '/number-cruncher') {
+    return [
+      { label: 'Home', path: '/' },
+      { label: 'Extra Credit', path: '/subjects/lab' },
+      { label: 'Number Cruncher', path: pathname },
+    ];
+  }
+
+  if (pathname.startsWith('/flashcard-builder')) {
+    const base = [
+      { label: 'Home', path: '/' },
+      { label: 'Extra Credit', path: '/subjects/lab' },
+      { label: 'Flashcard Builder', path: '/flashcard-builder' },
+    ];
+    if (pathname === '/flashcard-builder/create') {
+      base.push({ label: 'Create Deck', path: pathname });
+    } else if (pathname.startsWith('/flashcard-builder/play/')) {
+      base.push({ label: 'Play', path: pathname });
+    }
+    return base;
   }
 
   if (pathname === '/achievements' || pathname === '/unified-leaderboard') {

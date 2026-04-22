@@ -1,38 +1,68 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDeviceType } from '../../hooks/useDeviceType';
 import './TouchTypingSiege.css';
 
-const LANE_KEYS = ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'];
 const LANE_X = [8, 18, 28, 38, 62, 72, 82, 92];
 const CASTLE_HEALTH_START = 3;
 const TICK_MS = 30;
 const FIELD_HEIGHT = 520;
 
-const DIFFICULTY_POOLS = [
-  ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'],
-  ['q', 'w', 'e', 'r', 'u', 'i', 'o', 'p'],
-  ['z', 'x', 'c', 'v', 'm', ',', '.', '/'],
-  ['1', '2', '3', '4', '7', '8', '9', '0'],
-  ['!', '@', '#', '$', '&', '*', '(', ')'],
-  ['A', 'S', 'D', 'F', 'J', 'K', 'L', ';'],
+// Left-hand tiers (lanes 0–3), Right-hand tiers (lanes 4–7)
+// Progression: home row → top row → bottom row → numbers → special chars → uppercase
+const LEFT_TIERS = [
+  ['a', 's', 'd', 'f'],   // 1: home row left
+  ['q', 'w', 'e', 'r'],   // 2: top row left
+  ['z', 'x', 'c', 'v'],   // 3: bottom row left
+  ['1', '2', '3', '4'],   // 4: numbers left
+  ['!', '@', '#', '$'],   // 5: symbols left
+  ['A', 'S', 'D', 'F'],   // 6: uppercase left
 ];
+
+const RIGHT_TIERS = [
+  ['j', 'k', 'l', ';'],   // 1: home row right
+  ['u', 'i', 'o', 'p'],   // 2: top row right
+  ['m', ',', '.', '/'],   // 3: bottom row right
+  ['7', '8', '9', '0'],   // 4: numbers right
+  ['&', '*', '(', ')'],   // 5: symbols right
+  ['J', 'K', 'L', ':'],   // 6: uppercase right
+];
+
+const TIER_COUNT = LEFT_TIERS.length;
 
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function clampLevel(level) {
-  return Math.max(1, Math.min(level, DIFFICULTY_POOLS.length));
+  return Math.max(1, Math.min(level, TIER_COUNT));
 }
 
-function getPoolForLevel(level) {
+function getSidePool(tiers, level) {
   const cap = clampLevel(level);
   const pool = [];
   for (let i = 0; i < cap; i += 1) {
-    pool.push(...DIFFICULTY_POOLS[i]);
+    pool.push(...tiers[i]);
   }
   return pool;
+}
+
+function buildCastleTriggers(level) {
+  const leftPool = getSidePool(LEFT_TIERS, level);
+  const rightPool = getSidePool(RIGHT_TIERS, level);
+
+  // Shuffle a copy and pick 4 unique keys per side
+  function pick4(pool) {
+    const unique = [...new Set(pool)];
+    const shuffled = unique.sort(() => Math.random() - 0.5);
+    const result = [];
+    for (let i = 0; i < 4; i += 1) {
+      result.push(shuffled[i % shuffled.length]);
+    }
+    return result;
+  }
+
+  return [...pick4(leftPool), ...pick4(rightPool)];
 }
 
 export default function TouchTypingSiege() {
@@ -40,6 +70,7 @@ export default function TouchTypingSiege() {
   const deviceType = useDeviceType();
   const [mode, setMode] = useState('ready');
   const [castleHealth, setCastleHealth] = useState(Array(8).fill(CASTLE_HEALTH_START));
+  const [castleTriggers, setCastleTriggers] = useState(() => buildCastleTriggers(1));
   const [activeTarget, setActiveTarget] = useState(null);
   const [score, setScore] = useState(0);
   const [hits, setHits] = useState(0);
@@ -51,7 +82,6 @@ export default function TouchTypingSiege() {
   const [startedAt, setStartedAt] = useState(null);
 
   const spawnTimerRef = useRef(null);
-  const pool = useMemo(() => getPoolForLevel(level), [level]);
 
   const totalAttempts = hits + mistakes;
   const accuracy = totalAttempts > 0 ? Math.round((hits / totalAttempts) * 100) : 100;
@@ -62,6 +92,7 @@ export default function TouchTypingSiege() {
   const resetGame = () => {
     setMode('ready');
     setCastleHealth(Array(8).fill(CASTLE_HEALTH_START));
+    setCastleTriggers(buildCastleTriggers(1));
     setActiveTarget(null);
     setScore(0);
     setHits(0);
@@ -78,11 +109,9 @@ export default function TouchTypingSiege() {
 
   const spawnTarget = () => {
     const lane = Math.floor(Math.random() * 8);
-    const character = pickRandom(pool);
 
     setActiveTarget({
       lane,
-      key: character,
       y: 0,
       speed: fallSpeedPxPerTick,
       id: `${Date.now()}-${Math.random()}`,
@@ -103,7 +132,7 @@ export default function TouchTypingSiege() {
         clearTimeout(spawnTimerRef.current);
       }
     };
-  }, [mode, activeTarget, spawnDelayMs, pool]);
+  }, [mode, activeTarget, spawnDelayMs]);
 
   useEffect(() => {
     if (mode !== 'running') {
@@ -150,6 +179,11 @@ export default function TouchTypingSiege() {
   }, [hits, level, mode]);
 
   useEffect(() => {
+    if (mode !== 'running') return;
+    setCastleTriggers(buildCastleTriggers(level));
+  }, [mode, level]);
+
+  useEffect(() => {
     if (mode !== 'running') {
       return undefined;
     }
@@ -159,7 +193,7 @@ export default function TouchTypingSiege() {
       const input = event.key;
       if (input.length !== 1) return;
 
-      const expected = activeTarget.key;
+      const expected = castleTriggers[activeTarget.lane];
       if (input === expected) {
         setHits((v) => v + 1);
         setCurrentStreak((streak) => {
@@ -177,7 +211,7 @@ export default function TouchTypingSiege() {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [mode, activeTarget, level]);
+  }, [mode, activeTarget, level, castleTriggers]);
 
   if (deviceType !== 'desktop') {
     return (
@@ -196,7 +230,7 @@ export default function TouchTypingSiege() {
       <header className="tts-topbar">
         <div>
           <h1>⌨️ Touch Typing Siege</h1>
-          <p>Defend all 8 castles by typing the falling target key.</p>
+          <p>Type the threatened castle's trigger key to fire and destroy incoming objects.</p>
         </div>
         <div className="tts-actions">
           <button className="tts-btn tts-secondary" onClick={() => navigate('/subjects/lab')}>Back</button>
@@ -232,7 +266,7 @@ export default function TouchTypingSiege() {
           <div key={`lane-${index}`} className="tts-lane" style={{ left: `${x}%` }}>
             <div className="tts-lane-line" />
             <div className="tts-castle" data-damaged={castleHealth[index] < CASTLE_HEALTH_START}>
-              <span className="tts-key">{LANE_KEYS[index]}</span>
+              <span className="tts-key">{castleTriggers[index]}</span>
               <span className="tts-health">{castleHealth[index]}/{CASTLE_HEALTH_START}</span>
             </div>
           </div>
@@ -243,10 +277,8 @@ export default function TouchTypingSiege() {
             key={activeTarget.id}
             className="tts-target"
             style={{ left: `${LANE_X[activeTarget.lane]}%`, top: `${activeTarget.y}px` }}
-            aria-label={`Type ${activeTarget.key}`}
-          >
-            <span>{activeTarget.key}</span>
-          </div>
+            aria-label="Incoming projectile"
+          />
         )}
 
         {mode !== 'running' && (
@@ -255,12 +287,16 @@ export default function TouchTypingSiege() {
               {mode === 'ready' ? (
                 <>
                   <h2>Castle Defense Typing</h2>
-                  <p>Starts with home-row keys, then expands to top row, bottom row, numbers, symbols, and case-sensitive keys.</p>
+                  <p>Left castles use left-hand keys. Right castles use right-hand keys. The difficulty grows as you score hits.</p>
                   <ul>
-                    <li>Type the exact falling character before it hits a castle.</li>
-                    <li>One target at a time, with faster speed each level.</li>
-                    <li>Lose when any castle reaches 0 health.</li>
+                    <li><strong>Lv 1:</strong> Home row — <kbd>asdf</kbd> / <kbd>jkl;</kbd></li>
+                    <li><strong>Lv 2:</strong> + Top row — <kbd>qwer</kbd> / <kbd>uiop</kbd></li>
+                    <li><strong>Lv 3:</strong> + Bottom row — <kbd>zxcv</kbd> / <kbd>m,./</kbd></li>
+                    <li><strong>Lv 4:</strong> + Numbers — <kbd>1234</kbd> / <kbd>7890</kbd></li>
+                    <li><strong>Lv 5:</strong> + Symbols — <kbd>!@#$</kbd> / <kbd>&amp;*()</kbd></li>
+                    <li><strong>Lv 6:</strong> + Uppercase — <kbd>ASDF</kbd> / <kbd>JKL:</kbd></li>
                   </ul>
+                  <p>Type the key shown on a castle to fire it when a projectile falls in its lane.</p>
                 </>
               ) : (
                 <>
