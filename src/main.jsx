@@ -15,6 +15,6 @@ function MobileGate() {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {isMobileBrowser() ? <MobileGate /> : <App />}
+    <App />
   </StrictMode>,
 )
