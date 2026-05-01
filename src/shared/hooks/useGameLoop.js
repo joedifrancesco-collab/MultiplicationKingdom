@@ -81,6 +81,24 @@ export default function useGameLoop({
   }, [done, score, questions.length, calcStars, gameType, metadata, onGameEnd]);
 
   /**
+   * Manually advance to next question or end game
+   */
+  const advanceToNext = useCallback(() => {
+    if (advanceTimeoutRef.current) {
+      clearTimeout(advanceTimeoutRef.current);
+      advanceTimeoutRef.current = null;
+    }
+
+    setFeedback(null);
+
+    if (index + 1 >= questions.length) {
+      setDone(true);
+    } else {
+      setIndex(i => i + 1);
+    }
+  }, [index, questions.length]);
+
+  /**
    * Handle answer submission
    * Validates, plays sound, updates score, and either auto-advances or returns control
    * @param {*} userAnswer User's answer (string, number, object, etc.)
@@ -114,26 +132,8 @@ export default function useGameLoop({
         }, advanceDelay);
       }
     },
-    [index, questions, validateAnswer, autoAdvance, advanceDelay, play]
+    [index, questions, validateAnswer, autoAdvance, advanceDelay, play, advanceToNext]
   );
-
-  /**
-   * Manually advance to next question or end game
-   */
-  const advanceToNext = useCallback(() => {
-    if (advanceTimeoutRef.current) {
-      clearTimeout(advanceTimeoutRef.current);
-      advanceTimeoutRef.current = null;
-    }
-
-    setFeedback(null);
-
-    if (index + 1 >= questions.length) {
-      setDone(true);
-    } else {
-      setIndex(i => i + 1);
-    }
-  }, [index, questions.length]);
 
   /**
    * End game immediately (used by timer or user abort)

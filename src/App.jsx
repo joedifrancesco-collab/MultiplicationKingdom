@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { subscribeToAuthChanges, isGuestMode, hasGuestScores } from './store/progress';
 import { validateSettings } from './config/appSettings';
-import { OverlayProvider } from './context/OverlayContext.jsx';
+import { OverlayProvider } from './context/OverlayProvider.jsx';
 import ErrorBoundary from './shared/components/ErrorBoundary';
 import OverlayWrapper from './shared/components/OverlayWrapper';
 import ResponsiveNav from './shared/components/ResponsiveNav';
@@ -54,7 +54,6 @@ export default function App() {
   const [isGuest, setIsGuest] = useState(isGuestMode());
   const [loading, setLoading] = useState(true);
   const [showSaveScoresModal, setShowSaveScoresModal] = useState(false);
-  const [pendingNavigation, setPendingNavigation] = useState(null);
 
   // Validate settings on app boot
   useEffect(() => {
@@ -112,12 +111,12 @@ export default function App() {
       
       const isOnGameRoute = gameRoutes.some(route => currentPath.startsWith(route));
       
-      if (isOnGameRoute && pendingNavigation) {
+      if (isOnGameRoute) {
         console.log('Detected navigation from game route with unsaved scores');
         setShowSaveScoresModal(true);
       }
     }
-  }, [isGuest, pendingNavigation]);
+  }, [isGuest]);
 
   const handleSignUpFromModal = () => {
     setShowSaveScoresModal(false);

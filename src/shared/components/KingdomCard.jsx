@@ -14,7 +14,6 @@ export default function KingdomCard({
   path,
   enabled = true,
   disabled = false,
-  progress = 0,
   stars = 0,
   badge = null,
   comingSoon = false,

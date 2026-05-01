@@ -22,7 +22,7 @@ function calcStars(score, total) {
 export default function SpeedChallenge() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { toggleMute, isMuted } = useSound();
+  const { toggleMute } = useSound();
   const kingdomId = parseInt(id, 10);
   const { questions } = KINGDOMS[kingdomId - 1];
 

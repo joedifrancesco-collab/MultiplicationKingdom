@@ -9,6 +9,10 @@ const gridSize = getSetting('games.kingdomMaps.gridSize');
 const timedModePenalty = getSetting('games.kingdomMaps.timedModePenalty');
 const feedbackDuration = getSetting('games.kingdomMaps.feedbackDuration');
 const modes = getSetting('games.kingdomMaps.modes');
+// Alias for convenience
+const FREE_PLAY = modes.freePlay;
+const TIMED = modes.timed;
+const ROW_COLUMN = modes.rowColumn;
 
 export default function KingdomMaps() {
   const navigate = useNavigate();
@@ -53,7 +57,7 @@ export default function KingdomMaps() {
 
   // Timer for timed mode
   useEffect(() => {
-    if (done || mode !== modes.TIMED) return;
+    if (done || mode !== TIMED) return;
     const timer = setInterval(() => {
       setTime(Math.floor((Date.now() - startTime) / 1000) + penalty);
     }, 100);
@@ -118,7 +122,7 @@ export default function KingdomMaps() {
     setFeedbackCell({ row, col });
 
     // For Row & Column mode, don't show feedback on entry
-    const isRowColumnMode = mode === modes.ROW_COLUMN;
+    const isRowColumnMode = mode === ROW_COLUMN;
 
     if (isCorrect) {
       if (!isRowColumnMode) {
@@ -183,7 +187,7 @@ export default function KingdomMaps() {
         play('wrong');
         setFeedback('wrong');
         setErrorCount(e => e + 1);
-        if (mode === modes.TIMED) {
+        if (mode === TIMED) {
           setPenalty(p => p + timedModePenalty);
         }
 
@@ -342,7 +346,7 @@ export default function KingdomMaps() {
     const accuracy = correctCount + errorCount > 0 ? Math.round((correctCount / (correctCount + errorCount)) * 100) : 100;
 
     // Track Timed and Free Play separately in leaderboard
-    const scoreKey = mode === modes.TIMED ? 'kingdomMaps-timed' : 'kingdomMaps-free-play';
+    const scoreKey = mode === TIMED ? 'kingdomMaps-timed' : 'kingdomMaps-free-play';
     saveGameScore(scoreKey, {
       mode,
       time: elapsedTime,
@@ -428,15 +432,15 @@ export default function KingdomMaps() {
         </button>
         
         <div className="km-header-center">
-          {mode === modes.TIMED && (
+          {mode === TIMED && (
             <div className="km-timer">⏱️ {time}s</div>
           )}
-          {mode === modes.ROW_COLUMN && (
+          {mode === ROW_COLUMN && (
             <div className="km-progress">
               {rowColumnMode === 'row' ? '📏 Row' : '📊 Col'} {rowColumnIndex} / {gridSize - 1}
             </div>
           )}
-          {mode === modes.FREE_PLAY && (
+          {mode === FREE_PLAY && (
             <div className="km-stats">
               ✓ {correctCount} • ✗ {errorCount}
             </div>
@@ -485,7 +489,7 @@ export default function KingdomMaps() {
           )}
         </div>
 
-        {mode === modes.ROW_COLUMN && !done && (
+        {mode === ROW_COLUMN && !done && (
           <button 
             className="km-check-btn" 
             onClick={handleCheckRowColumn}

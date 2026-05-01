@@ -7,7 +7,6 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
 } from 'firebase/firestore';
 import { db, auth } from '../shared/config/firebase';

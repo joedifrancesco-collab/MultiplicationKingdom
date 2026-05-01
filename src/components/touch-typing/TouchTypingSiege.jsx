@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDeviceType } from '../../hooks/useDeviceType';
 import './TouchTypingSiege.css';
@@ -104,7 +104,7 @@ export default function TouchTypingSiege() {
   const [score, setScore] = useState(0);
   const [hits, setHits] = useState(0);
   const [mistakes, setMistakes] = useState(0);
-  const [missedTargets, setMissedTargets] = useState(0);
+  const [_missedTargets, setMissedTargets] = useState(0);
   const [level, setLevel] = useState(1);
   const [bestStreak, setBestStreak] = useState(0);
   const [currentStreak, setCurrentStreak] = useState(0);
@@ -120,7 +120,20 @@ export default function TouchTypingSiege() {
   const totalAttempts = hits + mistakes;
   const accuracy = totalAttempts > 0 ? Math.round((hits / totalAttempts) * 100) : 100;
 
-  const elapsedSeconds = startedAt ? Math.max(1, Math.floor((Date.now() - startedAt) / 1000)) : 1;
+  const [elapsedSeconds, setElapsedSeconds] = useState(1);
+  
+  useEffect(() => {
+    if (mode !== 'running') return undefined;
+    
+    const interval = setInterval(() => {
+      if (startedAt) {
+        setElapsedSeconds(Math.max(1, Math.floor((Date.now() - startedAt) / 1000)));
+      }
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [mode, startedAt]);
+  
   const cpm = Math.round((hits / elapsedSeconds) * 60);
 
   const resetGame = () => {
@@ -131,7 +144,6 @@ export default function TouchTypingSiege() {
     setScore(0);
     setHits(0);
     setMistakes(0);
-    setMissedTargets(0);
     setLevel(1);
     setBestStreak(0);
     setCurrentStreak(0);
@@ -143,7 +155,7 @@ export default function TouchTypingSiege() {
   const spawnDelayMs = Math.max(300, 1500 - (level - 1) * 80);
   const fallSpeedPxPerTick = Math.min(16, 1.5 + (level - 1) * 0.7);
 
-  const spawnTarget = () => {
+  const spawnTarget = useCallback(() => {
     const lane = Math.floor(Math.random() * 8);
 
     setActiveTarget({
@@ -152,7 +164,7 @@ export default function TouchTypingSiege() {
       speed: fallSpeedPxPerTick,
       id: `${Date.now()}-${Math.random()}`,
     });
-  };
+  }, [fallSpeedPxPerTick]);
 
   useEffect(() => {
     if (mode !== 'running' || activeTarget) {
@@ -168,7 +180,7 @@ export default function TouchTypingSiege() {
         clearTimeout(spawnTimerRef.current);
       }
     };
-  }, [mode, activeTarget, spawnDelayMs]);
+  }, [mode, activeTarget, spawnDelayMs, spawnTarget]);
 
   useEffect(() => {
     if (mode !== 'running') {

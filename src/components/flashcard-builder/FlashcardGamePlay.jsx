@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getDeck } from '../../store/flashcards';
 import './FlashcardGamePlay.css';
@@ -33,23 +33,9 @@ export default function FlashcardGamePlay() {
   });
   const [showSummary, setShowSummary] = useState(false);
   const [isQuit, setIsQuit] = useState(false);
-  const [answered, setAnswered] = useState({});
+  const [_answered, setAnswered] = useState({});
 
-  useEffect(() => {
-    loadDeck();
-  }, [deckId]);
-
-  // Reset card entrance animation after it completes
-  useEffect(() => {
-    if (isCardEntering) {
-      const timer = setTimeout(() => {
-        setIsCardEntering(false);
-      }, 400);
-      return () => clearTimeout(timer);
-    }
-  }, [isCardEntering]);
-
-  const loadDeck = async () => {
+  const loadDeck = useCallback(async () => {
     try {
       setLoading(true);
       const deckData = await getDeck(deckId);
@@ -73,7 +59,21 @@ export default function FlashcardGamePlay() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [deckId]);
+
+  useEffect(() => {
+    loadDeck();
+  }, [deckId, loadDeck]);
+
+  // Reset card entrance animation after it completes
+  useEffect(() => {
+    if (isCardEntering) {
+      const timer = setTimeout(() => {
+        setIsCardEntering(false);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [isCardEntering]);
 
   const handleToggleOrder = () => {
     if (!isRandomOrder) {

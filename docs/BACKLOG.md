@@ -170,7 +170,8 @@ Prioritized list of features, improvements, and fixes for the educational multip
 ## Bugs / Technical Debt
 
 #### User-Requested
-(None currently)
+
+- [ ] **Kingdom Maps Game Routing Bug** — In Multiplication Kingdom: Kingdom Maps games, regardless of which version of the game the user chooses, they are always taken to the 'free play' game. (Reported)
 
 #### Suggested
 - [ ] **Firebase Credentials Setup** — To use new Firebase credentials, create `.env.local` based on `.env.example` with values from your Firebase Console

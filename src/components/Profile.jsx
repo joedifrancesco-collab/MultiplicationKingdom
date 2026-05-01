@@ -5,8 +5,8 @@ import './Profile.css';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(() => getCurrentAuthUser());
-  const [guest, setGuest] = useState(isGuestMode());
+  const user = getCurrentAuthUser();
+  const guest = isGuestMode();
   const [progress, setProgress] = useState(null);
   const [totalScore, setTotalScore] = useState(0);
   const [totalStars, setTotalStars] = useState(0);

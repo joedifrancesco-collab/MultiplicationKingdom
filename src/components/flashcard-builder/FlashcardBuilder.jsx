@@ -113,7 +113,7 @@ export default function FlashcardBuilder() {
         cards: filledCards,
       };
 
-      const deckId = await saveDeck(deckData);
+      await saveDeck(deckData);
       
       // Navigate to deck selector or success page
       navigate('/flashcard-builder');

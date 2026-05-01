@@ -58,15 +58,6 @@ const GAME_METADATA = {
 };
 
 /**
- * Helper: Get all game types that have scores
- */
-function getGameTypesWithScores(scores) {
-  const gameTypes = new Set();
-  scores.forEach(score => gameTypes.add(score.gameType));
-  return Array.from(gameTypes);
-}
-
-/**
  * Helper: Get scores for a specific game type
  */
 function getScoresForGameType(scores, gameType) {
@@ -76,7 +67,7 @@ function getScoresForGameType(scores, gameType) {
 /**
  * SubjectHeader Component
  */
-function SubjectHeader({ subjectKey, structure }) {
+function SubjectHeader({ structure }) {
   return (
     <div className="ub-subject-header">
       <span className="ub-subject-icon">{structure.icon}</span>
@@ -88,7 +79,7 @@ function SubjectHeader({ subjectKey, structure }) {
 /**
  * SubSubjectSection Component (e.g., "Multiplication" under "Math")
  */
-function SubSubjectSection({ subSubjectKey, structure, children }) {
+function SubSubjectSection({ structure, children }) {
   return (
     <div className="ub-subsubject-section">
       <div className="ub-subsubject-header">
@@ -236,7 +227,6 @@ function GameSection({ gameType, scores }) {
 export default function UnifiedLeaderboard() {
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showGlobalStats, setShowGlobalStats] = useState(false);
   
   const authUser = getCurrentAuthUser();
   const isGuest = isGuestMode();

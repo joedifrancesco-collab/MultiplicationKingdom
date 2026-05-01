@@ -9,8 +9,6 @@ export default function NavBar() {
   const [signingOut, setSigningOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const hamburgerRef = useState(null)[1]; // Store ref for focus restoration
-  const menuRef = useState(null)[1]; // Store menu ref for focus trap
   const user = getCurrentAuthUser();
   const guest = isGuestMode();
 
