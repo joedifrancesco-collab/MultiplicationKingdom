@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getStateById } from '../data/states';
-import usMapUrl from '../../../../assets/us.svg';
+import usMapUrl from '../../../../assets/map.svg';
 import './USStatesMap.css';
 
 export default function USStatesMap() {
@@ -19,41 +19,61 @@ export default function USStatesMap() {
         if (svgRef.current) {
           svgRef.current.innerHTML = svgText;
           
+          // Debug: log all paths in the SVG
+          const allPaths = svgRef.current.querySelectorAll('path');
+          console.log('Total paths found:', allPaths.length);
+          allPaths.forEach((p, idx) => {
+            console.log(`Path ${idx}:`, {
+              id: p.getAttribute('id'),
+              'data-name': p.getAttribute('data-name'),
+              'data-id': p.getAttribute('data-id'),
+              class: p.getAttribute('class'),
+              d: p.getAttribute('d')?.substring(0, 50) + '...'
+            });
+          });
+          
           // Add click handlers to all state paths
           const paths = svgRef.current.querySelectorAll('path[id]');
+          console.log('Paths with id attribute:', paths.length);
           paths.forEach(path => {
-            const stateId = path.getAttribute('id').toLowerCase();
-            const stateName = path.getAttribute('data-name');
+            // Disable pointer events on paths so only text labels are interactive
+            path.style.pointerEvents = 'none';
+          });
+          
+          // Make text labels clickable
+          const textElements = svgRef.current.querySelectorAll('text');
+          console.log('Text elements found:', textElements.length);
+          
+          textElements.forEach(text => {
+            const stateAbbr = text.textContent.trim().toUpperCase();
+            console.log('State abbreviation:', stateAbbr);
             
-            path.style.cursor = 'pointer';
-            path.style.transition = 'all 0.2s ease';
-            path.style.fill = '#f9f9f9';
-            path.style.stroke = '#000';
-            path.style.strokeWidth = '0.97063118';
+            text.style.cursor = 'pointer';
+            text.style.userSelect = 'none';
+            text.style.transition = 'all 0.2s ease';
             
-            path.addEventListener('mouseenter', () => {
-              path.style.fill = '#6c63ff';
-              path.style.stroke = '#ff6b6b';
-              path.style.strokeWidth = '1.5';
-              path.style.filter = 'drop-shadow(0 2px 8px rgba(108, 99, 255, 0.4))';
+            // Hover effect
+            text.addEventListener('mouseover', () => {
+              text.style.fill = '#6C63FF';
+              text.style.fontSize = '32px';
+              text.style.fontWeight = 'bold';
             });
             
-            path.addEventListener('mouseleave', () => {
-              path.style.fill = '#f9f9f9';
-              path.style.stroke = '#000';
-              path.style.strokeWidth = '0.97063118';
-              path.style.filter = 'none';
+            text.addEventListener('mouseout', () => {
+              text.style.fill = '#000000';
+              text.style.fontSize = '29.3333px';
+              text.style.fontWeight = 'normal';
             });
             
-            path.addEventListener('click', () => {
+            // Click handler
+            text.addEventListener('click', () => {
+              const stateId = stateAbbr.toLowerCase();
               const state = getStateById(stateId);
+              console.log('Clicked state:', stateId, state);
               if (state) {
                 setSelectedState(state);
               }
             });
-            
-            // Add title for tooltip
-            path.setAttribute('title', stateName);
           });
         }
       } catch (error) {
@@ -92,19 +112,19 @@ export default function USStatesMap() {
               <h2 className="usm-info-title">{selectedState.name}</h2>
               <div className="usm-info-grid">
                 <div className="usm-info-item">
-                  <span className="usm-info-label">Capital</span>
+                  <span className="usm-info-label">🏛️ Capital</span>
                   <span className="usm-info-value">{selectedState.capital}</span>
                 </div>
                 <div className="usm-info-item">
-                  <span className="usm-info-label">Population</span>
+                  <span className="usm-info-label">👥 Population</span>
                   <span className="usm-info-value">{selectedState.population}</span>
                 </div>
                 <div className="usm-info-item">
-                  <span className="usm-info-label">State Motto</span>
+                  <span className="usm-info-label">📜 State Motto</span>
                   <span className="usm-info-value">{selectedState.motto}</span>
                 </div>
                 <div className="usm-info-item">
-                  <span className="usm-info-label">State Bird</span>
+                  <span className="usm-info-label">🦅 State Bird</span>
                   <span className="usm-info-value">{selectedState.bird}</span>
                 </div>
               </div>
