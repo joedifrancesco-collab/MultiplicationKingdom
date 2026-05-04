@@ -182,17 +182,17 @@ export default function ResponsiveNav() {
         label: 'Touch Typing',
         path: '/touch-typing',
       },
+      {
+        icon: '🗺️',
+        label: 'Geography',
+        path: '/subjects/geography-kingdom',
+      },
     ],
   };
 
   const subjects = [mathSubject, spellingSubject];
-  // Show Extra Credit on homepage and on Extra Credit pages
-  const isOnExtraCreditPages =
-    location.pathname.startsWith('/subjects/lab') ||
-    ['/touch-typing', '/flashcard-builder', '/number-cruncher'].some((p) =>
-      location.pathname.startsWith(p)
-    );
-  const sideBarSubjects = location.pathname === '/' || isOnExtraCreditPages ? [labSubject] : [];
+  // Extra Credit menu always shown
+  const sideBarSubjects = [labSubject];
 
   // Map for hamburger menu
   const hamburgerSubjects = subjects.concat(sideBarSubjects).map((subject) => ({

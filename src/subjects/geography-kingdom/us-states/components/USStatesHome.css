@@ -1,0 +1,174 @@
+.ush-container {
+  padding: max(20px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+.ush-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.ush-icon {
+  font-size: 2.4rem;
+  line-height: 1;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.ush-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary, #6c63ff);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.ush-subtitle {
+  font-size: 1rem;
+  color: var(--text-light, #666);
+  margin: 8px 0 0 0;
+  font-weight: 500;
+}
+
+/* Game Modes Grid */
+.ush-modes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Mode cards */
+.ush-mode-card {
+  width: 100%;
+  border-radius: var(--radius, 16px);
+  padding: 18px 16px;
+  box-shadow: var(--shadow, 0 2px 8px rgba(0, 0, 0, 0.08));
+  box-sizing: border-box;
+  border: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  cursor: pointer;
+  background: var(--card-bg, white);
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+  font-size: inherit;
+  position: relative;
+}
+
+.ush-mode-card:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ush-mode-card:active:not(.disabled) {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.ush-mode-card:focus-visible:not(.disabled) {
+  outline: 2px solid var(--primary, #6c63ff);
+  outline-offset: 2px;
+}
+
+.ush-mode-card.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Card color variants */
+.map-card { border-color: #1e88e5; background: #e3f2fd; }
+.states-id-card { border-color: #f57c00; background: #fff3e0; }
+.capitals-card { border-color: #7b1fa2; background: #f3e5f5; }
+
+.ush-mode-icon {
+  font-size: 2.4rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.ush-mode-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ush-mode-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--text, #1a1a1a);
+  margin-bottom: 4px;
+}
+
+.ush-mode-desc {
+  font-size: 0.82rem;
+  color: var(--text-light, #666);
+  line-height: 1.45;
+}
+
+.ush-mode-arrow {
+  font-size: 1.8rem;
+  color: var(--text-light, #666);
+  flex-shrink: 0;
+  font-weight: 300;
+  transition: transform 0.15s;
+}
+
+.ush-mode-card:hover:not(.disabled) .ush-mode-arrow {
+  transform: translateX(2px);
+}
+
+.ush-coming-soon {
+  display: inline-block;
+  background: var(--secondary, #ff6b6b);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .ush-container {
+    padding: max(12px, env(safe-area-inset-top)) 12px max(20px, env(safe-area-inset-bottom));
+  }
+
+  .ush-title {
+    font-size: 1.5rem;
+  }
+
+  .ush-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .ush-mode-card {
+    padding: 14px 12px;
+    gap: 12px;
+  }
+
+  .ush-mode-icon {
+    font-size: 2rem;
+  }
+
+  .ush-mode-title {
+    font-size: 1rem;
+  }
+
+  .ush-mode-desc {
+    font-size: 0.75rem;
+  }
+
+  .ush-coming-soon {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+  }
+}

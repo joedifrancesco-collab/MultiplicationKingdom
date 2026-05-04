@@ -167,7 +167,6 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
   if (pathname === '/touch-typing') {
     return [
       { label: 'Home', path: '/' },
-      { label: 'Extra Credit', path: '/subjects/lab' },
       { label: 'Touch Typing', path: pathname },
     ];
   }
@@ -175,7 +174,6 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
   if (pathname === '/number-cruncher') {
     return [
       { label: 'Home', path: '/' },
-      { label: 'Extra Credit', path: '/subjects/lab' },
       { label: 'Number Cruncher', path: pathname },
     ];
   }
@@ -183,7 +181,6 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
   if (pathname.startsWith('/flashcard-builder')) {
     const base = [
       { label: 'Home', path: '/' },
-      { label: 'Extra Credit', path: '/subjects/lab' },
       { label: 'Flashcard Builder', path: '/flashcard-builder' },
     ];
     if (pathname === '/flashcard-builder/create') {
@@ -216,6 +213,7 @@ function formatSubjectLabel(subject) {
     lab: 'Extra Credit',
     'number-cruncher': 'Extra Credit',
     'touch-typing': 'Extra Credit',
+    'geography-kingdom': 'Geography',
     science: 'Science',
   };
   return labels[subject] || subject.charAt(0).toUpperCase() + subject.slice(1);
@@ -228,6 +226,7 @@ function formatKingdomLabel(kingdom) {
     'subtraction-kingdom': 'Subtraction Kingdom',
     'division-kingdom': 'Division Kingdom',
     'number-cruncher': 'Number Cruncher',
+    'us-states': 'US States',
     'flashcard-builder': 'Flashcard Builder',
     'touch-typing': 'Touch Typing',
   };

@@ -39,6 +39,8 @@ import FlashcardBuilder from './components/flashcard-builder/FlashcardBuilder';
 import FlashcardDeckSelector from './components/flashcard-builder/FlashcardDeckSelector';
 import FlashcardGamePlay from './components/flashcard-builder/FlashcardGamePlay';
 import TouchTypingSiege from './components/touch-typing/TouchTypingSiege';
+import USStatesHome from './subjects/geography-kingdom/us-states/components/USStatesHome';
+import USStatesMap from './subjects/geography-kingdom/us-states/components/USStatesMap';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
@@ -198,6 +200,16 @@ export default function App() {
           <Route path="/spelling-admin" element={<Navigate to="/subjects/language-arts-kingdom/spelling/admin" replace />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
+          {/* GEOGRAPHY KINGDOM - US States */}
+          {/* ═════════════════════════════════════════════════════════════ */}
+          
+          {/* Game mode selection home page */}
+          <Route path="/subjects/geography-kingdom/us-states" element={<ProtectedRoute element={<USStatesHome />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          
+          {/* United States Map game */}
+          <Route path="/subjects/geography-kingdom/us-states/map" element={<ProtectedRoute element={<USStatesMap />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          
+          {/* ═════════════════════════════════════════════════════════════ */}
           {/* NUMBER CRUNCHER (Temporary location) */}
           {/* ═════════════════════════════════════════════════════════════ */}
           <Route path="/number-cruncher" element={<ProtectedRoute element={<NumberCruncherScreen />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
@@ -219,6 +231,7 @@ export default function App() {
           {/* ═════════════════════════════════════════════════════════════ */}
           {/* SHARED */}
           {/* ═════════════════════════════════════════════════════════════ */}
+          <Route path="/subjects/lab" element={<Navigate to="/" replace />} />
           <Route path="/leaderboard" element={<Navigate to="/unified-leaderboard" replace />} />
           <Route path="/unified-leaderboard" element={<ProtectedRoute element={<UnifiedLeaderboard />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
 

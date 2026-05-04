@@ -50,6 +50,10 @@ Prioritized list of features, improvements, and fixes for the educational multip
 
 ## Near-Term / In Progress
 
+### Geography Kingdom
+- [x] **US States Learning Reference Map** — Interactive SVG map of US states with clickable info panel showing capital, population, state motto, and state bird
+- [ ] **State Labels on Map** — Add state name and capital labels directly on SVG map for quick reference; option to manually position ~50 labels or use centroid-based auto-calculation
+
 ### User-Requested
 - [x] **Sound Effects** — Audio feedback system implemented with mute button in FlashcardGame and SpeedChallenge. Ready for audio files: download MP3s from free sources (Freesound, Zapsplat, Pixabay), place in public/sounds/, and integrate into remaining game modes (MatchGame, KingdomSiege, Flashcard Mode in Conquest)
 - [ ] **Create Teacher Dashboard** — Build admin interface for classroom management: view class progress, assign kingdoms, track student completion
