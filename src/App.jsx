@@ -41,6 +41,7 @@ import FlashcardGamePlay from './components/flashcard-builder/FlashcardGamePlay'
 import TouchTypingSiege from './components/touch-typing/TouchTypingSiege';
 import USStatesHome from './subjects/geography-kingdom/us-states/components/USStatesHome';
 import USStatesMap from './subjects/geography-kingdom/us-states/components/USStatesMap';
+import USStatesID from './subjects/geography-kingdom/us-states/components/USStatesID';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
@@ -208,6 +209,9 @@ export default function App() {
           
           {/* United States Map game */}
           <Route path="/subjects/geography-kingdom/us-states/map" element={<ProtectedRoute element={<USStatesMap />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          
+          {/* US States ID game */}
+          <Route path="/subjects/geography-kingdom/us-states/us-states-id" element={<ProtectedRoute element={<USStatesID />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           
           {/* ═════════════════════════════════════════════════════════════ */}
           {/* NUMBER CRUNCHER (Temporary location) */}

@@ -1,0 +1,533 @@
+/* US States ID Game Styles */
+
+.usid-container {
+  height: 100vh;
+  height: 100dvh;
+  padding: max(8px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: linear-gradient(135deg, #F0F4FF 0%, #E8EDFF 100%);
+}
+
+/* Header */
+.usid-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.usid-back-btn,
+.usid-reset-btn {
+  padding: 8px 12px;
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.usid-back-btn:hover,
+.usid-reset-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.usid-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.usid-title-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.usid-title {
+  margin: 0;
+  font-size: 24px;
+  color: var(--primary);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.usid-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.usid-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-self: end;
+}
+
+/* Counter */
+.usid-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.usid-counter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+.usid-counter-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Error Message */
+.usid-error-message {
+  padding: 6px 12px;
+  background: #FFE8E8;
+  border: 2px solid #FF6B6B;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #C92A2A;
+  text-align: center;
+  animation: fadeIn 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Guidance Message */
+.usid-guidance-message {
+  padding: 6px 12px;
+  background: #E3F2FD;
+  border: 2px solid #42A5F5;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1565C0;
+  text-align: center;
+  animation: fadeIn 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Main Content Layout */
+.usid-content {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Map Section */
+.usid-map-section {
+  background: white;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.usid-map {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+}
+
+.usid-map svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Grid Section */
+.usid-grid-section {
+  background: white;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.usid-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(17, auto);
+  gap: 3px;
+  align-content: start;
+  grid-auto-flow: column;
+}
+
+.usid-state-btn {
+  padding: 4px 6px;
+  background: #F5F5F5;
+  border: 2px solid #DDD;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.usid-state-btn:hover:not(:disabled) {
+  background: #E8E8FF;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.usid-state-btn.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+}
+
+.usid-state-btn.matched {
+  background: var(--success);
+  color: white;
+  border-color: var(--success);
+  cursor: default;
+  opacity: 0.7;
+}
+
+@media (max-width: 1024px) {
+  .usid-content {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .usid-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .usid-header {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+  }
+  
+  .usid-header-left {
+    grid-column: 1 / 2;
+  }
+  
+  .usid-title-section {
+    grid-column: 1 / -1;
+    order: 1;
+  }
+  
+  .usid-header-right {
+    grid-column: 2 / 3;
+  }
+}
+
+.usid-state-btn:disabled {
+  cursor: not-allowed;
+}
+
+/* Completion Modal */
+.usid-completion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.usid-completion-modal {
+  background: white;
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease;
+  max-width: 400px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.usid-celebration {
+  font-size: 60px;
+  margin-bottom: 20px;
+  animation: bounce 0.6s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.usid-completion-modal h2 {
+  font-size: 28px;
+  color: var(--primary);
+  margin: 0 0 12px;
+}
+
+.usid-completion-modal p {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 24px;
+}
+
+.usid-completion-btn {
+  padding: 12px 24px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+}
+
+.usid-completion-btn:hover {
+  background: #5c4db8;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .usid-content {
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+
+  .usid-grid-section {
+    min-height: 400px;
+  }
+
+  .usid-map-section {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .usid-content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .usid-grid-section {
+    min-height: 300px;
+  }
+
+  .usid-map-section {
+    min-height: 300px;
+  }
+
+  .usid-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .usid-container {
+    gap: 12px;
+    padding: max(12px, env(safe-area-inset-top)) 12px max(24px, env(safe-area-inset-bottom));
+  }
+
+  .usid-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .usid-title {
+    font-size: 22px;
+  }
+
+  .usid-subtitle {
+    font-size: 12px;
+  }
+
+  .usid-counter {
+    padding: 10px 16px;
+  }
+
+  .usid-counter-value {
+    font-size: 20px;
+  }
+
+  .usid-state-btn {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .usid-map-section,
+  .usid-grid-section {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .usid-container {
+    gap: 10px;
+  }
+
+  .usid-header {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .usid-back-btn,
+  .usid-reset-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .usid-title-section {
+    order: -1;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .usid-title {
+    font-size: 18px;
+  }
+
+  .usid-subtitle {
+    font-size: 11px;
+  }
+
+  .usid-counter {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .usid-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .usid-state-btn {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .usid-content {
+    gap: 12px;
+  }
+
+  .usid-map-section,
+  .usid-grid-section {
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .usid-grid-section {
+    max-height: 250px;
+  }
+
+  .usid-map-section {
+    min-height: 250px;
+  }
+
+  .usid-completion-modal {
+    padding: 30px 20px;
+    margin: 0 16px;
+  }
+
+  .usid-celebration {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .usid-completion-modal h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .usid-completion-modal p {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .usid-completion-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
