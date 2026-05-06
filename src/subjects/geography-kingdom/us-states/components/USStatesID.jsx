@@ -176,7 +176,7 @@ export default function USStatesID() {
     setSelectedMapState(null);
     setSelectedGridState(null);
     
-    pathElementsRef.current.forEach((path, stateId) => {
+    pathElementsRef.current.forEach((path) => {
       path.style.fill = '#E8E8FF';
       path.style.cursor = 'pointer';
     });
