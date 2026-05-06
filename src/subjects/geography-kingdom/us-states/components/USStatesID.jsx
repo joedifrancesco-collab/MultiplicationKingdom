@@ -31,7 +31,7 @@ export default function USStatesID() {
 
   // Timer effect
   useEffect(() => {
-    if (matched.size === 49) {
+    if (matched.size === 50) {
       // Game completed, don't increment timer
       return;
     }
@@ -45,7 +45,7 @@ export default function USStatesID() {
 
   // Create alphabetically sorted state list for grid
   const sortedStates = [...US_STATES].sort((a, b) => a.name.localeCompare(b.name));
-  const remainingCount = 49 - matched.size;
+  const remainingCount = 50 - matched.size;
 
   // Load and setup SVG map
   useEffect(() => {
@@ -228,7 +228,7 @@ export default function USStatesID() {
 
         <div className="usid-title-section">
           <h1 className="usid-title">US States ID</h1>
-          <p className="usid-subtitle">Can you identify all 49 states?</p>
+          <p className="usid-subtitle">Can you identify all 50 states?</p>
         </div>
 
         <div className="usid-header-right">
@@ -283,12 +283,12 @@ export default function USStatesID() {
         </div>
       </div>
 
-      {matched.size === 49 && (
+      {matched.size === 50 && (
         <div className="usid-completion-overlay">
           <div className="usid-completion-modal">
             <div className="usid-celebration">🎉</div>
             <h2>Congratulations!</h2>
-            <p>You've identified all 49 states!</p>
+            <p>You've identified all 50 states!</p>
             <button className="usid-completion-btn" onClick={() => navigate(-1)}>
               ← Back to Menu
             </button>
