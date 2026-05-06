@@ -159,13 +159,15 @@ export default function USStatesID() {
   }, [selectedMapState, selectedGridState, matched]);
 
   const handleGridStateClick = (stateId) => {
-    // Only allow grid button clicks if a map state is already selected
-    if (!selectedMapState || matched.has(selectedMapState)) {
+    // Allow grid button clicks anytime (can choose name first or map first)
+    // But prevent clicking if this state has already been matched
+    if (matched.has(stateId)) {
       return;
     }
     
-    console.log('Grid click:', stateId, 'selectedMapState:', selectedMapState);
-    setSelectedGridState(stateId);
+    console.log('Grid click:', stateId);
+    // Toggle: if clicking same state, deselect it; otherwise select it
+    setSelectedGridState(prev => prev === stateId ? null : stateId);
     setMismatch(false); // Clear error when user selects new button
   };
 
@@ -197,8 +199,11 @@ export default function USStatesID() {
           {mismatch && (
             <div className="usid-error-message">Incorrect, try again.</div>
           )}
-          {selectedMapState && !mismatch && !matched.has(selectedMapState) && (
+          {selectedMapState && !selectedGridState && !mismatch && !matched.has(selectedMapState) && (
             <div className="usid-guidance-message">Choose the state name from the list.</div>
+          )}
+          {selectedGridState && !selectedMapState && !mismatch && !matched.has(selectedGridState) && (
+            <div className="usid-guidance-message">Choose the state on the map.</div>
           )}
         </div>
 
