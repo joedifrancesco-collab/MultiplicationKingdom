@@ -54,7 +54,6 @@ export const US_STATES = [
   { id: 'wv', name: 'West Virginia', capital: 'Charleston', population: '1,770,071', motto: 'Montani semper liberi', bird: 'Northern Mockingbird' },
   { id: 'wi', name: 'Wisconsin', capital: 'Madison', population: '5,910,726', motto: 'Forward', bird: 'American Robin' },
   { id: 'wy', name: 'Wyoming', capital: 'Cheyenne', population: '580,447', motto: 'Equal rights', bird: 'Western Meadowlark' },
-  { id: 'dc', name: 'District of Columbia', capital: 'Washington', population: '689,545', motto: 'Justice for all', bird: 'Wood Thrush' },
 ];
 
 export function getStateById(id) {

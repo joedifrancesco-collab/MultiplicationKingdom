@@ -13,6 +13,8 @@ export default function USStatesID() {
   const [selectedMapState, setSelectedMapState] = useState(null);
   const [selectedGridState, setSelectedGridState] = useState(null);
   const [mismatch, setMismatch] = useState(false);
+  const [incorrectCount, setIncorrectCount] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const stateLabelsRef = useRef(new Map());
   const pathElementsRef = useRef(new Map());
   const matchedRef = useRef(matched);
@@ -27,9 +29,23 @@ export default function USStatesID() {
     selectedMapStateRef.current = selectedMapState;
   }, [selectedMapState]);
 
+  // Timer effect
+  useEffect(() => {
+    if (matched.size === 49) {
+      // Game completed, don't increment timer
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setElapsedSeconds(prev => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [matched.size]);
+
   // Create alphabetically sorted state list for grid
   const sortedStates = [...US_STATES].sort((a, b) => a.name.localeCompare(b.name));
-  const remainingCount = 50 - matched.size;
+  const remainingCount = 49 - matched.size;
 
   // Load and setup SVG map
   useEffect(() => {
@@ -153,6 +169,7 @@ export default function USStatesID() {
         // Wrong match - show error but keep selections visible for retry
         console.log('Mismatch:', selectedMapState, 'vs', selectedGridState);
         setMismatch(true);
+        setIncorrectCount(prev => prev + 1);
         // Don't clear selections - keep them so user can try again
       }
     }
@@ -175,6 +192,8 @@ export default function USStatesID() {
     setMatched(new Set());
     setSelectedMapState(null);
     setSelectedGridState(null);
+    setIncorrectCount(0);
+    setElapsedSeconds(0);
     
     pathElementsRef.current.forEach((path) => {
       path.style.fill = '#E8E8FF';
@@ -209,13 +228,21 @@ export default function USStatesID() {
 
         <div className="usid-title-section">
           <h1 className="usid-title">US States ID</h1>
-          <p className="usid-subtitle">Can you identify all 50 states?</p>
+          <p className="usid-subtitle">Can you identify all 49 states?</p>
         </div>
 
         <div className="usid-header-right">
           <div className="usid-counter">
             <span className="usid-counter-label">States Remaining:</span>
             <span className="usid-counter-value">{remainingCount}</span>
+          </div>
+          <div className="usid-counter">
+            <span className="usid-counter-label">Incorrect:</span>
+            <span className="usid-counter-value">{incorrectCount}</span>
+          </div>
+          <div className="usid-counter">
+            <span className="usid-counter-label">Time:</span>
+            <span className="usid-counter-value">{elapsedSeconds}s</span>
           </div>
           <button className="usid-reset-btn" onClick={handleReset}>
             🔄 Reset
@@ -256,12 +283,12 @@ export default function USStatesID() {
         </div>
       </div>
 
-      {matched.size === 50 && (
+      {matched.size === 49 && (
         <div className="usid-completion-overlay">
           <div className="usid-completion-modal">
             <div className="usid-celebration">🎉</div>
             <h2>Congratulations!</h2>
-            <p>You've identified all 50 states!</p>
+            <p>You've identified all 49 states!</p>
             <button className="usid-completion-btn" onClick={() => navigate(-1)}>
               ← Back to Menu
             </button>
