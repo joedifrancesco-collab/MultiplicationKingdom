@@ -1,0 +1,165 @@
+/* State Info Panel Styles */
+
+.sip-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: sip-fade-in 0.2s ease;
+}
+
+@keyframes sip-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sip-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background: white;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sip-panel.sip-open {
+  transform: translateX(0);
+}
+
+.sip-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: 2px solid var(--primary, #6C63FF);
+  color: var(--primary, #6C63FF);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1001;
+}
+
+.sip-close-btn:hover {
+  background: var(--primary, #6C63FF);
+  color: white;
+  transform: scale(1.05);
+}
+
+.sip-header {
+  padding: 24px 20px 16px;
+  background: linear-gradient(135deg, var(--primary, #6C63FF), #7D73FF);
+  color: white;
+  flex-shrink: 0;
+}
+
+.sip-state-name {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.sip-capital {
+  margin: 8px 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.sip-content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sip-section {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #E8E8FF;
+}
+
+.sip-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.sip-label {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary, #6C63FF);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sip-fact {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.sip-elevation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sip-elevation p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.sip-elevation strong {
+  color: var(--primary, #6C63FF);
+  font-weight: 600;
+}
+
+.sip-motto {
+  font-style: italic;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .sip-panel {
+    max-width: 100%;
+  }
+
+  .sip-header {
+    padding: 20px 16px 12px;
+  }
+
+  .sip-state-name {
+    font-size: 24px;
+  }
+
+  .sip-content {
+    padding: 16px;
+  }
+}

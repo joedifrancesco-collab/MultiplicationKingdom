@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { US_STATES } from '../data/states';
 import usMapUrl from '../../../../assets/us.svg';
+import StateInfoPanel from './StateInfoPanel';
 import './USStatesID.css';
 
 export default function USStatesID() {
@@ -15,6 +16,7 @@ export default function USStatesID() {
   const [mismatch, setMismatch] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [selectedStateForPanel, setSelectedStateForPanel] = useState(null);
   const stateLabelsRef = useRef(new Map());
   const pathElementsRef = useRef(new Map());
   const matchedRef = useRef(matched);
@@ -88,6 +90,9 @@ export default function USStatesID() {
                 // Toggle: if clicking same state, deselect it; otherwise select it
                 setSelectedMapState(prev => prev === stateId ? null : stateId);
                 setMismatch(false); // Clear error when user selects new state
+                // Show info panel
+                const state = US_STATES.find(s => s.id === stateId);
+                setSelectedStateForPanel(state);
               });
             }
           });
@@ -295,6 +300,12 @@ export default function USStatesID() {
           </div>
         </div>
       )}
+
+      <StateInfoPanel
+        state={selectedStateForPanel}
+        isOpen={!!selectedStateForPanel}
+        onClose={() => setSelectedStateForPanel(null)}
+      />
     </div>
   );
 }
