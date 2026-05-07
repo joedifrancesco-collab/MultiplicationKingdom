@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getStateById } from '../data/states';
+import StateInfoPanel from './StateInfoPanel';
 import usMapUrl from '../../../../assets/map.svg';
 import './USStatesMap.css';
 
@@ -103,35 +104,11 @@ export default function USStatesMap() {
       </div>
 
       {/* Info Panel */}
-      {selectedState && (
-        <>
-          <div className="usm-overlay" onClick={closePanel} />
-          <div className="usm-info-panel">
-            <button className="usm-close-btn" onClick={closePanel}>✕</button>
-            <div className="usm-info-content">
-              <h2 className="usm-info-title">{selectedState.name}</h2>
-              <div className="usm-info-grid">
-                <div className="usm-info-item">
-                  <span className="usm-info-label">🏛️ Capital</span>
-                  <span className="usm-info-value">{selectedState.capital}</span>
-                </div>
-                <div className="usm-info-item">
-                  <span className="usm-info-label">👥 Population</span>
-                  <span className="usm-info-value">{selectedState.population}</span>
-                </div>
-                <div className="usm-info-item">
-                  <span className="usm-info-label">📜 State Motto</span>
-                  <span className="usm-info-value">{selectedState.motto}</span>
-                </div>
-                <div className="usm-info-item">
-                  <span className="usm-info-label">🦅 State Bird</span>
-                  <span className="usm-info-value">{selectedState.bird}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      <StateInfoPanel
+        state={selectedState}
+        isOpen={!!selectedState}
+        onClose={closePanel}
+      />
     </div>
   );
 }
