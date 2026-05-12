@@ -15,7 +15,7 @@ export default function MultiplicationKingdomHome() {
       icon: '🏰',
       title: 'Conquest',
       description: 'Conquer 12 Lands — one per times table. Train with flashcards, and then conquer the speed challenge!',
-      path: '/subjects/math-kingdom/multiplication-kingdom/grid',
+      path: '/subjects/math/multiplication-kingdom/grid',
       className: 'conquest-card',
     },
     {
@@ -23,7 +23,7 @@ export default function MultiplicationKingdomHome() {
       icon: '🃏',
       title: 'Flashcard Challenge',
       description: 'All tables 1 to 12! Practice at your own pace, race the clock, or sprint for 30 seconds.',
-      path: '/subjects/math-kingdom/multiplication-kingdom/flashcards',
+      path: '/subjects/math/multiplication-kingdom/flashcards',
       className: 'flashcard-card',
     },
     {
@@ -31,7 +31,7 @@ export default function MultiplicationKingdomHome() {
       icon: '🗺️',
       title: 'Kingdom Maps',
       description: 'Fill the grid with the right products. Free play, race the clock, or find the errors!',
-      path: '/subjects/math-kingdom/multiplication-kingdom/maps',
+      path: '/subjects/math/multiplication-kingdom/maps',
       className: 'maps-card',
     },
     {
@@ -39,7 +39,7 @@ export default function MultiplicationKingdomHome() {
       icon: '⚔️',
       title: 'Kingdom Siege',
       description: 'Towers under attack! Solve problems to defend — survive as long as you can!',
-      path: '/subjects/math-kingdom/multiplication-kingdom/siege',
+      path: '/subjects/math/multiplication-kingdom/siege',
       className: 'siege-card',
     },
   ];

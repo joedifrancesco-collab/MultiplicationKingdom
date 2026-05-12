@@ -73,7 +73,7 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
     let subject = subjectsMatch[1];
     // Map kingdom-based paths to subject paths (only for subject landing page)
     const subjectMap = {
-      'math-kingdom': 'math',
+      'math': 'math',
       'language-arts-kingdom': 'spelling',
     };
     const mappedSubject = subjectMap[subject] || subject;

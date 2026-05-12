@@ -116,19 +116,19 @@ export default function ResponsiveNav() {
       {
         icon: '➕',
         label: 'Addition Kingdom',
-        path: '/subjects/math-kingdom/addition-kingdom',
+        path: '/subjects/math/addition-kingdom',
         disabled: true,
       },
       {
         icon: '➖',
         label: 'Subtraction Kingdom',
-        path: '/subjects/math-kingdom/subtraction-kingdom',
+        path: '/subjects/math/subtraction-kingdom',
         disabled: true,
       },
       {
         icon: '÷',
         label: 'Division Kingdom',
-        path: '/subjects/math-kingdom/division-kingdom',
+        path: '/subjects/math/division-kingdom',
         disabled: true,
       },
     ],

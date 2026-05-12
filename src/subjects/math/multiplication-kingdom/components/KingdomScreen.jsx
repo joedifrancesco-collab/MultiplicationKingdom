@@ -17,13 +17,13 @@ export default function KingdomScreen() {
 
   useEffect(() => {
     if (!kingdom || !kp?.unlocked) {
-      navigate('/subjects/math-kingdom/multiplication-kingdom');
+      navigate('/subjects/math/multiplication-kingdom');
     }
   }, [kingdom, kp, navigate]);
 
   return (
     <div className="kingdom-screen" style={{ '--kingdom-color': kingdom.color }}>
-      <button className="back-btn" onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom')}>‹</button>
+      <button className="back-btn" onClick={() => navigate('/subjects/math/multiplication-kingdom')}>‹</button>
       <h1 className="kingdom-title">{kingdom.name}</h1>
       <p className="kingdom-desc">Conquer the {kingdomId}× land!</p>
 
@@ -39,7 +39,7 @@ export default function KingdomScreen() {
           icon="⚡"
           title="Speed Challenge"
           description="Beat the clock!"
-          onClick={() => navigate(`/subjects/math-kingdom/multiplication-kingdom/${id}/speed`)}
+          onClick={() => navigate(`/subjects/math/multiplication-kingdom/${id}/speed`)}
           platforms="both"
           deviceType={deviceType}
         />
@@ -48,7 +48,7 @@ export default function KingdomScreen() {
           icon="🔀"
           title="Match Game"
           description="Find the matching pairs"
-          onClick={() => navigate(`/subjects/math-kingdom/multiplication-kingdom/${id}/match`)}
+          onClick={() => navigate(`/subjects/math/multiplication-kingdom/${id}/match`)}
           platforms="both"
           deviceType={deviceType}
         />
@@ -57,7 +57,7 @@ export default function KingdomScreen() {
           icon="⚔️"
           title="Kingdom Siege"
           description="Defend the kingdom!"
-          onClick={() => navigate(`/subjects/math-kingdom/multiplication-kingdom/${id}/siege`)}
+          onClick={() => navigate(`/subjects/math/multiplication-kingdom/${id}/siege`)}
           platforms="both"
           deviceType={deviceType}
         />

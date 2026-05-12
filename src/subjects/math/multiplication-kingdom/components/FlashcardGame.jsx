@@ -146,7 +146,7 @@ export default function FlashcardGame() {
           {total > 0 && <div className="res-pct">{pct}% accuracy</div>}
         </div>
         <div className="done-buttons">
-          <button onClick={() => navigate('/subjects/math-kingdom/multiplication-kingdom/flashcards')}>Play Again</button>
+          <button onClick={() => navigate('/subjects/math/multiplication-kingdom/flashcards')}>Play Again</button>
         </div>
       </div>
     );

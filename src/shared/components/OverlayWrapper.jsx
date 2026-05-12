@@ -2,7 +2,7 @@ import React, { useContext, lazy, Suspense } from 'react';
 import { OverlayContext } from '../../context/OverlayContext.jsx';
 import './OverlayWrapper.css';
 
-const TrainingTable = lazy(() => import('../../subjects/math-kingdom/multiplication-kingdom/components/TrainingTable'));
+const TrainingTable = lazy(() => import('../../subjects/math/multiplication-kingdom/components/TrainingTable'));
 
 export default function OverlayWrapper() {
   const { isOpen, overlayType, closeOverlay } = useContext(OverlayContext);

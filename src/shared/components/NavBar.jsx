@@ -91,7 +91,7 @@ export default function NavBar() {
   const navItems = [
     { label: '🏠 Home', path: '/', key: 'home' },
     { label: '🏆 Leaderboard', path: '/unified-leaderboard', key: 'leaderboard' },
-    ...(isOnMathPages ? [{ label: '📊 Times Table', path: '/subjects/math-kingdom/multiplication-kingdom/training/table', key: 'table' }] : []),
+    ...(isOnMathPages ? [{ label: '📊 Times Table', path: '/subjects/math/multiplication-kingdom/training/table', key: 'table' }] : []),
   ];
 
   const rightNavItems = [
