@@ -1,4 +1,4 @@
-﻿# ðŸ‘‘ Learning Kingdom
+﻿# 👑 Learning Kingdom
 
 [![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-Lightning%20Fast-646cff?logo=vite)](https://vitejs.dev)
@@ -6,15 +6,15 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](./LICENSE)
 [![Android](https://img.shields.io/badge/Mobile-Android-3ddc84?logo=android)](https://capacitorjs.com)
 
-**Master essential skills the fun way!** An engaging multi-subject educational platform for students ages 7â€“12, built with React 19 + Vite. Currently includes Multiplication Kingdom (12 kingdoms, one per times table) and Spelling, with plans for Language Arts and beyond. Earn stars, track progress on cloud-synced leaderboards, and play on web or Android.
+**Master essential skills the fun way!** An engaging multi-subject educational platform for students ages 7–12, built with React 19 + Vite. Currently includes Multiplication Kingdom (12 kingdoms, one per times table) and Spelling, with plans for Language Arts and beyond. Earn stars, track progress on cloud-synced leaderboards, and play on web or Android.
 
-> âœ… **Development Environment**: This project has been configured and is ready for local development. Run `npm run dev` to start the dev server at `http://localhost:5173`.
+> ✅ **Development Environment**: This project has been configured and is ready for local development. Run `npm run dev` to start the dev server at `http://localhost:5173`.
 
-**ðŸŽ® Play now:** [multiplication-kingdom-e8c53.web.app](https://multiplication-kingdom-e8c53.web.app)
+**🎮 Play now:** [multiplication-kingdom-e8c53.web.app](https://multiplication-kingdom-e8c53.web.app)
 
 ---
 
-## ðŸ“– Table of Contents
+## 📖 Table of Contents
 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
@@ -22,7 +22,7 @@
 - [Prerequisites](#-prerequisites)
 - [Getting Started](#-getting-started)
 - [Architecture](#-architecture)
-- [Configuration](#ï¸-configuration)
+- [Configuration](#️-configuration)
 - [Deployment](#-deployment)
 - [Contributing](#-contributing)
 - [Troubleshooting](#-troubleshooting)
@@ -32,40 +32,40 @@
 
 ---
 
-## âœ¨ Features
+## ✨ Features
 
-### ðŸ° **Conquest Mode**
-Explore 12 magical kingdoms, each dedicated to one multiplication table (1â€“12). Complete three unique game modes per kingdom to earn stars:
-- **Flashcard Mode** â€” Take your time and test at your own pace
-- **Speed Challenge** â€” Race against the clock for bonus points
-- **Match Game** â€” Flip cards and match problems to their answers
+### 🏰 **Conquest Mode**
+Explore 12 magical kingdoms, each dedicated to one multiplication table (1–12). Complete three unique game modes per kingdom to earn stars:
+- **Flashcard Mode** – Take your time and test at your own pace
+- **Speed Challenge** – Race against the clock for bonus points
+- **Match Game** – Flip cards and match problems to their answers
 
-Progress unlocks the next kingdom: Kingdom 1 is free, Kingdom 2 requires â‰¥1 star from Kingdom 1, and so on.
+Progress unlocks the next kingdom: Kingdom 1 is free, Kingdom 2 requires ≥1 star from Kingdom 1, and so on.
 
-### ðŸƒ **Flashcard Challenge**
-Practice all 12 times tables (1Ã—1 to 12Ã—12) with three timed game modes:
-- **Timed Mode** â€” 60-second rounds with scoring and leaderboards
-- **Sprint Mode** â€” Intense 30-second challenges
-- **Practice Mode** â€” Learn at your own pace (untracked)
+### 🃏 **Flashcard Challenge**
+Practice all 12 times tables (1×1 to 12×12) with three timed game modes:
+- **Timed Mode** – 60-second rounds with scoring and leaderboards
+- **Sprint Mode** – Intense 30-second challenges
+- **Practice Mode** – Learn at your own pace (untracked)
 
-### ðŸ§® **Number Cruncher**
-Fast-paced number entry training with calculator aesthetics. Enter multi-digit numbers (2â€“7 digits) within 5-second time limits. Features 8 progressive difficulty levels with scoring and cloud leaderboards.
+### 🧮 **Number Cruncher**
+Fast-paced number entry training with calculator aesthetics. Enter multi-digit numbers (2–7 digits) within 5-second time limits. Features 8 progressive difficulty levels with scoring and cloud leaderboards.
 
-### ðŸ“ **Spelling Practice**
+### 📝 **Spelling Practice**
 Build spelling skills through interactive word tests:
 - Complete word lists with immediate corrective feedback
 - Peek Hints reveal answers to learn from mistakes
 - Cloud + local leaderboard tracks spelling progress
 
-### âš”ï¸ **Kingdom Siege**
+### ⚔️ **Kingdom Siege**
 Defend your kingdom from invading towers by solving multiplication problems before they breach your defenses. How long can you survive?
 
-### ðŸ”Š **Audio Feedback**
+### 📊 **Audio Feedback**
 - Real-time sound effects for correct/incorrect answers
 - Customizable volume + mute toggle in every game mode
 - Procedural tone fallback (works even without audio files)
 
-### ðŸ‘¥ **User Profiles & Cloud Leaderboard**
+### 👥 **User Profiles & Cloud Leaderboard**
 - Create and manage multiple player profiles
 - Track personal high scores across all game modes
 - Cloud-synced leaderboards for:
@@ -78,7 +78,7 @@ Defend your kingdom from invading towers by solving multiplication problems befo
 
 ---
 
-## ðŸ› ï¸ Tech Stack
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -88,25 +88,25 @@ Defend your kingdom from invading towers by solving multiplication problems befo
 | **State Management** | localStorage + React Context (no Redux) |
 | **Cloud Backend** | Firebase Firestore (leaderboards, data sync) |
 | **Authentication** | Firebase Auth (email + Guest mode) |
-| **Mobile** | Capacitor v8 â†’ Android deployment |
+| **Mobile** | Capacitor v8 → Android deployment |
 | **Minification** | R8/ProGuard (Android only) |
 | **Hosting** | Firebase Hosting (GitHub Actions auto-deploy) |
 
 ---
 
-## ðŸŒ Cross-Platform Support
+## 🌐 Cross-Platform Support
 
 Built as a **single responsive React codebase**, Learning Kingdom runs seamlessly across all devices:
 
-- **Web** â€” Instant play on any modern browser (Chrome, Safari, Firefox, Edge). No installation needed.
-- **Android** â€” Packaged via **Capacitor**, providing native app experience with offline storage and access to device features.
-- **Desktop (PWA)** â€” Installable web app with offline fallback (service worker ready).
+- **Web** – Instant play on any modern browser (Chrome, Safari, Firefox, Edge). No installation needed.
+- **Android** – Packaged via **Capacitor**, providing native app experience with offline storage and access to device features.
+- **Desktop (PWA)** – Installable web app with offline fallback (service worker ready).
 
-The same code, one build pipelineâ€”web or Androidâ€”optimized for touch and keyboard.
+The same code, one build pipeline—web or Android—optimized for touch and keyboard.
 
 ---
 
-## ðŸ“‹ Prerequisites
+## 📋 Prerequisites
 
 ### Development
 
@@ -123,11 +123,11 @@ The same code, one build pipelineâ€”web or Androidâ€”optimized for tou
 | **Java** | 21 (via Android Studio JDK) | Required by Gradle 8+ |
 | **Android SDK** | API 31+ | Target Android 12+ |
 | **Gradle** | v8+ | Build automation |
-| **Capacitor CLI** | v8+ | Bridge React â†’ Android |
+| **Capacitor CLI** | v8+ | Bridge React → Android |
 
 ---
 
-## ðŸš€ Getting Started
+## 🚀 Getting Started
 
 ### 1. Clone & Install
 
@@ -171,43 +171,43 @@ Check for code quality issues using ESLint.
 
 ---
 
-## ðŸ—ï¸ Architecture
+## 🗺️ Architecture
 
 ### Project Layout
 
 ```
 src/
-â”œâ”€â”€ App.jsx              â† Route definitions (React Router, all routes defined here)
-â”œâ”€â”€ main.jsx             â† Entry point (React 19 strict mode)
-â”œâ”€â”€ index.css            â† Global CSS variables + theme
-â”œâ”€â”€ components/          â† React components (one .jsx + one .css per component)
-â”‚   â”œâ”€â”€ HomeScreen.jsx / HomeScreen.css
-â”‚   â”œâ”€â”€ KingdomMap.jsx / KingdomMap.css
-â”‚   â”œâ”€â”€ KingdomScreen.jsx / KingdomScreen.css
-â”‚   â”œâ”€â”€ SpeedChallenge.jsx / SpeedChallenge.css
-â”‚   â”œâ”€â”€ MatchGame.jsx / MatchGame.css
-â”‚   â”œâ”€â”€ FlashcardGame.jsx / FlashcardGame.css
-â”‚   â”œâ”€â”€ Leaderboard.jsx / Leaderboard.css
-â”‚   â”œâ”€â”€ AuthScreen.jsx / AuthScreen.css (Firebase Auth UI)
-â”‚   â”œâ”€â”€ ErrorBoundary.jsx (Error fallback component)
-â”‚   â”œâ”€â”€ spelling/ â† Spelling Practice subsystem
-â”‚   â”œâ”€â”€ number-cruncher/ â† Number entry training subsystem
-â”‚   â””â”€â”€ ...
-â”œâ”€â”€ config/
-â”‚   â”œâ”€â”€ firebase.js      â† Firebase Firestore + Auth initialization
-â”‚   â””â”€â”€ kingdomMapsConfig.js â† Kingdom configuration
-â”œâ”€â”€ data/
-â”‚   â”œâ”€â”€ questions.js     â† Procedurally generates KINGDOMS + ALL_QUESTIONS (no API)
-â”‚   â”œâ”€â”€ words.js
-â”‚   â””â”€â”€ numberCruncher.js
-â”œâ”€â”€ store/
-â”‚   â””â”€â”€ progress.js      â† localStorage read/write (mk_progress) + Firebase sync
-â”œâ”€â”€ hooks/
-â”‚   â””â”€â”€ useSound.js      â† Audio playback abstraction
-â””â”€â”€ utils/
-    â”œâ”€â”€ contentFilter.js
-    â”œâ”€â”€ geminiSentenceGenerator.js
-    â””â”€â”€ ...
+├── App.jsx              ← Route definitions (React Router, all routes defined here)
+├── main.jsx             ← Entry point (React 19 strict mode)
+├── index.css            ← Global CSS variables + theme
+├── components/          ← React components (one .jsx + one .css per component)
+│   ├── HomeScreen.jsx / HomeScreen.css
+│   ├── KingdomMap.jsx / KingdomMap.css
+│   ├── KingdomScreen.jsx / KingdomScreen.css
+│   ├── SpeedChallenge.jsx / SpeedChallenge.css
+│   ├── MatchGame.jsx / MatchGame.css
+│   ├── FlashcardGame.jsx / FlashcardGame.css
+│   ├── Leaderboard.jsx / Leaderboard.css
+│   ├── AuthScreen.jsx / AuthScreen.css (Firebase Auth UI)
+│   ├── ErrorBoundary.jsx (Error fallback component)
+│   ├── spelling/ ← Spelling Practice subsystem
+│   ├── number-cruncher/ ← Number entry training subsystem
+│   └── ...
+├── config/
+│   ├── firebase.js      ← Firebase Firestore + Auth initialization
+│   └── kingdomMapsConfig.js ← Kingdom configuration
+├── data/
+│   ├── questions.js     ← Procedurally generates KINGDOMS + ALL_QUESTIONS (no API)
+│   ├── words.js
+│   └── numberCruncher.js
+├── store/
+│   └── progress.js      ← localStorage read/write (mk_progress) + Firebase sync
+├── hooks/
+│   └── useSound.js      ← Audio playback abstraction
+└── utils/
+    ├── contentFilter.js
+    ├── geminiSentenceGenerator.js
+    └── ...
 ```
 
 ### Route Map
@@ -234,15 +234,15 @@ src/
 
 **No Redux, no Context API.** State is kept simple:
 
-- **Component state** â€” Local UI state (current question, user input, animations)
-- **localStorage** â€” Persistent across sessions (`mk_progress` key)
-- **Firebase Firestore** â€” Cloud scores (leaderboards)
-- **Helper functions** â€” `src/store/progress.js` exports: `getProgress()`, `awardStars()`, `saveGameScore()`, `syncScoreToFirebase()`
+- **Component state** – Local UI state (current question, user input, animations)
+- **localStorage** – Persistent across sessions (`mk_progress` key)
+- **Firebase Firestore** – Cloud scores (leaderboards)
+- **Helper functions** – `src/store/progress.js` exports: `getProgress()`, `awardStars()`, `saveGameScore()`, `syncScoreToFirebase()`
 
 When your game ends:
-1. Call `awardStars(kingdomId, starsEarned)` â†’ updates localStorage
-2. Call `saveGameScore(gameType, scoreData)` â†’ syncs to Firestore
-3. Navigate away, then back â†’ component calls `getProgress()` on mount and sees updated state
+1. Call `awardStars(kingdomId, starsEarned)` → updates localStorage
+2. Call `saveGameScore(gameType, scoreData)` → syncs to Firestore
+3. Navigate away, then back → component calls `getProgress()` on mount and sees updated state
 
 **Why no reactive store?** Components are simple, routes are sparse, and navigation re-mounts components naturally. This approach minimizes bundle size and keeps state mutation predictable.
 
@@ -259,14 +259,14 @@ export const KINGDOMS = [
 ];
 
 export const ALL_QUESTIONS = [
-  { id: 0, kingdomId: 1, question: "1 Ã— 1 = ?", answer: 1 },
+  { id: 0, kingdomId: 1, question: "1 × 1 = ?", answer: 1 },
   // ... ~600 questions total (50 per kingdom)
 ];
 ```
 
-- **KINGDOMS** â€” Array of 12 objects (indices 0â€“11; kingdom `id` is 1-based: 1 to 12)
-- **ALL_QUESTIONS** â€” Flat array of every question across all kingdoms
-- **Zero latency** â€” All questions are in-memory; no API calls
+- **KINGDOMS** – Array of 12 objects (indices 0–11; kingdom `id` is 1-based: 1 to 12)
+- **ALL_QUESTIONS** – Flat array of every question across all kingdoms
+- **Zero latency** – All questions are in-memory; no API calls
 
 ### Styling Conventions
 
@@ -284,11 +284,11 @@ export const ALL_QUESTIONS = [
 ```
 
 **Component CSS classes** are scoped with kebab-case prefixes:
-- `.fcg-*` â€” FlashcardGame
-- `.speed-*` â€” SpeedChallenge
-- `.match-*` â€” MatchGame
+- `.fcg-*` – FlashcardGame
+- `.speed-*` – SpeedChallenge
+- `.match-*` – MatchGame
 
-Each kingdom has a hardcoded color (from `KINGDOM_COLORS` array). Emojis are used as icons throughout (ðŸ‘‘, âš”ï¸, ðŸƒ, etc.)â€”this is intentional and skips icon file overhead.
+Each kingdom has a hardcoded color (from `KINGDOM_COLORS` array). Emojis are used as icons throughout (👑, ⚔️, 🃏, etc.)—this is intentional and skips icon file overhead.
 
 ### Key Design Patterns
 
@@ -296,20 +296,20 @@ Each kingdom has a hardcoded color (from `KINGDOM_COLORS` array). Emojis are use
 
 Every game (Flashcard, Speed, Match, etc.) follows this 5-step pattern:
 
-1. **Display** â€” Show question/challenge
-2. **Collect** â€” Get user input (text, clicks, etc.)
-3. **Validate** â€” Check answer â†’ show ðŸ˜Š/ðŸ˜Ÿ feedback
-4. **Auto-advance** â€” Move to next question or manual next button
-5. **Tally** â€” Calculate stars â†’ `calcStars()` â†’ `awardStars()` â†’ navigate back
+1. **Display** – Show question/challenge
+2. **Collect** – Get user input (text, clicks, etc.)
+3. **Validate** – Check answer → show 😊/😟 feedback
+4. **Auto-advance** – Move to next question or manual next button
+5. **Tally** – Calculate stars → `calcStars()` → `awardStars()` → navigate back
 
 This ensures consistency across all game modes.
 
 #### 2. **Star System**
 
-- Kingdom 1 starts unlocked; Kingdom *n+1* unlocks when Kingdom *n* reaches â‰¥1 star.
+- Kingdom 1 starts unlocked; Kingdom *n+1* unlocks when Kingdom *n* reaches ≥1 star.
 - Stars are awarded based on score: `calcStars() = Math.ceil(score / maxScore * 3)` (max 3 stars)
 - Stars never decrease (only increase); `awardStars()` always compares and updates if higher.
-- After calling `awardStars()`, navigate away and back to reflect changesâ€”components re-mount and call `getProgress()` fresh.
+- After calling `awardStars()`, navigate away and back to reflect changes—components re-mount and call `getProgress()` fresh.
 
 #### 3. **No Centralized Re-render Signal**
 
@@ -317,11 +317,11 @@ This is intentional. There's no EventBus or global state invalidation. Navigatio
 
 ---
 
-## âš™ï¸ Configuration
+## ⚙️ Configuration
 
 ### Firebase Setup (Required for Leaderboards)
 
-See the [Firebase Configuration](#%EF%B8%8F-configuration) section above for complete setup instructions, including:
+See the [Firebase Configuration](#️-configuration) section above for complete setup instructions, including:
 - Creating a Firebase project
 - Configuring credentials in `src/config/firebase.js`
 - Deploying Firestore security rules
@@ -351,7 +351,7 @@ Access in code via `import.meta.env.VITE_SOME_SECRET`. This file is git-ignored 
 
 ---
 
-## ðŸš€ Deployment
+## 🚀 Deployment
 
 ### Web Hosting (Firebase Hosting)
 
@@ -366,12 +366,12 @@ firebase deploy --only hosting
 
 #### Automatic Deploy (GitHub Actions)
 
-Push to `main` branch â†’ GitHub Actions runs `.github/workflows/firebase-hosting-*.yml` â†’ automatically deploys to Firebase Hosting. No manual steps needed after merging.
+Push to `main` branch → GitHub Actions runs `.github/workflows/firebase-hosting-*.yml` → automatically deploys to Firebase Hosting. No manual steps needed after merging.
 
 **Features:**
-- âš¡ Global CDN (zero cold starts)
-- ðŸ”’ Automatic HTTPS
-- ðŸ“Š Same Firebase project as backend (database is already syncing)
+- ⚡ Global CDN (zero cold starts)
+- 🔒 Automatic HTTPS
+- 📊 Same Firebase project as backend (database is already syncing)
 
 ### Android Deployment (Google Play Store)
 
@@ -395,8 +395,8 @@ cd android
 ```
 
 **Output files:**
-- **Release Bundle:** `android/app/build/outputs/bundle/release/app-release.aab` â† Upload to Play Store
-- **Deobfuscation Map:** `android/app/build/outputs/mapping/release/mapping.txt` â† Upload alongside AAB
+- **Release Bundle:** `android/app/build/outputs/bundle/release/app-release.aab` ← Upload to Play Store
+- **Deobfuscation Map:** `android/app/build/outputs/mapping/release/mapping.txt` ← Upload alongside AAB
 
 #### Upload to Google Play Console
 
