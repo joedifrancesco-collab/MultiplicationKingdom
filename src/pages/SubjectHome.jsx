@@ -17,7 +17,7 @@ export default function SubjectHome() {
   const subjectData = {
     math: {
       icon: '🔢',
-      label: '🔢 Math Kingdom',
+      label: '🔢 Math',
       description: 'Master the fundamentals of mathematics!',
       kingdoms: [
         {

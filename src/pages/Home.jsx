@@ -33,7 +33,7 @@ export default function Home() {
     <div className="home-page">
       <header className="home-header">
         <div className="home-hero">
-          <h1 className="home-title">Welcome to Learning Kingdom! 👑</h1>
+          <h1 className="home-title">Master essential skills the Big City way! 🏙️</h1>
           <p className="home-subtitle">
             Choose a subject to embark on your learning adventure.
           </p>

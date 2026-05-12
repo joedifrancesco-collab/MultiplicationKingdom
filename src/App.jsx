@@ -28,20 +28,20 @@ import TestDeviceViewport from './shared/components/TestDeviceViewport';
 import SettingsTest from './shared/components/SettingsTest';
 import KingdomMapsMode from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMapsMode';
 import KingdomMaps from './subjects/math-kingdom/multiplication-kingdom/components/KingdomMaps';
-import SpellingScreen from './subjects/language-arts-kingdom/spelling/components/SpellingScreen';
-import SpellingPractice from './subjects/language-arts-kingdom/spelling/components/SpellingPractice';
-import SpellingAdmin from './subjects/language-arts-kingdom/spelling/components/SpellingAdmin';
-import VocabularyScreen from './subjects/language-arts-kingdom/vocabulary/components/VocabularyScreen';
-import WordMatchLanding from './subjects/language-arts-kingdom/vocabulary/components/WordMatchLanding';
+import SpellingScreen from './subjects/language-arts/spelling/components/SpellingScreen';
+import SpellingPractice from './subjects/language-arts/spelling/components/SpellingPractice';
+import SpellingAdmin from './subjects/language-arts/spelling/components/SpellingAdmin';
+import VocabularyScreen from './subjects/language-arts/vocabulary/components/VocabularyScreen';
+import WordMatchLanding from './subjects/language-arts/vocabulary/components/WordMatchLanding';
 import NumberCruncherScreen from './components/number-cruncher/NumberCruncherScreen';
 import NumberCruncherGame from './components/number-cruncher/NumberCruncherGame';
 import FlashcardBuilder from './components/flashcard-builder/FlashcardBuilder';
 import FlashcardDeckSelector from './components/flashcard-builder/FlashcardDeckSelector';
 import FlashcardGamePlay from './components/flashcard-builder/FlashcardGamePlay';
 import TouchTypingSiege from './components/touch-typing/TouchTypingSiege';
-import USStatesHome from './subjects/geography-kingdom/us-states/components/USStatesHome';
-import USStatesMap from './subjects/geography-kingdom/us-states/components/USStatesMap';
-import USStatesID from './subjects/geography-kingdom/us-states/components/USStatesID';
+import USStatesHome from './subjects/geography/us-states/components/USStatesHome';
+import USStatesMap from './subjects/geography/us-states/components/USStatesMap';
+import USStatesID from './subjects/geography/us-states/components/USStatesID';
 
 // Protected route component
 function ProtectedRoute({ element, isAuthenticated, isGuest, isLoading }) {
@@ -108,7 +108,7 @@ export default function App() {
       const currentPath = window.location.pathname;
       const gameRoutes = [
         '/subjects/math-kingdom/multiplication-kingdom',
-        '/subjects/language-arts-kingdom/spelling',
+        '/subjects/language-arts/spelling',
         '/number-cruncher',
       ];
       

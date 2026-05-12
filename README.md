@@ -1,4 +1,4 @@
-﻿# 👑 Learning Kingdom
+﻿# 🏙️ Big City Education
 
 [![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-Lightning%20Fast-646cff?logo=vite)](https://vitejs.dev)
@@ -96,7 +96,7 @@ Defend your kingdom from invading towers by solving multiplication problems befo
 
 ## 🌐 Cross-Platform Support
 
-Built as a **single responsive React codebase**, Learning Kingdom runs seamlessly across all devices:
+Built as a **single responsive React codebase**, Big City Education runs seamlessly across all devices:
 
 - **Web** – Instant play on any modern browser (Chrome, Safari, Firefox, Edge). No installation needed.
 - **Android** – Packaged via **Capacitor**, providing native app experience with offline storage and access to device features.
