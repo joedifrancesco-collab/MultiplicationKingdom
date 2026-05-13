@@ -45,15 +45,6 @@ export default function KingdomScreen() {
         />
 
         <GameCard
-          icon="🔀"
-          title="Match Game"
-          description="Find the matching pairs"
-          onClick={() => navigate(`/subjects/math/multiplication-kingdom/${id}/match`)}
-          platforms="both"
-          deviceType={deviceType}
-        />
-
-        <GameCard
           icon="⚔️"
           title="Kingdom Siege"
           description="Defend the kingdom!"

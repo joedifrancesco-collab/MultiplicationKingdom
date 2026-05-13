@@ -1,6 +1,6 @@
-# Learning Kingdom — Copilot Instructions
+# Big City Education — Copilot Instructions
 
-A modular educational platform for ages 7–12, built with React 19 + Vite. Currently includes multiplication (12 kingdoms, one per times table) and spelling, with plans for additional subjects. Available on web and Android via Capacitor.
+A modular educational platform for ages 7–12, built with React 19 + Vite. Currently includes multiplication (12 kingdoms, one per times table), spelling, and geography (US States game). Available as a responsive web app with Firebase backend for leaderboards.
 
 ---
 
@@ -11,19 +11,7 @@ npm run dev          # Vite dev server → http://localhost:5173 (hot reload)
 npm run build        # Production build → dist/
 npm run preview      # Preview production build locally
 npm run lint         # ESLint check
-```
-
-**Android release bundle:**
-```powershell
-# Set JAVA_HOME first (Android Studio JDK)
-$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
-$env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
-
-npm run build
-npx cap sync android
-cd android
-./gradlew bundleRelease
-# Output: android/app/build/outputs/bundle/release/app-release.aab
+npm start            # Build and start Node.js server
 ```
 
 ---
