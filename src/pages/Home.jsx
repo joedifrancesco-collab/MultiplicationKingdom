@@ -27,6 +27,15 @@ export default function Home() {
       enabled: true,
       badge: null,
     },
+    {
+      id: 'lab',
+      icon: '🧪',
+      label: 'Extra Credit',
+      description: 'Explore challenges, typing games, and more!',
+      path: '/subjects/lab',
+      enabled: true,
+      badge: null,
+    },
   ];
 
   return (
