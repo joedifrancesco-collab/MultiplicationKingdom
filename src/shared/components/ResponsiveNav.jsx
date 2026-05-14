@@ -184,6 +184,11 @@ export default function ResponsiveNav() {
         label: 'Geography',
         path: '/subjects/geography',
       },
+      {
+        icon: '📊',
+        label: 'Times Table',
+        path: '/subjects/math/multiplication-kingdom/training/table',
+      },
     ],
   };
 
