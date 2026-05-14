@@ -1,6 +1,6 @@
 services:
   - type: static
-    name: multiplication-kingdom
+    name: BC-Learning
     env: static
     region: oregon
     plan: free

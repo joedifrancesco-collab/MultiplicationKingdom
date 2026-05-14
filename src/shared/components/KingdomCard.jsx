@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useOverlay } from '../../context/OverlayContext';
 import './KingdomCard.css';
 
 /**
@@ -12,6 +13,7 @@ export default function KingdomCard({
   label,
   description,
   path,
+  overlayType,
   enabled = true,
   disabled = false,
   stars = 0,
@@ -19,10 +21,15 @@ export default function KingdomCard({
   comingSoon = false,
 }) {
   const navigate = useNavigate();
+  const { openOverlay } = useOverlay();
 
   const handleAction = () => {
     if (!comingSoon && enabled && !disabled) {
-      navigate(path);
+      if (overlayType) {
+        openOverlay(overlayType);
+      } else if (path) {
+        navigate(path);
+      }
     }
   };
 

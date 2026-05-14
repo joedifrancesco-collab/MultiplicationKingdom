@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useOverlay } from '../../context/OverlayContext';
 import './NavDropdown.css';
 
 /**
@@ -17,6 +18,7 @@ export default function NavDropdown({ label, icon, items = [], activeSubject = n
   const menuRef = useRef(null);
   const submenuCloseTimerRef = useRef(null);
   const navigate = useNavigate();
+  const { openOverlay } = useOverlay();
 
   // Calculate menu position based on button location
   useEffect(() => {
@@ -111,7 +113,11 @@ export default function NavDropdown({ label, icon, items = [], activeSubject = n
   };
 
   const handleItemClick = (item) => {
-    if (item.path) {
+    if (item.overlayType) {
+      openOverlay(item.overlayType);
+      setIsOpen(false);
+      setOpenSubject(null);
+    } else if (item.path) {
       navigate(item.path);
       setIsOpen(false);
       setOpenSubject(null);

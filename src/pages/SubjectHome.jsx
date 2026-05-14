@@ -17,7 +17,7 @@ export default function SubjectHome() {
   const subjectData = {
     math: {
       icon: '🔢',
-      label: '🔢 Math Kingdom',
+      label: '🔢 Math',
       description: 'Master the fundamentals of mathematics!',
       kingdoms: [
         {
@@ -25,7 +25,7 @@ export default function SubjectHome() {
           icon: '✖️',
           label: 'Multiplication Kingdom',
           description: '12 times tables with engaging games',
-          path: '/subjects/math-kingdom/multiplication-kingdom',
+          path: '/subjects/math/multiplication-kingdom',
           unlockIndex: 0, // First one is always unlocked
         },
         {
@@ -33,7 +33,7 @@ export default function SubjectHome() {
           icon: '➕',
           label: 'Addition Kingdom',
           description: 'Master addition and number combinations',
-          path: '/subjects/math-kingdom/addition-kingdom',
+          path: '/subjects/math/addition-kingdom',
           unlockIndex: 1,
           comingSoon: true,
         },
@@ -42,7 +42,7 @@ export default function SubjectHome() {
           icon: '➖',
           label: 'Subtraction Kingdom',
           description: 'Learn subtraction and differences',
-          path: '/subjects/math-kingdom/subtraction-kingdom',
+          path: '/subjects/math/subtraction-kingdom',
           unlockIndex: 2,
           comingSoon: true,
         },
@@ -51,7 +51,7 @@ export default function SubjectHome() {
           icon: '÷',
           label: 'Division Kingdom',
           description: 'Understand division and fractions',
-          path: '/subjects/math-kingdom/division-kingdom',
+          path: '/subjects/math/division-kingdom',
           unlockIndex: 3,
           comingSoon: true,
         },
@@ -59,7 +59,7 @@ export default function SubjectHome() {
     },
     spelling: {
       icon: '📖',
-      label: '📖 Language Arts Kingdom',
+      label: '📖 Language Arts',
       description: 'Improve your language and spelling skills!',
       kingdoms: [
         {
@@ -67,7 +67,7 @@ export default function SubjectHome() {
           icon: '✍️',
           label: 'Spelling',
           description: 'Vowels, consonants, and word patterns',
-          path: '/subjects/language-arts-kingdom/spelling',
+          path: '/subjects/language-arts/spelling',
           unlockIndex: 0,
         },
         {
@@ -75,7 +75,7 @@ export default function SubjectHome() {
           icon: '📚',
           label: 'Vocabulary',
           description: 'Learn new words and meanings',
-          path: '/subjects/language-arts-kingdom/vocabulary',
+          path: '/subjects/language-arts/vocabulary',
           unlockIndex: 1,
           comingSoon: true,
         },
@@ -84,7 +84,7 @@ export default function SubjectHome() {
           icon: '🔤',
           label: 'Grammar',
           description: 'Master grammar rules and punctuation',
-          path: '/subjects/language-arts-kingdom/grammar',
+          path: '/subjects/language-arts/grammar',
           unlockIndex: 2,
           comingSoon: true,
         },
@@ -123,7 +123,7 @@ export default function SubjectHome() {
           alwaysUnlocked: true,
         },
         {
-          id: 'geography-kingdom',
+          id: 'geography',
           icon: '🗺️',
           label: 'Geography',
           description: 'Explore geography and learn about the world',
@@ -131,9 +131,18 @@ export default function SubjectHome() {
           unlockIndex: 3,
           alwaysUnlocked: true,
         },
+        {
+          id: 'times-table',
+          icon: '📊',
+          label: 'Times Table',
+          description: 'Quick reference for multiplication tables',
+          overlayType: 'times-table',
+          unlockIndex: 4,
+          alwaysUnlocked: true,
+        },
       ],
     },
-    'geography-kingdom': {
+    'geography': {
       icon: '🗺️',
       label: 'Geography',
       description: 'Explore and learn about world geography!',
@@ -143,7 +152,7 @@ export default function SubjectHome() {
           icon: '🗺️',
           label: 'US States',
           description: 'Learn about the United States, states, and capitals',
-          path: '/subjects/geography-kingdom/us-states',
+          path: '/subjects/geography/us-states',
           unlockIndex: 0,
           alwaysUnlocked: true,
         },
@@ -152,7 +161,7 @@ export default function SubjectHome() {
           icon: '🌍',
           label: 'World Geography',
           description: 'Explore countries, capitals, and continents',
-          path: '/subjects/geography-kingdom/world-geography',
+          path: '/subjects/geography/world-geography',
           unlockIndex: 1,
           alwaysUnlocked: true,
           comingSoon: true,
@@ -213,6 +222,7 @@ export default function SubjectHome() {
                   label={kingdom.label}
                   description={kingdom.description}
                   path={kingdom.path}
+                  overlayType={kingdom.overlayType}
                   enabled={isUnlocked && !kingdom.comingSoon}
                   disabled={!isUnlocked}
                   stars={kingdomProgress.stars}

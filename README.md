@@ -1,12 +1,11 @@
-﻿# 👑 Learning Kingdom
+﻿# 🏙️ Big City Education
 
 [![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-Lightning%20Fast-646cff?logo=vite)](https://vitejs.dev)
 [![Firebase](https://img.shields.io/badge/Firebase-Firestore-ffca28?logo=firebase)](https://firebase.google.com)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](./LICENSE)
-[![Android](https://img.shields.io/badge/Mobile-Android-3ddc84?logo=android)](https://capacitorjs.com)
 
-**Master essential skills the fun way!** An engaging multi-subject educational platform for students ages 7–12, built with React 19 + Vite. Currently includes Multiplication Kingdom (12 kingdoms, one per times table) and Spelling, with plans for Language Arts and beyond. Earn stars, track progress on cloud-synced leaderboards, and play on web or Android.
+**Master essential skills the fun way!** An engaging multi-subject educational platform for students ages 7–12, built with React 19 + Vite. Currently includes Multiplication Kingdom (12 kingdoms, one per times table) and Spelling, with plans for Language Arts and beyond. Earn stars, track progress on cloud-synced leaderboards, and play on any device via responsive web app.
 
 > ✅ **Development Environment**: This project has been configured and is ready for local development. Run `npm run dev` to start the dev server at `http://localhost:5173`.
 
@@ -88,15 +87,15 @@ Defend your kingdom from invading towers by solving multiplication problems befo
 | **State Management** | localStorage + React Context (no Redux) |
 | **Cloud Backend** | Firebase Firestore (leaderboards, data sync) |
 | **Authentication** | Firebase Auth (email + Guest mode) |
-| **Mobile** | Capacitor v8 → Android deployment |
-| **Minification** | R8/ProGuard (Android only) |
+| **Mobile** | Responsive web design (PWA) |
+| **Minification** | Built-in with Vite (production build) |
 | **Hosting** | Firebase Hosting (GitHub Actions auto-deploy) |
 
 ---
 
 ## 🌐 Cross-Platform Support
 
-Built as a **single responsive React codebase**, Learning Kingdom runs seamlessly across all devices:
+Built as a **single responsive React codebase**, Big City Education runs seamlessly across all devices:
 
 - **Web** – Instant play on any modern browser (Chrome, Safari, Firefox, Edge). No installation needed.
 - **Android** – Packaged via **Capacitor**, providing native app experience with offline storage and access to device features.
@@ -116,15 +115,6 @@ The same code, one build pipeline—web or Android—optimized for touch and key
 | **npm** | v9+ | Package manager |
 | **Git** | Any | Version control |
 
-### Android Deployment
-
-| Tool | Version | Why |
-|------|---------|-----|
-| **Java** | 21 (via Android Studio JDK) | Required by Gradle 8+ |
-| **Android SDK** | API 31+ | Target Android 12+ |
-| **Gradle** | v8+ | Build automation |
-| **Capacitor CLI** | v8+ | Bridge React → Android |
-
 ---
 
 ## 🚀 Getting Started
@@ -133,7 +123,7 @@ The same code, one build pipeline—web or Android—optimized for touch and key
 
 ```bash
 git clone https://github.com/joedifrancesco-collab/MultiplicationKingdom.git
-cd multiplication-kingdom
+cd BC-Learning
 npm install
 ```
 
@@ -373,41 +363,6 @@ Push to `main` branch → GitHub Actions runs `.github/workflows/firebase-hostin
 - 🔒 Automatic HTTPS
 - 📊 Same Firebase project as backend (database is already syncing)
 
-### Android Deployment (Google Play Store)
-
-#### Prerequisites
-
-Set up your environment first:
-
-```powershell
-# Extract from Android Studio JDK
-$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
-$env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
-```
-
-#### Build Release Bundle
-
-```bash
-npm run build
-npx cap sync android
-cd android
-./gradlew bundleRelease
-```
-
-**Output files:**
-- **Release Bundle:** `android/app/build/outputs/bundle/release/app-release.aab` ← Upload to Play Store
-- **Deobfuscation Map:** `android/app/build/outputs/mapping/release/mapping.txt` ← Upload alongside AAB
-
-#### Upload to Google Play Console
-
-1. Go to [Google Play Console](https://play.google.com/console)
-2. Open your app → **Release** → **Production**
-3. Upload `.aab` file + mapping file
-4. Add release notes and screenshots
-5. Review and publish
-
-> **Note:** First release requires Play Store setup (developer account, app listing, screenshots, privacy policy). See [PRIVACY_POLICY.md](./PRIVACY_POLICY.md).
-
 ---
 
 ## 🤝 Contributing
@@ -420,10 +375,10 @@ Contributions are welcome! Please follow these guidelines:
    - One component = one `.jsx` + one `.css` file (co-located)
    - Use kebab-case for CSS class prefixes
    - No inline styles (use CSS files)
-   - Test on both web and Android (if mobile-related)
+   - Test on desktop and mobile browsers
 4. **Lint before committing:** `npm run lint`
 5. **Commit with clear messages:** `git commit -m "Add feature X"`
-6. **Push and open a Pull Request**
+6. **Push and open a Pull Request`"
 
 **Project conventions** are documented in [.github/copilot-instructions.md](./.github/copilot-instructions.md).
 

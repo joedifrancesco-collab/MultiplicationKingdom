@@ -4,7 +4,7 @@
 
 ## Overview
 
-Multiplication Kingdom ("we," "our," or "us") takes your privacy seriously. This Privacy Policy explains how our app handles your information.
+Big City Education ("we," "our," or "us") takes your privacy seriously. This Privacy Policy explains how our app handles your information.
 
 ## Information We Collect
 

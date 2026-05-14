@@ -45,9 +45,6 @@ export default function ResponsiveNav() {
     setIsHamburgerOpen(false);
   }, []);
 
-  // Times Table only shows on Math pages
-  const isOnMathPages = location.pathname.startsWith('/subjects/math');
-
   // Reset signingOut state when user or guest status changes
   useEffect(() => {
     setSigningOut(false);
@@ -116,19 +113,19 @@ export default function ResponsiveNav() {
       {
         icon: '➕',
         label: 'Addition Kingdom',
-        path: '/subjects/math-kingdom/addition-kingdom',
+        path: '/subjects/math/addition-kingdom',
         disabled: true,
       },
       {
         icon: '➖',
         label: 'Subtraction Kingdom',
-        path: '/subjects/math-kingdom/subtraction-kingdom',
+        path: '/subjects/math/subtraction-kingdom',
         disabled: true,
       },
       {
         icon: '÷',
         label: 'Division Kingdom',
-        path: '/subjects/math-kingdom/division-kingdom',
+        path: '/subjects/math/division-kingdom',
         disabled: true,
       },
     ],
@@ -185,7 +182,12 @@ export default function ResponsiveNav() {
       {
         icon: '🗺️',
         label: 'Geography',
-        path: '/subjects/geography-kingdom',
+        path: '/subjects/geography',
+      },
+      {
+        icon: '📊',
+        label: 'Times Table',
+        overlayType: 'times-table',
       },
     ],
   };
@@ -243,17 +245,6 @@ export default function ResponsiveNav() {
         <div className="nav-right">
           {/* Lab dropdown (right-aligned) */}
           <div className="nav-lab-section">
-            {/* Times Table Link (right-aligned) - only show on Math pages */}
-            {isOnMathPages && (
-              <button
-                className="nav-times-table-link"
-                onClick={() => openOverlay('times-table')}
-                title="Times Table"
-                aria-label="Times Table"
-              >
-                📖 Times Table
-              </button>
-            )}
 
           {sideBarSubjects.map((subject) => (
               <NavDropdown

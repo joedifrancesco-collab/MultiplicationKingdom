@@ -1,7 +1,7 @@
 {
-  "name": "Learning Kingdom",
-  "short_name": "LK",
-  "description": "A fun multiplication table learning game for kids aged 7-10",
+  "name": "Big City Education",
+  "short_name": "Big City Ed",
+  "description": "Games and resources to assist in elementary learning.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F0F4FF",
