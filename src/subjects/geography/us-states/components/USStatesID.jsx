@@ -15,7 +15,6 @@ export default function USStatesID() {
   const [mismatch, setMismatch] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const stateLabelsRef = useRef(new Map());
   const pathElementsRef = useRef(new Map());
   const matchedRef = useRef(matched);
   const selectedMapStateRef = useRef(selectedMapState);

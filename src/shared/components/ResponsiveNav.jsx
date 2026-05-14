@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getCurrentAuthUser, isGuestMode, signOutUser, clearGuestMode, subscribeToAuthChanges } from '../../store/progress';
-import { OverlayContext } from '../../context/OverlayContext.jsx';
 import NavDropdown from './NavDropdown';
 import HamburgerMenu from './HamburgerMenu';
 import Breadcrumb from './Breadcrumb';
@@ -19,9 +18,7 @@ export default function ResponsiveNav() {
   const [user, setUser] = useState(() => getCurrentAuthUser());
   const [guest, setGuest] = useState(isGuestMode());
   const navigate = useNavigate();
-  const location = useLocation();
   const profileDropdownRef = useRef(null);
-  const { openOverlay } = useContext(OverlayContext);
 
   // Subscribe to auth state changes
   useEffect(() => {
