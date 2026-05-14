@@ -123,7 +123,7 @@ The same code, one build pipeline—web or Android—optimized for touch and key
 
 ```bash
 git clone https://github.com/joedifrancesco-collab/MultiplicationKingdom.git
-cd multiplication-kingdom
+cd BC-Learning
 npm install
 ```
 

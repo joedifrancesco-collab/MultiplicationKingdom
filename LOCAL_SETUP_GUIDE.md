@@ -48,7 +48,7 @@ The test commit has been created locally but needs to be pushed to GitHub. This 
 
 #### Option B: Push via Terminal
 ```powershell
-cd c:\Users\joedi\multiplication-kingdom
+cd c:\Users\joedi\BC-Learning
 git push origin main
 ```
 
@@ -112,7 +112,7 @@ Once you've pushed to GitHub and added the `FIREBASE_TOKEN` secret:
 
 ### Starting Development
 ```powershell
-cd c:\Users\joedi\multiplication-kingdom
+cd c:\Users\joedi\BC-Learning
 npm run dev
 ```
 - Opens dev server at `http://localhost:5173`
@@ -178,7 +178,7 @@ npm run lint
 ## ⚠️ Known Issues & Troubleshooting
 
 ### Git push fails with "fatal: not a git repository"
-- Ensure you're in the correct directory: `c:\Users\joedi\multiplication-kingdom`
+- Ensure you're in the correct directory: `c:\Users\joedi\BC-Learning`
 
 ### npm: "File cannot be loaded because running scripts is disabled"
 - Solution: Run PowerShell command before npm:
