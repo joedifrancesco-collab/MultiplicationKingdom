@@ -57,7 +57,7 @@ export default function FlashcardDeckSelector() {
   return (
     <div className="fds-container">
       <div className="fds-header">
-        <h1>📇 My Flashcard Decks</h1>
+        <h1>📇 My Flashcards</h1>
         <p className="fds-subtitle">Select a deck to study or create a new one</p>
       </div>
 
@@ -68,7 +68,7 @@ export default function FlashcardDeckSelector() {
           onClick={() => navigate('/flashcard-builder/create')}
         >
           <span className="fds-create-icon">➕</span>
-          <span>Create New Deck</span>
+          <span>Create New Cards</span>
         </button>
 
         {/* Error Message */}
@@ -93,13 +93,13 @@ export default function FlashcardDeckSelector() {
         {!loading && decks.length === 0 && !error && (
           <div className="fds-empty">
             <div className="fds-empty-icon">📚</div>
-            <h2>No Decks Yet</h2>
+            <h2>No Flashcards Yet</h2>
             <p>Create your first flashcard deck to get started!</p>
             <button
               className="fds-empty-cta"
               onClick={() => navigate('/flashcard-builder/create')}
             >
-              Create First Deck
+              Create First Cards
             </button>
           </div>
         )}

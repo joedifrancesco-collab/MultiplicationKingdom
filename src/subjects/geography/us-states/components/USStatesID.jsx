@@ -93,23 +93,7 @@ export default function USStatesID() {
           });
           
           pathElementsRef.current = newPathElements;
-          
-          // Store label elements
-          const textElements = svgRef.current.querySelectorAll('text');
-          const newStateLabels = new Map();
-          
-          textElements.forEach(text => {
-            const stateAbbr = text.textContent.trim().toUpperCase();
-            const stateId = stateAbbr.toLowerCase();
-            if (US_STATES.some(s => s.id === stateId)) {
-              newStateLabels.set(stateId, text);
-              text.style.userSelect = 'none';
-              text.style.pointerEvents = 'none';
-              text.style.display = 'none';
-            }
-          });
-          
-          stateLabelsRef.current = newStateLabels;
+          console.log('SVG loaded with', newPathElements.size, 'states');
         }
       } catch (error) {
         console.error('Failed to load SVG:', error);
@@ -128,13 +112,20 @@ export default function USStatesID() {
         path.style.cursor = 'default';
       }
       
-      const label = stateLabelsRef.current.get(stateId);
-      if (label) {
-        const state = US_STATES.find(s => s.id === stateId);
-        label.textContent = state.id.toUpperCase();
-        label.style.fill = '#000';
-        label.style.fontWeight = 'bold';
-        label.style.display = 'block';
+      // Show the pre-positioned text label and connector for this state
+      if (svgRef.current) {
+        const textLabel = svgRef.current.querySelector(`text[data-state="${stateId}"]`);
+        if (textLabel) {
+          textLabel.setAttribute('visibility', 'visible');
+          textLabel.style.visibility = 'visible';
+        }
+        
+        // Also show any connector paths associated with this state
+        const connectorPath = svgRef.current.querySelector(`path[data-state="${stateId}"]`);
+        if (connectorPath) {
+          connectorPath.setAttribute('visibility', 'visible');
+          connectorPath.style.visibility = 'visible';
+        }
       }
     });
   }, [matched]);
@@ -200,12 +191,20 @@ export default function USStatesID() {
       path.style.cursor = 'pointer';
     });
     
-    stateLabelsRef.current.forEach((label, stateId) => {
-      label.textContent = stateId.toUpperCase();
-      label.style.fill = '#000000';
-      label.style.fontWeight = 'normal';
-      label.style.display = 'none';
-    });
+    // Hide all state label text elements and connector paths
+    if (svgRef.current) {
+      const textElements = svgRef.current.querySelectorAll('text[data-state]');
+      textElements.forEach(textEl => {
+        textEl.setAttribute('visibility', 'hidden');
+        textEl.style.visibility = 'hidden';
+      });
+      
+      const connectorPaths = svgRef.current.querySelectorAll('path[data-state]');
+      connectorPaths.forEach(connectorEl => {
+        connectorEl.setAttribute('visibility', 'hidden');
+        connectorEl.style.visibility = 'hidden';
+      });
+    }
   };
 
   return (

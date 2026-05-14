@@ -85,13 +85,9 @@ export default function NavBar() {
     return null;
   })();
 
-  // Times Table only shows on Math pages and descendants
-  const isOnMathPages = location.pathname.startsWith('/subjects/math');
-
   const navItems = [
     { label: '🏠 Home', path: '/', key: 'home' },
     { label: '🏆 Leaderboard', path: '/unified-leaderboard', key: 'leaderboard' },
-    ...(isOnMathPages ? [{ label: '📊 Times Table', path: '/subjects/math/multiplication-kingdom/training/table', key: 'table' }] : []),
   ];
 
   const rightNavItems = [

@@ -213,7 +213,7 @@ function formatSubjectLabel(subject) {
     lab: 'Extra Credit',
     'number-cruncher': 'Extra Credit',
     'touch-typing': 'Extra Credit',
-    'geography-kingdom': 'Geography',
+    geography: 'Geography',
     science: 'Science',
   };
   return labels[subject] || subject.charAt(0).toUpperCase() + subject.slice(1);

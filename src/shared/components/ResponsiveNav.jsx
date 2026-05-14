@@ -45,9 +45,6 @@ export default function ResponsiveNav() {
     setIsHamburgerOpen(false);
   }, []);
 
-  // Times Table only shows on Math pages
-  const isOnMathPages = location.pathname.startsWith('/subjects/math');
-
   // Reset signingOut state when user or guest status changes
   useEffect(() => {
     setSigningOut(false);
@@ -185,7 +182,7 @@ export default function ResponsiveNav() {
       {
         icon: '🗺️',
         label: 'Geography',
-        path: '/subjects/geography-kingdom',
+        path: '/subjects/geography',
       },
     ],
   };
@@ -243,17 +240,6 @@ export default function ResponsiveNav() {
         <div className="nav-right">
           {/* Lab dropdown (right-aligned) */}
           <div className="nav-lab-section">
-            {/* Times Table Link (right-aligned) - only show on Math pages */}
-            {isOnMathPages && (
-              <button
-                className="nav-times-table-link"
-                onClick={() => openOverlay('times-table')}
-                title="Times Table"
-                aria-label="Times Table"
-              >
-                📖 Times Table
-              </button>
-            )}
 
           {sideBarSubjects.map((subject) => (
               <NavDropdown
