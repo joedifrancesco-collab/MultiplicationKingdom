@@ -187,7 +187,7 @@ export default function ResponsiveNav() {
       {
         icon: '📊',
         label: 'Times Table',
-        path: '/subjects/math/multiplication-kingdom/training/table',
+        overlayType: 'times-table',
       },
     ],
   };

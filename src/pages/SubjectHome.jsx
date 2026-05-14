@@ -136,7 +136,7 @@ export default function SubjectHome() {
           icon: '📊',
           label: 'Times Table',
           description: 'Quick reference for multiplication tables',
-          path: '/subjects/math/multiplication-kingdom/training/table',
+          overlayType: 'times-table',
           unlockIndex: 4,
           alwaysUnlocked: true,
         },
@@ -222,6 +222,7 @@ export default function SubjectHome() {
                   label={kingdom.label}
                   description={kingdom.description}
                   path={kingdom.path}
+                  overlayType={kingdom.overlayType}
                   enabled={isUnlocked && !kingdom.comingSoon}
                   disabled={!isUnlocked}
                   stars={kingdomProgress.stars}
