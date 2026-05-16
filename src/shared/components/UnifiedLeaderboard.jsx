@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getCurrentAuthUser, getCurrentUser, isGuestMode, getGameBests, getAllGameScores, getNumberCruncherAttempts, getSpellingAttempts } from '../../store/progress';
+import { getCurrentAuthUser, getCurrentUser, isGuestMode, getGameBests, getAllGameScores, getNumberCruncherAttempts, getSpellingAttempts, getUSStatesAchievements, getUSStatesAchievementsByAccuracy, getUSStatesAchievementsBySpeed, getTopMissedStates } from '../../store/progress';
+import { US_STATES } from '../../subjects/geography/us-states/data/states';
 import './UnifiedLeaderboard.css';
 
 /**
@@ -28,14 +29,19 @@ const SUBJECT_STRUCTURE = {
       }
     }
   },
-  lab: {
-    icon: '🔬',
-    label: 'Lab',
+  extraCredit: {
+    icon: '⭐',
+    label: 'Extra Credit',
     subjects: {
       numberCruncher: {
         icon: '🔢',
         label: 'Number Cruncher',
         games: ['numberCruncher']
+      },
+      usStatesId: {
+        icon: '🗺️',
+        label: 'US States ID',
+        games: ['usStatesId']
       }
     }
   }
@@ -55,6 +61,7 @@ const GAME_METADATA = {
   'kingdomMaps-rowColumn': { icon: '📊', label: 'Kingdom Maps (Row/Column)' },
   'spelling': { icon: '📝', label: 'Spelling' },
   'numberCruncher': { icon: '🔢', label: 'Number Cruncher' },
+  'usStatesId': { icon: '🗺️', label: 'US States ID' },
 };
 
 /**
@@ -221,11 +228,155 @@ function GameSection({ gameType, scores }) {
 }
 
 /**
+ * USStatesAchievementCard Component - Displays individual US States achievement
+ */
+function USStatesAchievementCard({ achievement, rank, sortType }) {
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="ub-us-states-card">
+      <div className="ub-us-states-rank">#{rank}</div>
+      <div className="ub-us-states-time">⏱️ {formatTime(achievement.time)}</div>
+      <div className="ub-us-states-incorrect">❌ {achievement.incorrectCount}</div>
+      {sortType === 'accuracy' && (
+        <div className="ub-us-states-sort-note">Sorted by accuracy</div>
+      )}
+      {sortType === 'speed' && (
+        <div className="ub-us-states-sort-note">Sorted by speed</div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * USStatesAchievementsSection Component
+ */
+function USStatesAchievementsSection({ achievements }) {
+  const [expandedCategory, setExpandedCategory] = useState(null);
+  
+  const accuracyRanked = getUSStatesAchievementsByAccuracy(10);
+  const speedRanked = getUSStatesAchievementsBySpeed(10);
+  const topMissed = getTopMissedStates(3);
+  
+  const getStateName = (stateId) => {
+    const state = US_STATES.find(s => s.id === stateId);
+    return state ? state.name : stateId;
+  };
+
+  return (
+    <div className="ub-us-states-section">
+      {/* Category 1: By Accuracy (Least Incorrect, Then Fastest) */}
+      <div className="ub-us-states-category">
+        <div className="ub-us-states-category-header">
+          <h4 className="ub-us-states-category-title">🎯 Most Accurate</h4>
+          <p className="ub-us-states-category-desc">Sorted by fewest incorrect, then by fastest time</p>
+        </div>
+        <div className="ub-us-states-top3">
+          {accuracyRanked.slice(0, 3).map((achievement, idx) => (
+            <USStatesAchievementCard
+              key={`accuracy-${idx}`}
+              achievement={achievement}
+              rank={idx + 1}
+              sortType="accuracy"
+            />
+          ))}
+        </div>
+        {accuracyRanked.length > 3 && (
+          <>
+            <button
+              className="ub-show-more-btn"
+              onClick={() => setExpandedCategory(expandedCategory === 'accuracy' ? null : 'accuracy')}
+            >
+              {expandedCategory === 'accuracy' ? '▼ Show Less' : '▶ Show More'}
+            </button>
+            {expandedCategory === 'accuracy' && (
+              <div className="ub-us-states-expanded">
+                {accuracyRanked.slice(3).map((achievement, idx) => (
+                  <USStatesAchievementCard
+                    key={`accuracy-expanded-${idx}`}
+                    achievement={achievement}
+                    rank={idx + 4}
+                    sortType="accuracy"
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Category 2: By Speed (Fastest Time, Then Fewest Incorrect) */}
+      <div className="ub-us-states-category">
+        <div className="ub-us-states-category-header">
+          <h4 className="ub-us-states-category-title">⚡ Fastest Times</h4>
+          <p className="ub-us-states-category-desc">Sorted by fastest time, then by fewest incorrect</p>
+        </div>
+        <div className="ub-us-states-top3">
+          {speedRanked.slice(0, 3).map((achievement, idx) => (
+            <USStatesAchievementCard
+              key={`speed-${idx}`}
+              achievement={achievement}
+              rank={idx + 1}
+              sortType="speed"
+            />
+          ))}
+        </div>
+        {speedRanked.length > 3 && (
+          <>
+            <button
+              className="ub-show-more-btn"
+              onClick={() => setExpandedCategory(expandedCategory === 'speed' ? null : 'speed')}
+            >
+              {expandedCategory === 'speed' ? '▼ Show Less' : '▶ Show More'}
+            </button>
+            {expandedCategory === 'speed' && (
+              <div className="ub-us-states-expanded">
+                {speedRanked.slice(3).map((achievement, idx) => (
+                  <USStatesAchievementCard
+                    key={`speed-expanded-${idx}`}
+                    achievement={achievement}
+                    rank={idx + 4}
+                    sortType="speed"
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Top 3 Most Missed States */}
+      {topMissed.length > 0 && (
+        <div className="ub-us-states-missed">
+          <div className="ub-us-states-missed-header">
+            <h4 className="ub-us-states-missed-title">🤔 Top 3 Most Missed States</h4>
+          </div>
+          <div className="ub-us-states-missed-list">
+            {topMissed.map((item, idx) => (
+              <div key={`missed-${item.stateId}`} className="ub-us-states-missed-item">
+                <div className="ub-us-states-missed-rank">#{idx + 1}</div>
+                <div className="ub-us-states-missed-name">{getStateName(item.stateId)}</div>
+                <div className="ub-us-states-missed-count">{item.count} times</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
  * UnifiedLeaderboard Component
  * Shows all game scores for current user or session
  */
 export default function UnifiedLeaderboard() {
   const [scores, setScores] = useState([]);
+  const [usStatesAchievements, setUsStatesAchievements] = useState([]);
   const [loading, setLoading] = useState(true);
   
   const authUser = getCurrentAuthUser();
@@ -290,6 +441,10 @@ export default function UnifiedLeaderboard() {
               });
             });
           });
+
+          // Load US States achievements
+          const usStates = getUSStatesAchievements();
+          setUsStatesAchievements(usStates);
         }
 
         console.log('Total scores loaded:', gameScores.length, gameScores);
@@ -334,6 +489,7 @@ export default function UnifiedLeaderboard() {
   const hasMathGames = scores.some(s => mathGames.includes(s.gameType));
   const hasSpelling = scores.some(s => s.gameType === 'spelling');
   const hasNumberCruncher = scores.some(s => s.gameType === 'numberCruncher');
+  const hasUSStates = usStatesAchievements.length > 0;
 
   return (
     <div className="ub-container">
@@ -401,26 +557,40 @@ export default function UnifiedLeaderboard() {
             </div>
           )}
 
-          {/* Lab Section */}
-          {hasNumberCruncher && (
+          {/* Extra Credit Section */}
+          {(hasNumberCruncher || hasUSStates) && (
             <div className="ub-subject">
-              <SubjectHeader subjectKey="lab" structure={SUBJECT_STRUCTURE.lab} />
-              <SubSubjectSection 
-                subSubjectKey="numberCruncher" 
-                structure={SUBJECT_STRUCTURE.lab.subjects.numberCruncher}
-              >
-                <div className="ub-subject-games">
-                  {(() => {
-                    const gameScores = getScoresForGameType(scores, 'numberCruncher');
-                    return gameScores.length > 0 && (
-                      <GameSection 
-                        gameType="numberCruncher" 
-                        scores={gameScores}
-                      />
-                    );
-                  })()}
-                </div>
-              </SubSubjectSection>
+              <SubjectHeader subjectKey="extraCredit" structure={SUBJECT_STRUCTURE.extraCredit} />
+              
+              {/* Number Cruncher */}
+              {hasNumberCruncher && (
+                <SubSubjectSection 
+                  subSubjectKey="numberCruncher" 
+                  structure={SUBJECT_STRUCTURE.extraCredit.subjects.numberCruncher}
+                >
+                  <div className="ub-subject-games">
+                    {(() => {
+                      const gameScores = getScoresForGameType(scores, 'numberCruncher');
+                      return gameScores.length > 0 && (
+                        <GameSection 
+                          gameType="numberCruncher" 
+                          scores={gameScores}
+                        />
+                      );
+                    })()}
+                  </div>
+                </SubSubjectSection>
+              )}
+
+              {/* US States ID */}
+              {hasUSStates && (
+                <SubSubjectSection 
+                  subSubjectKey="usStatesId" 
+                  structure={SUBJECT_STRUCTURE.extraCredit.subjects.usStatesId}
+                >
+                  <USStatesAchievementsSection achievements={usStatesAchievements} />
+                </SubSubjectSection>
+              )}
             </div>
           )}
         </div>

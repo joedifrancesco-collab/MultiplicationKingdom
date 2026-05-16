@@ -1249,3 +1249,226 @@ export async function transferGuestScoresToFirebase(user) {
   return { success: true, transferred, failed };
 }
 
+// ── US States ID Achievement Tracking ────────────────────────────────────
+
+/**
+ * Get a unique user identifier for US States achievements
+ */
+function getUSStatesUserKey() {
+  const authUser = getCurrentAuthUser();
+  if (authUser) {
+    return authUser.uid; // Firebase UID
+  }
+  return getCurrentUser(); // Named user system
+}
+
+/**
+ * Get storage key for US States achievements
+ */
+function getUSStatesStorageKey(userKey) {
+  return `mk_us_states_achievements_${userKey}`;
+}
+
+/**
+ * Save a US States achievement record when player completes all 50 states
+ * Data shape: { time (seconds), incorrectCount, misidentifiedStates (array of state IDs) }
+ */
+export function saveUSStatesAchievement(data) {
+  const userKey = getUSStatesUserKey();
+  if (!userKey) return; // No user logged in
+  
+  const storageKey = getUSStatesStorageKey(userKey);
+  
+  let achievements = [];
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) achievements = JSON.parse(raw);
+  } catch { /* ignore */ }
+  
+  const achievementRecord = {
+    ...data,
+    timestamp: new Date().toISOString(),
+  };
+  
+  achievements.push(achievementRecord);
+  localStorage.setItem(storageKey, JSON.stringify(achievements));
+  
+  // Sync to Firebase in background (don't block game flow)
+  const authUser = getCurrentAuthUser();
+  if (authUser) {
+    syncUSStatesAchievementToFirebase(authUser, data);
+  }
+}
+
+/**
+ * Get US States achievements for current user
+ * Returns array of all achievements, newest first
+ */
+export function getUSStatesAchievements() {
+  const userKey = getUSStatesUserKey();
+  if (!userKey) return []; // No user logged in
+  
+  const storageKey = getUSStatesStorageKey(userKey);
+  
+  let achievements = [];
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) achievements = JSON.parse(raw);
+  } catch { /* ignore */ }
+  
+  // Sort by timestamp descending (newest first)
+  return achievements.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+}
+
+/**
+ * Get US States achievements sorted by least incorrect, then by fastest time
+ * Returns array limited to topN
+ */
+export function getUSStatesAchievementsByAccuracy(topN = 10) {
+  const achievements = getUSStatesAchievements();
+  return achievements
+    .sort((a, b) => {
+      if (a.incorrectCount !== b.incorrectCount) {
+        return a.incorrectCount - b.incorrectCount;
+      }
+      return a.time - b.time;
+    })
+    .slice(0, topN);
+}
+
+/**
+ * Get US States achievements sorted by fastest time, then by fewest incorrect
+ * Returns array limited to topN
+ */
+export function getUSStatesAchievementsBySpeed(topN = 10) {
+  const achievements = getUSStatesAchievements();
+  return achievements
+    .sort((a, b) => {
+      if (a.time !== b.time) {
+        return a.time - b.time;
+      }
+      return a.incorrectCount - b.incorrectCount;
+    })
+    .slice(0, topN);
+}
+
+/**
+ * Get top N most frequently misidentified states
+ * Analyzes all achievements and counts which states appear most in misidentifiedStates
+ */
+export function getTopMissedStates(topN = 3) {
+  const achievements = getUSStatesAchievements();
+  const missedCount = {};
+  
+  achievements.forEach(achievement => {
+    if (achievement.misidentifiedStates && Array.isArray(achievement.misidentifiedStates)) {
+      achievement.misidentifiedStates.forEach(stateId => {
+        missedCount[stateId] = (missedCount[stateId] || 0) + 1;
+      });
+    }
+  });
+  
+  // Sort by count (descending) and return top N state IDs
+  return Object.entries(missedCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, topN)
+    .map(([stateId, count]) => ({ stateId, count }));
+}
+
+/**
+ * Sync US States achievement to Firestore.
+ * Called automatically when saveUSStatesAchievement is invoked.
+ * Runs silently in background (doesn't block game flow).
+ */
+export async function syncUSStatesAchievementToFirebase(authUser, data) {
+  try {
+    const user = authUser || auth.currentUser;
+    if (!user) {
+      return;
+    }
+    
+    const username = user.displayName || user.email;
+    
+    await addDoc(collection(db, 'us_states_achievements'), {
+      uid: user.uid,
+      email: user.email,
+      username: username,
+      time: data.time,
+      incorrectCount: data.incorrectCount,
+      misidentifiedStates: data.misidentifiedStates || [],
+      timestamp: new Date(),
+    });
+  } catch (error) {
+    console.error('Failed to sync US States achievement to Firebase:', error.code, error.message);
+    // Fail silently - game still works offline
+  }
+}
+
+/**
+ * Fetch US States achievements from Firestore for current user
+ */
+export async function fetchUSStatesAchievementsFromFirebase() {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      return [];
+    }
+
+    const q = query(
+      collection(db, 'us_states_achievements'),
+      where('uid', '==', user.uid),
+      orderBy('timestamp', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      timestamp: doc.data().timestamp?.toDate?.() || new Date(doc.data().timestamp),
+    }));
+  } catch (error) {
+    console.error('Failed to fetch US States achievements from Firebase:', error);
+    return [];
+  }
+}
+
+/**
+ * Fetch global US States leaderboard from Firestore (all users, top performers)
+ */
+export async function fetchUSStatesLeaderboard(topN = 50) {
+  try {
+    const q = query(
+      collection(db, 'us_states_achievements'),
+      orderBy('timestamp', 'desc'),
+      limit(topN * 2) // Fetch more to deduplicate and filter
+    );
+    const querySnapshot = await getDocs(q);
+    
+    const allAchievements = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      timestamp: doc.data().timestamp?.toDate?.() || new Date(doc.data().timestamp),
+    }));
+
+    // Group by username and keep only the best of each sort category
+    // For this, we return all achievements and let the component sort them
+    return allAchievements.slice(0, topN);
+  } catch (error) {
+    console.error('Failed to fetch US States leaderboard from Firebase:', error);
+    return [];
+  }
+}
+
+/**
+ * Clear all US States achievements for the current user (for testing/cleanup)
+ */
+export function clearUSStatesAchievements() {
+  const userKey = getUSStatesUserKey();
+  if (!userKey) return false;
+  
+  const storageKey = getUSStatesStorageKey(userKey);
+  localStorage.removeItem(storageKey);
+  console.log('Cleared US States achievements for user:', userKey);
+  return true;
+}
+

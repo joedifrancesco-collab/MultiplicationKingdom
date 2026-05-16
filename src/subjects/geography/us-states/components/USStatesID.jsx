@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { US_STATES } from '../data/states';
+import { saveUSStatesAchievement } from '../../../store/progress';
 import usMapUrl from '../../../../assets/us.svg';
 import './USStatesID.css';
 
@@ -15,6 +16,7 @@ export default function USStatesID() {
   const [mismatch, setMismatch] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [misidentifiedStates, setMisidentifiedStates] = useState([]);
   const pathElementsRef = useRef(new Map());
   const matchedRef = useRef(matched);
   const selectedMapStateRef = useRef(selectedMapState);
@@ -156,10 +158,12 @@ export default function USStatesID() {
         setSelectedMapState(null);
         setSelectedGridState(null);
       } else {
-        // Wrong match - show error but keep selections visible for retry
+        // Wrong match - track the misidentified state
         console.log('Mismatch:', selectedMapState, 'vs', selectedGridState);
         setMismatch(true);
         setIncorrectCount(prev => prev + 1);
+        // Track which state was misidentified (the one they clicked on the map)
+        setMisidentifiedStates(prev => [...prev, selectedMapState]);
         // Don't clear selections - keep them so user can try again
       }
     }
@@ -184,6 +188,7 @@ export default function USStatesID() {
     setSelectedGridState(null);
     setIncorrectCount(0);
     setElapsedSeconds(0);
+    setMisidentifiedStates([]);
     
     pathElementsRef.current.forEach((path) => {
       path.style.fill = '#E8E8FF';
@@ -204,6 +209,16 @@ export default function USStatesID() {
         connectorEl.style.visibility = 'hidden';
       });
     }
+  };
+
+  const handleCompletionBack = () => {
+    // Save achievement to storage and Firebase
+    saveUSStatesAchievement({
+      time: elapsedSeconds,
+      incorrectCount,
+      misidentifiedStates: [...new Set(misidentifiedStates)], // Deduplicate states
+    });
+    navigate(-1);
   };
 
   return (
@@ -287,7 +302,7 @@ export default function USStatesID() {
             <div className="usid-celebration">🎉</div>
             <h2>Congratulations!</h2>
             <p>You've identified all 50 states!</p>
-            <button className="usid-completion-btn" onClick={() => navigate(-1)}>
+            <button className="usid-completion-btn" onClick={handleCompletionBack}>
               ← Back to Menu
             </button>
           </div>

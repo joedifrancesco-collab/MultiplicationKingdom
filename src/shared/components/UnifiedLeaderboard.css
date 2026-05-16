@@ -560,3 +560,203 @@
     font-size: 13px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════ */
+/* US STATES ACHIEVEMENTS SECTION */
+/* ═══════════════════════════════════════════════════════════════════════════════ */
+
+.ub-us-states-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ub-us-states-category {
+  background: rgba(255, 167, 38, 0.06);
+  border: 2px solid rgba(255, 167, 38, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ub-us-states-category-header {
+  margin-bottom: 14px;
+}
+
+.ub-us-states-category-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ff5722;
+  margin: 0 0 4px 0;
+}
+
+.ub-us-states-category-desc {
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+  font-style: italic;
+}
+
+.ub-us-states-top3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.ub-us-states-card {
+  background: white;
+  border: 2px solid #ffc0ad;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.ub-us-states-card:hover {
+  border-color: #ff5722;
+  box-shadow: 0 2px 8px rgba(255, 87, 34, 0.15);
+  transform: translateY(-2px);
+}
+
+.ub-us-states-rank {
+  font-size: 18px;
+  font-weight: 900;
+  color: #ff5722;
+  margin-bottom: 6px;
+}
+
+.ub-us-states-time {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.ub-us-states-incorrect {
+  font-size: 13px;
+  color: #ff6b6b;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.ub-us-states-sort-note {
+  font-size: 10px;
+  color: #999;
+  margin-top: 6px;
+}
+
+.ub-show-more-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  margin-top: 8px;
+  background: rgba(255, 87, 34, 0.1);
+  border: 1px solid rgba(255, 87, 34, 0.3);
+  border-radius: 8px;
+  color: #ff5722;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ub-show-more-btn:hover {
+  background: rgba(255, 87, 34, 0.2);
+  border-color: #ff5722;
+}
+
+.ub-us-states-expanded {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 87, 34, 0.2);
+}
+
+.ub-us-states-missed {
+  background: rgba(76, 175, 80, 0.06);
+  border: 2px solid rgba(76, 175, 80, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ub-us-states-missed-header {
+  margin-bottom: 12px;
+}
+
+.ub-us-states-missed-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #4caf50;
+  margin: 0;
+}
+
+.ub-us-states-missed-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.ub-us-states-missed-item {
+  background: white;
+  border: 2px solid #c8e6c9;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.ub-us-states-missed-item:hover {
+  border-color: #4caf50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+  transform: translateY(-2px);
+}
+
+.ub-us-states-missed-rank {
+  font-size: 14px;
+  font-weight: 700;
+  color: #4caf50;
+  margin-bottom: 4px;
+}
+
+.ub-us-states-missed-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.ub-us-states-missed-count {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ub-us-states-top3,
+  .ub-us-states-expanded,
+  .ub-us-states-missed-list {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+  }
+
+  .ub-us-states-category {
+    padding: 12px;
+  }
+
+  .ub-us-states-card,
+  .ub-us-states-missed-item {
+    padding: 10px;
+  }
+
+  .ub-us-states-category-title {
+    font-size: 15px;
+  }
+
+  .ub-us-states-rank {
+    font-size: 16px;
+  }
+}
+
