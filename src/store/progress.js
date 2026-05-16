@@ -831,6 +831,37 @@ export function getCurrentAuthUser() {
   }
 }
 
+/**
+ * Update the display name of the current authenticated user
+ */
+export async function updateUserDisplayName(newDisplayName) {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error('No user is currently authenticated');
+    }
+
+    // Update in Firebase Auth
+    await updateProfile(user, { displayName: newDisplayName });
+
+    // Also update in Firestore users collection if it exists
+    const userDocRef = doc(db, 'users', user.email?.toLowerCase());
+    try {
+      await updateDoc(userDocRef, { 
+        displayName: newDisplayName,
+        updatedAt: new Date(),
+      });
+    } catch {
+      // User doc might not exist yet, that's fine
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to update display name:', error);
+    return { success: false, error: error.message };
+  }
+}
+
 // ── Clear spelling data (for testing) ──────────────────────────────────────
 
 /**
@@ -1253,13 +1284,22 @@ export async function transferGuestScoresToFirebase(user) {
 
 /**
  * Get a unique user identifier for US States achievements
+ * Supports Firebase auth, named users, and guest users
  */
 function getUSStatesUserKey() {
   const authUser = getCurrentAuthUser();
   if (authUser) {
     return authUser.uid; // Firebase UID
   }
-  return getCurrentUser(); // Named user system
+  const currentUser = getCurrentUser();
+  if (currentUser) {
+    return currentUser; // Named user system
+  }
+  // Fallback for guest mode - use guest identifier
+  if (isGuestMode()) {
+    return 'guest_session';
+  }
+  return null;
 }
 
 /**
@@ -1275,9 +1315,14 @@ function getUSStatesStorageKey(userKey) {
  */
 export function saveUSStatesAchievement(data) {
   const userKey = getUSStatesUserKey();
-  if (!userKey) return; // No user logged in
+  console.log('saveUSStatesAchievement - userKey:', userKey);
+  if (!userKey) {
+    console.log('saveUSStatesAchievement - No user key, returning early');
+    return;
+  }
   
   const storageKey = getUSStatesStorageKey(userKey);
+  console.log('saveUSStatesAchievement - storageKey:', storageKey);
   
   let achievements = [];
   try {
@@ -1292,10 +1337,13 @@ export function saveUSStatesAchievement(data) {
   
   achievements.push(achievementRecord);
   localStorage.setItem(storageKey, JSON.stringify(achievements));
+  console.log('saveUSStatesAchievement - Saved achievement:', achievementRecord);
+  console.log('saveUSStatesAchievement - Total achievements:', achievements.length);
   
   // Sync to Firebase in background (don't block game flow)
   const authUser = getCurrentAuthUser();
   if (authUser) {
+    console.log('saveUSStatesAchievement - Syncing to Firebase for user:', authUser.email);
     syncUSStatesAchievementToFirebase(authUser, data);
   }
 }
@@ -1306,15 +1354,23 @@ export function saveUSStatesAchievement(data) {
  */
 export function getUSStatesAchievements() {
   const userKey = getUSStatesUserKey();
-  if (!userKey) return []; // No user logged in
+  console.log('getUSStatesAchievements - userKey:', userKey);
+  if (!userKey) {
+    console.log('getUSStatesAchievements - No user key, returning empty array');
+    return [];
+  }
   
   const storageKey = getUSStatesStorageKey(userKey);
+  console.log('getUSStatesAchievements - storageKey:', storageKey);
   
   let achievements = [];
   try {
     const raw = localStorage.getItem(storageKey);
+    console.log('getUSStatesAchievements - raw data:', raw);
     if (raw) achievements = JSON.parse(raw);
   } catch { /* ignore */ }
+  
+  console.log('getUSStatesAchievements - loaded achievements:', achievements.length, achievements);
   
   // Sort by timestamp descending (newest first)
   return achievements.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -1472,3 +1528,43 @@ export function clearUSStatesAchievements() {
   return true;
 }
 
+/**
+ * Generate fake US States achievement (for testing without playing the game)
+ * Generates realistic data: time 5-12 min, 3-15 incorrect, 5-15 misidentified states
+ */
+export function generateFakeUSStatesAchievement() {
+  const allStates = [
+    'al', 'ak', 'az', 'ar', 'ca', 'co', 'ct', 'de', 'fl', 'ga',
+    'hi', 'id', 'il', 'in', 'ia', 'ks', 'ky', 'la', 'me', 'md',
+    'ma', 'mi', 'mn', 'ms', 'mo', 'mt', 'ne', 'nv', 'nh', 'nj',
+    'nm', 'ny', 'nc', 'nd', 'oh', 'ok', 'or', 'pa', 'ri', 'sc',
+    'sd', 'tn', 'tx', 'ut', 'vt', 'va', 'wa', 'wv', 'wi', 'wy'
+  ];
+  
+  // Random time between 5-12 minutes (300-720 seconds)
+  const time = Math.floor(Math.random() * 420) + 300;
+  
+  // Random incorrect count between 3-15
+  const incorrectCount = Math.floor(Math.random() * 13) + 3;
+  
+  // Random 5-15 misidentified states
+  const numMissed = Math.floor(Math.random() * 11) + 5;
+  const misidentifiedStates = [];
+  for (let i = 0; i < numMissed; i++) {
+    const randomState = allStates[Math.floor(Math.random() * allStates.length)];
+    if (!misidentifiedStates.includes(randomState)) {
+      misidentifiedStates.push(randomState);
+    }
+  }
+  
+  const achievement = {
+    time,
+    incorrectCount,
+    misidentifiedStates,
+  };
+  
+  // Save the fake achievement
+  saveUSStatesAchievement(achievement);
+  console.log('Generated fake US States achievement:', achievement);
+  return achievement;
+}

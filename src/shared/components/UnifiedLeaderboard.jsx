@@ -441,11 +441,11 @@ export default function UnifiedLeaderboard() {
               });
             });
           });
-
-          // Load US States achievements
-          const usStates = getUSStatesAchievements();
-          setUsStatesAchievements(usStates);
         }
+
+        // Load US States achievements (always load, even for guests)
+        const usStates = getUSStatesAchievements();
+        setUsStatesAchievements(usStates);
 
         console.log('Total scores loaded:', gameScores.length, gameScores);
 

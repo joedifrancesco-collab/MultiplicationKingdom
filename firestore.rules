@@ -47,6 +47,16 @@ service cloud.firestore {
       allow update, delete: if request.auth.uid == resource.data.uid;
     }
 
+    // ── US States Achievements Collection ──────────────────────────────────
+    // Allow authenticated users to write their US States ID achievements
+    // Allow anyone to read (for leaderboard and statistics)
+    // Allow users to update/delete only their own achievements
+    match /us_states_achievements/{document=**} {
+      allow create: if request.auth != null;
+      allow read: if true;  // Allow anyone to read for leaderboard
+      allow update, delete: if request.auth.uid == resource.data.uid;
+    }
+
     // ── Spelling Word Groups Collection ───────────────────────────────────
     // Word groups for spelling practice (created by teachers)
     // Allow anyone to read (students browse available word lists)

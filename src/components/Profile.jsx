@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentAuthUser, isGuestMode, getProgress } from '../store/progress';
+import { getCurrentAuthUser, isGuestMode, updateUserDisplayName } from '../store/progress';
 import './Profile.css';
 
 export default function Profile() {
   const navigate = useNavigate();
   const user = getCurrentAuthUser();
   const guest = isGuestMode();
-  const [progress, setProgress] = useState(null);
-  const [totalScore, setTotalScore] = useState(0);
-  const [totalStars, setTotalStars] = useState(0);
+  const [displayName, setDisplayName] = useState('');
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isSavingName, setIsSavingName] = useState(false);
 
   useEffect(() => {
     // Redirect guest users
@@ -18,48 +18,25 @@ export default function Profile() {
       return;
     }
 
-    // Load progress data
-    const userProgress = getProgress();
-    setProgress(userProgress);
-
-    // Calculate total stats
-    let stars = 0;
-    let score = 0;
-
-    if (userProgress.kingdoms) {
-      userProgress.kingdoms.forEach((kingdom) => {
-        stars += kingdom.stars || 0;
-      });
-    }
-
-    if (userProgress.scores) {
-      Object.values(userProgress.scores).forEach((gameType) => {
-        if (typeof gameType === 'object') {
-          Object.values(gameType).forEach((gameScore) => {
-            if (gameScore && gameScore.score) {
-              score += gameScore.score;
-            }
-          });
-        }
-      });
-    }
-
-    setTotalStars(stars);
-    setTotalScore(score);
+    setDisplayName(user?.displayName || '');
   }, [guest, user, navigate]);
+
+  const handleSaveDisplayName = async () => {
+    if (!displayName.trim()) return;
+    setIsSavingName(true);
+    try {
+      await updateUserDisplayName(displayName.trim());
+      setIsEditingName(false);
+    } catch (error) {
+      console.error('Failed to update display name:', error);
+    } finally {
+      setIsSavingName(false);
+    }
+  };
 
   if (guest || !user) {
     return null;
   }
-
-  const getInitials = (displayName) => {
-    if (!displayName) return '👤';
-    return displayName
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase();
-  };
 
   return (
     <div className="profile-page">
@@ -67,31 +44,61 @@ export default function Profile() {
         {/* Profile Header */}
         <div className="profile-header">
           <div className="profile-avatar">
-            {getInitials(user?.displayName || 'User')}
+            {user?.displayName
+              ? user.displayName
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')
+                  .toUpperCase()
+              : '👤'}
           </div>
           <div className="profile-header-content">
-            <h1 className="profile-name">{user?.displayName || 'User'}</h1>
+            {isEditingName ? (
+              <div className="profile-name-edit">
+                <input
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="Enter your name"
+                  className="profile-name-input"
+                  disabled={isSavingName}
+                />
+                <div className="profile-name-buttons">
+                  <button
+                    className="profile-name-save-btn"
+                    onClick={handleSaveDisplayName}
+                    disabled={isSavingName || !displayName.trim()}
+                  >
+                    {isSavingName ? '💾 Saving...' : '✓ Save'}
+                  </button>
+                  <button
+                    className="profile-name-cancel-btn"
+                    onClick={() => {
+                      setIsEditingName(false);
+                      setDisplayName(user?.displayName || '');
+                    }}
+                    disabled={isSavingName}
+                  >
+                    ✕ Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h1 className="profile-name">{user?.displayName || 'User'}</h1>
+                <button
+                  className="profile-name-edit-btn"
+                  onClick={() => setIsEditingName(true)}
+                >
+                  ✏️ Edit Name
+                </button>
+              </div>
+            )}
             <p className="profile-email">{user?.email || 'No email'}</p>
           </div>
         </div>
 
-        {/* Profile Stats */}
-        <div className="profile-stats">
-          <div className="stat-card">
-            <div className="stat-label">Total Stars</div>
-            <div className="stat-value">⭐ {totalStars}</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-label">Total Score</div>
-            <div className="stat-value">🏆 {totalScore}</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-label">Kingdoms Completed</div>
-            <div className="stat-value">
-              👑 {progress?.kingdoms?.filter((k) => k.stars > 0).length || 0}
-            </div>
-          </div>
-        </div>
+        {/* Profile Stats Section Removed */}
 
         {/* Profile Info */}
         <div className="profile-info">

@@ -60,18 +60,36 @@ export default function ResponsiveNav() {
   }
 
   const getProfileDisplay = () => {
-    if (guest) {
-      return '👤'; // Guest silhouette
+    // First check if we're in guest mode - silhouette for guest
+    if (guest || !user) {
+      return '👤';
     }
-    if (user?.displayName) {
-      // Get initials from display name
+    
+    // User is logged in, try to get displayName
+    if (user.displayName && user.displayName.trim()) {
       const initials = user.displayName
-        .split(' ')
+        .trim()
+        .split(/\s+/)
         .map(n => n[0])
         .join('')
         .toUpperCase();
-      return initials || '👤';
+      if (initials) {
+        return initials;
+      }
     }
+    
+    // Fallback to email initials if no displayName
+    if (user.email) {
+      const emailInitials = user.email
+        .split('@')[0]
+        .substring(0, 2)
+        .toUpperCase();
+      if (emailInitials) {
+        return emailInitials;
+      }
+    }
+    
+    // Final fallback
     return '👤';
   };
 

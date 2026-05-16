@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { US_STATES } from '../data/states';
-import { saveUSStatesAchievement } from '../../../store/progress';
+import { saveUSStatesAchievement, generateFakeUSStatesAchievement } from '../../../../store/progress';
 import usMapUrl from '../../../../assets/us.svg';
 import './USStatesID.css';
 
@@ -259,6 +259,14 @@ export default function USStatesID() {
           </div>
           <button className="usid-reset-btn" onClick={handleReset}>
             🔄 Reset
+          </button>
+          {/* TEST BUTTON - COMMENT OUT OR DELETE THIS AFTER TESTING */}
+          <button 
+            className="usid-test-btn" 
+            onClick={generateFakeUSStatesAchievement}
+            title="Generate fake achievement (testing only)"
+          >
+            ⚙️ Test Gen
           </button>
         </div>
       </div>
