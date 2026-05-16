@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { US_STATES } from '../data/states';
-import { saveUSStatesAchievement, generateFakeUSStatesAchievement } from '../../../../store/progress';
+import { saveUSStatesAchievement } from '../../../../store/progress';
 import usMapUrl from '../../../../assets/us.svg';
 import './USStatesID.css';
 
