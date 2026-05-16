@@ -255,7 +255,7 @@ function USStatesAchievementCard({ achievement, rank, sortType }) {
 /**
  * USStatesAchievementsSection Component
  */
-function USStatesAchievementsSection({ achievements }) {
+function USStatesAchievementsSection() {
   const [expandedCategory, setExpandedCategory] = useState(null);
   
   const accuracyRanked = getUSStatesAchievementsByAccuracy(10);

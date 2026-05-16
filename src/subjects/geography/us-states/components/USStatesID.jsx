@@ -260,16 +260,15 @@ export default function USStatesID() {
           <button className="usid-reset-btn" onClick={handleReset}>
             🔄 Reset
           </button>
-          {/* TEST BUTTON - Hidden for production. Uncomment to re-enable. */}
-          {false && (
-            <button 
-              className="usid-test-btn" 
-              onClick={generateFakeUSStatesAchievement}
-              title="Generate fake achievement (testing only)"
-            >
-              ⚙️ Test Gen
-            </button>
-          )}
+          {/* TEST BUTTON - Hidden for production. Uncomment to re-enable.
+          <button 
+            className="usid-test-btn" 
+            onClick={generateFakeUSStatesAchievement}
+            title="Generate fake achievement (testing only)"
+          >
+            ⚙️ Test Gen
+          </button>
+          */}
         </div>
       </div>
 
