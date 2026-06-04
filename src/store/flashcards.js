@@ -8,8 +8,36 @@ import {
   deleteDoc,
   query,
   orderBy,
+  Timestamp,
 } from 'firebase/firestore';
 import { db, auth } from '../shared/config/firebase';
+
+/**
+ * Convert Firestore Timestamp to ISO string
+ * Handles both Firestore Timestamp objects and regular Date objects
+ * @param {Timestamp|Date|string} timestamp
+ * @returns {string} ISO string
+ */
+function convertTimestampToISO(timestamp) {
+  if (!timestamp) return new Date().toISOString();
+  
+  // If it's a Firestore Timestamp, convert to Date first
+  if (timestamp instanceof Timestamp) {
+    return timestamp.toDate().toISOString();
+  }
+  
+  // If it's already a Date, convert to ISO
+  if (timestamp instanceof Date) {
+    return timestamp.toISOString();
+  }
+  
+  // If it's a string, assume it's already ISO and return as-is
+  if (typeof timestamp === 'string') {
+    return timestamp;
+  }
+  
+  return new Date().toISOString();
+}
 
 const DECKS_COLLECTION = 'flashcard_decks';
 const LOCAL_STORAGE_KEY = 'mk_flashcard_decks';
@@ -81,10 +109,15 @@ export async function getUserDecksFromFirebase() {
     const q = query(decksRef, orderBy('updatedAt', 'desc'));
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map(docSnap => ({
-      id: docSnap.id,
-      ...docSnap.data(),
-    }));
+    return querySnapshot.docs.map(docSnap => {
+      const data = docSnap.data();
+      return {
+        id: docSnap.id,
+        ...data,
+        createdAt: convertTimestampToISO(data.createdAt),
+        updatedAt: convertTimestampToISO(data.updatedAt),
+      };
+    });
   } catch (error) {
     console.error('Failed to fetch user decks from Firebase:', error.message);
     return [];
@@ -107,7 +140,13 @@ export async function getDeckFromFirebase(deckId) {
     const docSnap = await getDoc(deckRef);
 
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() };
+      const data = docSnap.data();
+      return {
+        id: docSnap.id,
+        ...data,
+        createdAt: convertTimestampToISO(data.createdAt),
+        updatedAt: convertTimestampToISO(data.updatedAt),
+      };
     }
     return null;
   } catch (error) {

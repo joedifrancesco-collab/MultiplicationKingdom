@@ -111,7 +111,7 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
         }
       } else {
         // Match game types in root kingdom path (e.g., /subjects/.../flashcards or /subjects/.../maps/mode)
-        const gameMatch = pathname.match(/\/(flashcards|siege|maps|grid)($|\/)/);
+        const gameMatch = pathname.match(/\/(flashcards|siege|maps|grid|bridge-builder)($|\/)/);
         if (gameMatch) {
           const gamePath = gameMatch[1];
           // Game paths use ORIGINAL subject to keep full path
@@ -120,6 +120,7 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
             siege: { label: 'Kingdom Siege', path: `/subjects/${subject}/${kingdom}/siege` },
             maps: { label: 'Kingdom Maps', path: `/subjects/${subject}/${kingdom}/maps` },
             grid: { label: 'Times Table Grid', path: `/subjects/${subject}/${kingdom}/grid` },
+            'bridge-builder': { label: 'Bridge Builder', path: `/subjects/${subject}/${kingdom}/bridge-builder` },
           };
           if (gameMap[gamePath]) {
             const gameItem = gameMap[gamePath];
@@ -222,9 +223,7 @@ function formatSubjectLabel(subject) {
 function formatKingdomLabel(kingdom) {
   const labels = {
     'multiplication-kingdom': 'Multiplication Kingdom',
-    'addition-kingdom': 'Addition Kingdom',
-    'subtraction-kingdom': 'Subtraction Kingdom',
-    'division-kingdom': 'Division Kingdom',
+    'fractions-kingdom': 'Fractions Kingdom',
     'number-cruncher': 'Number Cruncher',
     'us-states': 'US States',
     'flashcard-builder': 'Flashcard Builder',

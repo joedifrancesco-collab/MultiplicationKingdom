@@ -117,31 +117,21 @@ export default function ResponsiveNav() {
       {
         icon: '✖️',
         label: 'Multiplication Kingdom',
-        path: '/subjects/math-kingdom/multiplication-kingdom',
+        path: '/subjects/math/multiplication-kingdom',
         items: [
-          { label: '🏰 Conquest', path: '/subjects/math-kingdom/multiplication-kingdom/grid' },
-          { label: '🃏 Flashcard Challenge', path: '/subjects/math-kingdom/multiplication-kingdom/flashcards' },
-          { label: '🗺️ Kingdom Maps', path: '/subjects/math-kingdom/multiplication-kingdom/maps' },
-          { label: '⚔️ Kingdom Siege', path: '/subjects/math-kingdom/multiplication-kingdom/siege' },
+          { label: '🏰 Conquest', path: '/subjects/math/multiplication-kingdom/grid' },
+          { label: '🃏 Flashcard Challenge', path: '/subjects/math/multiplication-kingdom/flashcards' },
+          { label: '🗺️ Kingdom Maps', path: '/subjects/math/multiplication-kingdom/maps' },
+          { label: '⚔️ Kingdom Siege', path: '/subjects/math/multiplication-kingdom/siege' },
         ],
       },
       {
-        icon: '➕',
-        label: 'Addition Kingdom',
-        path: '/subjects/math/addition-kingdom',
-        disabled: true,
-      },
-      {
-        icon: '➖',
-        label: 'Subtraction Kingdom',
-        path: '/subjects/math/subtraction-kingdom',
-        disabled: true,
-      },
-      {
-        icon: '÷',
-        label: 'Division Kingdom',
-        path: '/subjects/math/division-kingdom',
-        disabled: true,
+        icon: '🧩',
+        label: 'Fractions Kingdom',
+        path: '/subjects/math/fractions-kingdom',
+        items: [
+          { label: '🌉 Bridge Builder', path: '/subjects/math/fractions-kingdom/bridge-builder' },
+        ],
       },
     ],
   };

@@ -26,6 +26,8 @@ import TestDeviceViewport from './shared/components/TestDeviceViewport';
 import SettingsTest from './shared/components/SettingsTest';
 import KingdomMapsMode from './subjects/math/multiplication-kingdom/components/KingdomMapsMode';
 import KingdomMaps from './subjects/math/multiplication-kingdom/components/KingdomMaps';
+import FractionsKingdomHome from './subjects/math/fractions-kingdom/components/FractionsKingdomHome';
+import FractionsBridgeBuilder from './subjects/math/fractions-kingdom/components/FractionsBridgeBuilder';
 import SpellingScreen from './subjects/language-arts/spelling/components/SpellingScreen';
 import SpellingPractice from './subjects/language-arts/spelling/components/SpellingPractice';
 import SpellingAdmin from './subjects/language-arts/spelling/components/SpellingAdmin';
@@ -121,6 +123,10 @@ export default function App() {
           <Route path="/subjects/math/multiplication-kingdom/training/table" element={<ProtectedRoute element={<TrainingTable />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/math/multiplication-kingdom/maps" element={<ProtectedRoute element={<KingdomMapsMode />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           <Route path="/subjects/math/multiplication-kingdom/maps/:mode" element={<ProtectedRoute element={<KingdomMaps />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+
+          {/* FRACTIONS - Fractions Kingdom */}
+          <Route path="/subjects/math/fractions-kingdom" element={<ProtectedRoute element={<FractionsKingdomHome />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
+          <Route path="/subjects/math/fractions-kingdom/bridge-builder" element={<ProtectedRoute element={<FractionsBridgeBuilder />} isAuthenticated={!!user} isGuest={isGuest} isLoading={loading} />} />
           
           {/* Legacy routes for backward compatibility - redirect to new routes */}
           <Route path="/kingdom" element={<Navigate to="/subjects/math/multiplication-kingdom" replace />} />

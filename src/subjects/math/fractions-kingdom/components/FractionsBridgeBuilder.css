@@ -1,0 +1,217 @@
+.fbb-container {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+}
+
+.fbb-topbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.fbb-quit-btn {
+  border: none;
+  border-radius: 999px;
+  background: #ffe4e4;
+  color: #7f1d1d;
+  font-weight: 700;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.fbb-progress-label {
+  text-align: center;
+  font-weight: 700;
+  color: #2d5baf;
+}
+
+.fbb-score {
+  font-weight: 700;
+  color: #111827;
+}
+
+.fbb-scene {
+  border-radius: 16px;
+  border: 2px solid #8ec5ff;
+  background: linear-gradient(140deg, #ebf6ff, #f0fdf4);
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.fbb-scene-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #1e3a8a;
+}
+
+.fbb-scene-subtitle {
+  margin: 8px 0 0;
+  color: #334155;
+}
+
+.fbb-question {
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-align: center;
+  color: #0f172a;
+  margin: 14px 0 6px;
+}
+
+.fbb-question.correct {
+  color: #166534;
+}
+
+.fbb-question.wrong {
+  color: #b91c1c;
+}
+
+.fbb-story {
+  margin: 0 0 14px;
+  text-align: center;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.fbb-form {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.fbb-fraction-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fbb-fraction-slash {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.fbb-input {
+  width: 92px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 2px solid #93c5fd;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.fbb-input:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+.fbb-submit {
+  border: none;
+  border-radius: 12px;
+  background: #2d5baf;
+  color: white;
+  font-weight: 800;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.fbb-progress-track {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.fbb-dot {
+  height: 8px;
+  border-radius: 999px;
+  background: #dbeafe;
+}
+
+.fbb-dot.current {
+  background: #2563eb;
+}
+
+.fbb-dot.done {
+  background: #16a34a;
+}
+
+.fbb-done {
+  max-width: 540px;
+  margin: 24px auto;
+  padding: 24px 16px;
+  text-align: center;
+  border-radius: 18px;
+  border: 2px solid #86efac;
+  background: linear-gradient(150deg, #f0fdf4, #eff6ff);
+}
+
+.fbb-done-emoji {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.fbb-final-score {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.fbb-stars-earned {
+  margin: 12px 0;
+  font-size: 1.6rem;
+}
+
+.fbb-stars-earned .star.filled {
+  color: #fbbf24;
+}
+
+.fbb-stars-earned .star.empty {
+  color: #d1d5db;
+}
+
+.fbb-done-tip {
+  color: #334155;
+  margin: 0 0 14px;
+}
+
+.fbb-done-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.fbb-done-buttons button {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+}
+
+.fbb-done-buttons .btn-secondary {
+  background: #0f766e;
+}
+
+@media (max-width: 768px) {
+  .fbb-topbar {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .fbb-progress-track {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .fbb-input {
+    width: 84px;
+  }
+}
