@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import fractionIcon from '../../../../assets/Copilot_20260606_123509.png';
 import './FractionsKingdomHome.css';
 
 export default function FractionsKingdomHome() {
@@ -8,7 +7,7 @@ export default function FractionsKingdomHome() {
   const gameModes = [
     {
       id: 'bridge-builder',
-      icon: '⚔️',
+      icon: '🌉',
       title: 'Moat Bridge Builder',
       description: 'Simplify fractions to build a bridge across the castle moat and earn your place in the kingdom.',
       path: '/subjects/math/fractions-kingdom/bridge-builder',
@@ -19,7 +18,7 @@ export default function FractionsKingdomHome() {
   return (
     <div className="fk-home-container">
       <header className="fk-home-header">
-        <img src={fractionIcon} alt="Fractions Kingdom" className="fk-home-icon" />
+        <div className="fk-home-icon">🧩</div>
         <h1 className="fk-home-title">Fractions Kingdom</h1>
         <p className="fk-home-subtitle">Build confidence with fraction simplification adventures.</p>
       </header>

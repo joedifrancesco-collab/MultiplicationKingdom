@@ -1,0 +1,19 @@
+<svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fraction notation with sword as divider -->
+  
+  <!-- Top number: 1 -->
+  <text x="60" y="45" font-size="48" font-weight="bold" text-anchor="middle" fill="#2D5BAF" font-family="Arial, sans-serif">1</text>
+  
+  <!-- Sword divider -->
+  <g transform="translate(60, 80)">
+    <!-- Blade -->
+    <line x1="0" y1="-20" x2="0" y2="20" stroke="#7F1D1D" stroke-width="4" stroke-linecap="round"/>
+    <!-- Cross-guard -->
+    <line x1="-12" y1="0" x2="12" y2="0" stroke="#B45309" stroke-width="6" stroke-linecap="round"/>
+    <!-- Hilt -->
+    <circle cx="0" cy="18" r="4" fill="#B45309"/>
+  </g>
+  
+  <!-- Bottom number: 2 -->
+  <text x="60" y="145" font-size="48" font-weight="bold" text-anchor="middle" fill="#2D5BAF" font-family="Arial, sans-serif">2</text>
+</svg>

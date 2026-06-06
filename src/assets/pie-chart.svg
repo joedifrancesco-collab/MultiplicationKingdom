@@ -1,0 +1,18 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pie chart with multiple colored segments and one missing/separated -->
+  
+  <!-- Segment 1: Blue (90 degrees) -->
+  <path d="M 100,100 L 100,20 A 80,80 0 0,1 156.57,43.43 Z" fill="#3B82F6" stroke="white" stroke-width="2"/>
+  
+  <!-- Segment 2: Green (90 degrees) -->
+  <path d="M 100,100 L 156.57,43.43 A 80,80 0 0,1 180,100 Z" fill="#10B981" stroke="white" stroke-width="2"/>
+  
+  <!-- Segment 3: Purple (90 degrees) -->
+  <path d="M 100,100 L 180,100 A 80,80 0 0,1 156.57,156.57 Z" fill="#8B5CF6" stroke="white" stroke-width="2"/>
+  
+  <!-- Segment 4: Orange (separated/missing) - offset outward -->
+  <path d="M 120,120 L 140,45 A 80,80 0 0,1 173.64,126.36 Z" fill="#F97316" stroke="white" stroke-width="2" transform="translate(20, 20)"/>
+  
+  <!-- Center circle for donut effect -->
+  <circle cx="100" cy="100" r="40" fill="white"/>
+</svg>
