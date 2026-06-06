@@ -53,6 +53,175 @@
   color: #334155;
 }
 
+/* Bridge Visualization */
+.fbb-bridge-visualization {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  height: 140px;
+}
+
+.fbb-bridge-left,
+.fbb-bridge-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 50px;
+}
+
+.fbb-castle {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 4px;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.fbb-castle-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.fbb-person {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 4px;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.fbb-person-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+/* Moat Container */
+.fbb-moat-container {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  min-width: 150px;
+}
+
+/* Water Effect */
+.fbb-moat-water {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 8px 8px 0 0;
+  opacity: 0.7;
+  overflow: hidden;
+}
+
+.fbb-moat-water::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 10px,
+    rgba(255, 255, 255, 0.1) 10px,
+    rgba(255, 255, 255, 0.1) 20px
+  );
+  animation: fbb-wave 2s linear infinite;
+}
+
+.fbb-moat-water::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 15px,
+    rgba(255, 255, 255, 0.08) 15px,
+    rgba(255, 255, 255, 0.08) 30px
+  );
+  animation: fbb-wave 3s linear infinite reverse;
+}
+
+/* Bridge Stones */
+.fbb-bridge-stones {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  height: 100%;
+  padding-bottom: 50px;
+  position: relative;
+  z-index: 2;
+}
+
+.fbb-stone {
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.fbb-stone.placed {
+  background: rgba(139, 92, 246, 0.3);
+  animation: fbb-stone-drop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+}
+
+.fbb-stone.current {
+  background: rgba(255, 193, 7, 0.4);
+  animation: fbb-pulse 1s ease-in-out infinite;
+}
+
+@keyframes fbb-stone-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.8);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fbb-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes fbb-wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(20px);
+  }
+}
+
 .fbb-question {
   font-size: 1.25rem;
   font-weight: 800;
@@ -119,27 +288,6 @@
   cursor: pointer;
 }
 
-.fbb-progress-track {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 6px;
-}
-
-.fbb-dot {
-  height: 8px;
-  border-radius: 999px;
-  background: #dbeafe;
-}
-
-.fbb-dot.current {
-  background: #2563eb;
-}
-
-.fbb-dot.done {
-  background: #16a34a;
-}
-
 .fbb-done {
   max-width: 540px;
   margin: 24px auto;
@@ -148,13 +296,117 @@
   border-radius: 18px;
   border: 2px solid #86efac;
   background: linear-gradient(150deg, #f0fdf4, #eff6ff);
+  position: relative;
+  z-index: 10;
+  animation: fbb-bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fbb-completion-info {
+  margin-top: 32px;
+  padding: 24px 16px;
+  text-align: center;
+  border-radius: 18px;
+  border: 2px solid #86efac;
+  background: linear-gradient(150deg, #f0fdf4, #eff6ff);
+  position: relative;
+  z-index: 10;
+  animation: fbb-bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s backwards;
 }
 
 .fbb-done-emoji {
   font-size: 3rem;
   line-height: 1;
   margin-bottom: 8px;
+  animation: fbb-emoji-bounce 1s ease-in-out infinite;
 }
+
+.fbb-done-icon {
+  font-size: 2rem;
+  color: #1e3a8a;
+  margin-bottom: 12px;
+  font-weight: 900;
+  animation: fbb-icon-spin 2s ease-in-out infinite;
+}
+
+/* Confetti Container */
+.fbb-done-container {
+  position: relative;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+}
+
+.fbb-confetti-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fbb-confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: fbb-confetti-fall 3s ease-in forwards;
+  --delay: 0s;
+  --angle: 0deg;
+  animation-delay: var(--delay);
+  left: 50%;
+  top: -10px;
+}
+
+.fbb-confetti:nth-child(odd) {
+  background: #f97316;
+}
+
+.fbb-confetti:nth-child(3n) {
+  background: #06b6d4;
+}
+
+.fbb-confetti:nth-child(4n) {
+  background: #ec4899;
+}
+
+@keyframes fbb-bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fbb-emoji-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fbb-icon-spin {
+  0%, 100% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+}
+
+@keyframes fbb-confetti-fall {
+  to {
+    transform: translateX(var(--angle)) translateY(100vh) rotateZ(720deg);
+    opacity: 0;
+  }
+}
+
 
 .fbb-final-score {
   font-size: 1.1rem;
@@ -187,6 +439,14 @@
   flex-wrap: wrap;
 }
 
+.fbb-completion-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
 .fbb-done-buttons button {
   border: none;
   border-radius: 12px;
@@ -195,6 +455,34 @@
   cursor: pointer;
   background: #2563eb;
   color: white;
+  transition: all 0.3s ease;
+}
+
+.fbb-completion-buttons button {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.fbb-done-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.fbb-play-again-btn {
+  background: #10b981 !important;
+  font-size: 1.1rem;
+  padding: 12px 24px !important;
+}
+
+.fbb-play-again-btn:hover {
+  background: #059669 !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
 }
 
 .fbb-done-buttons .btn-secondary {

@@ -13,10 +13,11 @@
 }
 
 .fk-home-icon {
-  font-size: 2.4rem;
-  line-height: 1;
+  width: 80px;
+  height: 80px;
   display: inline-block;
   margin-bottom: 8px;
+  object-fit: contain;
 }
 
 .fk-home-title {

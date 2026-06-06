@@ -42,7 +42,7 @@ export function generateBridgeBuilderQuestions(count = 12) {
     return {
       ...challenge,
       prompt: `Reduce ${challenge.fractionNumerator}/${challenge.fractionDenominator} to simplest form.`,
-      story: 'Only simplified planks can lock into the bridge.',
+      story: 'Only properly sized stones fit perfectly in the bridge structure.',
     };
   });
 }

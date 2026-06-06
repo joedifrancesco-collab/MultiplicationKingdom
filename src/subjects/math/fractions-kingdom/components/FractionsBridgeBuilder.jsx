@@ -21,6 +21,7 @@ export default function FractionsBridgeBuilder() {
   const [questions] = useState(() => generateBridgeBuilderQuestions(QUESTION_COUNT));
   const [numerator, setNumerator] = useState('');
   const [denominator, setDenominator] = useState('');
+  const [playAgain, setPlayAgain] = useState(false);
 
   const gameLoop = useGameLoop({
     questions,
@@ -67,26 +68,82 @@ export default function FractionsBridgeBuilder() {
     setDenominator('');
   }
 
+  function handlePlayAgain() {
+    setPlayAgain(false);
+    // Reset game state by reloading the component
+    window.location.reload();
+  }
+
   if (gameLoop.done) {
     return (
-      <div className="fbb-done">
-        <div className="fbb-done-emoji">{gameLoop.earnedStars >= 2 ? '🌉' : '🧱'}</div>
-        <h2>Bridge Check Complete!</h2>
-        <p className="fbb-final-score">You repaired {gameLoop.score} of {questions.length} bridge planks.</p>
-
-        <div className="fbb-stars-earned">
-          {[1, 2, 3].map((star) => (
-            <span key={star} className={star <= gameLoop.earnedStars ? 'star filled' : 'star empty'}>★</span>
+      <div className="fbb-done-container">
+        <div className="fbb-confetti-bg">
+          {Array.from({ length: 50 }).map((_, i) => (
+            <div key={i} className="fbb-confetti" style={{ '--delay': `${Math.random() * 0.5}s`, '--angle': `${Math.random() * 360}deg` }}></div>
           ))}
         </div>
 
-        <p className="fbb-done-tip">
-          Every simplified fraction makes future algebra and ratios easier.
-        </p>
+        <div className="fbb-container">
+          <div className="fbb-topbar">
+            <button className="fbb-quit-btn" onClick={() => navigate('/subjects/math/fractions-kingdom')}>✕ Quit</button>
+            <div className="fbb-progress-label">Bridge Complete!</div>
+            <div className="fbb-score">Score: {gameLoop.score}</div>
+          </div>
 
-        <div className="fbb-done-buttons">
-          <button onClick={() => navigate('/subjects/math/fractions-kingdom')}>Back to Fractions Kingdom</button>
-          <button className="btn-secondary" onClick={() => navigate('/subjects/math')}>Back to Math</button>
+          <div className="fbb-scene">
+            <div className="fbb-scene-title">⚔️ Moat Bridge Builder 🏰</div>
+            <p className="fbb-scene-subtitle">You've successfully built the bridge across the moat!</p>
+            
+            {/* Bridge Visualization */}
+            <div className="fbb-bridge-visualization">
+              <div className="fbb-bridge-left">
+                <div className="fbb-castle">🏰</div>
+                <div className="fbb-castle-label">Castle</div>
+              </div>
+              
+              <div className="fbb-moat-container">
+                <div className="fbb-moat-water"></div>
+                <div className="fbb-bridge-stones">
+                  {Array.from({ length: questions.length }).map((_, i) => (
+                    <div
+                      key={i}
+                      className={`fbb-stone placed`}
+                      style={{ animationDelay: `${i * 0.1}s` }}
+                    >
+                      🪨
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="fbb-bridge-right">
+                <div className="fbb-person">🐎</div>
+                <div className="fbb-person-label">You</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="fbb-completion-info">
+            <div className="fbb-done-icon">◆</div>
+            <h2>Moat Crossing Complete!</h2>
+            <p className="fbb-final-score">You built {gameLoop.score} of {questions.length} bridge stones.</p>
+
+            <div className="fbb-stars-earned">
+              {[1, 2, 3].map((star) => (
+                <span key={star} className={star <= gameLoop.earnedStars ? 'star filled' : 'star empty'}>★</span>
+              ))}
+            </div>
+
+            <p className="fbb-done-tip">
+              Every simplified fraction makes future algebra and ratios easier.
+            </p>
+
+            <div className="fbb-completion-buttons">
+              <button className="fbb-play-again-btn" onClick={handlePlayAgain}>Play Again?</button>
+              <button onClick={() => navigate('/subjects/math/fractions-kingdom')}>Back to Kingdom</button>
+              <button className="btn-secondary" onClick={() => navigate('/subjects/math')}>Back to Math</button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -96,13 +153,41 @@ export default function FractionsBridgeBuilder() {
     <div className="fbb-container">
       <div className="fbb-topbar">
         <button className="fbb-quit-btn" onClick={() => navigate('/subjects/math/fractions-kingdom')}>✕ Quit</button>
-        <div className="fbb-progress-label">Plank {gameLoop.index + 1}/{questions.length}</div>
+        <div className="fbb-progress-label">Stone {gameLoop.index + 1}/{questions.length}</div>
         <div className="fbb-score">Score: {gameLoop.score}</div>
       </div>
 
       <div className="fbb-scene">
-        <div className="fbb-scene-title">Bridge Builder</div>
-        <p className="fbb-scene-subtitle">Simplify each plank fraction so it locks into place.</p>
+        <div className="fbb-scene-title">⚔️ Moat Bridge Builder 🏰</div>
+        <p className="fbb-scene-subtitle">Simplify each fraction to place a stone and cross the castle's moat.</p>
+        
+        {/* Bridge Visualization */}
+        <div className="fbb-bridge-visualization">
+          <div className="fbb-bridge-left">
+            <div className="fbb-castle">🏰</div>
+            <div className="fbb-castle-label">Castle</div>
+          </div>
+          
+          <div className="fbb-moat-container">
+            <div className="fbb-moat-water"></div>
+            <div className="fbb-bridge-stones">
+              {Array.from({ length: questions.length }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`fbb-stone ${i < gameLoop.score ? 'placed' : ''} ${i === gameLoop.score ? 'current' : ''}`}
+                  style={{ animationDelay: `${i * 0.1}s` }}
+                >
+                  {i < gameLoop.score ? '🪨' : '⬜'}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="fbb-bridge-right">
+            <div className="fbb-person">🐎</div>
+            <div className="fbb-person-label">You</div>
+          </div>
+        </div>
       </div>
 
       <div className={`fbb-question ${gameLoop.feedback || ''}`}>
@@ -141,17 +226,8 @@ export default function FractionsBridgeBuilder() {
           />
         </div>
 
-        <button type="submit" className="fbb-submit">Place Plank</button>
+        <button type="submit" className="fbb-submit">Place Stone</button>
       </form>
-
-      <div className="fbb-progress-track">
-        {questions.map((_, i) => (
-          <div
-            key={i}
-            className={`fbb-dot ${i < gameLoop.index ? 'done' : i === gameLoop.index ? 'current' : ''}`}
-          />
-        ))}
-      </div>
     </div>
   );
 }

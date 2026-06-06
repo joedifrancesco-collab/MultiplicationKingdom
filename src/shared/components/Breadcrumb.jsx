@@ -120,7 +120,7 @@ function getDefaultBreadcrumbs(pathname, state = {}) {
             siege: { label: 'Kingdom Siege', path: `/subjects/${subject}/${kingdom}/siege` },
             maps: { label: 'Kingdom Maps', path: `/subjects/${subject}/${kingdom}/maps` },
             grid: { label: 'Times Table Grid', path: `/subjects/${subject}/${kingdom}/grid` },
-            'bridge-builder': { label: 'Bridge Builder', path: `/subjects/${subject}/${kingdom}/bridge-builder` },
+            'bridge-builder': { label: 'Moat Bridge Builder', path: `/subjects/${subject}/${kingdom}/bridge-builder` },
           };
           if (gameMap[gamePath]) {
             const gameItem = gameMap[gamePath];

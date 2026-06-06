@@ -130,7 +130,7 @@ export default function ResponsiveNav() {
         label: 'Fractions Kingdom',
         path: '/subjects/math/fractions-kingdom',
         items: [
-          { label: '🌉 Bridge Builder', path: '/subjects/math/fractions-kingdom/bridge-builder' },
+          { label: '� Moat Bridge Builder', path: '/subjects/math/fractions-kingdom/bridge-builder' },
         ],
       },
     ],
