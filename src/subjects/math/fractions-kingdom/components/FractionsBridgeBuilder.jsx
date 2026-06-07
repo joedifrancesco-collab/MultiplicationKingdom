@@ -14,6 +14,16 @@ function calcStars(score, total) {
   return 0;
 }
 
+// Generate confetti values outside component to avoid impure function during render
+function generateConfettiValues() {
+  return Array.from({ length: 50 }).map(() => ({
+    delay: Math.random() * 0.5,
+    angle: Math.random() * 360,
+  }));
+}
+
+const CONFETTI_VALUES = generateConfettiValues();
+
 export default function FractionsBridgeBuilder() {
   const navigate = useNavigate();
   const numeratorRef = useRef(null);
@@ -21,7 +31,6 @@ export default function FractionsBridgeBuilder() {
   const [questions] = useState(() => generateBridgeBuilderQuestions(QUESTION_COUNT));
   const [numerator, setNumerator] = useState('');
   const [denominator, setDenominator] = useState('');
-  const [playAgain, setPlayAgain] = useState(false);
 
   const gameLoop = useGameLoop({
     questions,
@@ -69,7 +78,6 @@ export default function FractionsBridgeBuilder() {
   }
 
   function handlePlayAgain() {
-    setPlayAgain(false);
     // Reset game state by reloading the component
     window.location.reload();
   }
@@ -78,8 +86,8 @@ export default function FractionsBridgeBuilder() {
     return (
       <div className="fbb-done-container">
         <div className="fbb-confetti-bg">
-          {Array.from({ length: 50 }).map((_, i) => (
-            <div key={i} className="fbb-confetti" style={{ '--delay': `${Math.random() * 0.5}s`, '--angle': `${Math.random() * 360}deg` }}></div>
+          {CONFETTI_VALUES.map((conf, i) => (
+            <div key={i} className="fbb-confetti" style={{ '--delay': `${conf.delay}s`, '--angle': `${conf.angle}deg` }}></div>
           ))}
         </div>
 
